@@ -1,0 +1,35 @@
+---
+import type { Metric } from "@domain/entities/shared";
+
+interface Props {
+	result: Metric;
+}
+
+const { result } = Astro.props;
+---
+
+<div class="c-project-result">
+	<span class="c-project-result__value">{result.value}</span>
+	<span class="c-project-result__label">{result.label}</span>
+</div>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-project-result {
+		@include stack(4px, flex-start);
+
+		white-space: nowrap;
+
+		&__value {
+			@include typography("retro", 26px, $font-weight-bold);
+			@include neon-text("teal", 0.6);
+
+			color: color("teal");
+		}
+
+		&__label {
+			@include mono-label(10px);
+		}
+	}
+</style>

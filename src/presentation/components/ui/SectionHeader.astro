@@ -1,0 +1,71 @@
+---
+import type { SectionIntro } from "@domain/entities/shared";
+import SectionLabel from "./SectionLabel.astro";
+
+interface Props {
+	index: string;
+	intro: SectionIntro;
+	headingId?: string;
+}
+
+const { index, intro, headingId } = Astro.props;
+---
+
+<header class="c-section-header">
+	<SectionLabel index={index} label={intro.label} />
+	<div class="c-section-header__heading">
+		<h2 class="c-section-header__title" id={headingId}>
+			{intro.title}
+		</h2>
+		{intro.description && (
+			<p class="c-section-header__description">{intro.description}</p>
+		)}
+	</div>
+</header>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-section-header {
+		@include stack(24px);
+
+		&__heading {
+			@include cluster(48px, flex-end, space-between);
+
+			@include respond-below("tablet") {
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 20px;
+			}
+		}
+
+		&__title {
+			@include typography("retro", 40px, $font-weight-bold, 1.15);
+			@include neon-text("magenta", 0.6);
+
+			max-width: 720px;
+			color: color("text");
+
+			@include respond-below("tablet") {
+				font-size: 30px;
+			}
+
+			@include respond-below("mobile") {
+				font-size: 26px;
+			}
+		}
+
+		&__description {
+			@include typography("body", 16px, $font-weight-regular, 1.6);
+
+			flex-shrink: 0;
+			width: 390px;
+			color: color("text-muted");
+
+			@include respond-below("tablet") {
+				width: auto;
+				max-width: 520px;
+			}
+		}
+	}
+</style>

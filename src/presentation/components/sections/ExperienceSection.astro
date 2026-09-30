@@ -1,0 +1,235 @@
+---
+import {
+	isCurrentPosition,
+	type Experience,
+} from "@domain/entities/experience";
+import { formatPeriod } from "../../utils/formatPeriod";
+import Pill from "../ui/Pill.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+interface Props {
+	index: string;
+	experience: Experience;
+}
+
+const { index, experience } = Astro.props;
+---
+
+<section
+	class="l-section l-section--alt"
+	id="experiencia"
+	aria-labelledby="experiencia-title"
+>
+	<div class="l-container">
+		<SectionHeader
+			index={index}
+			intro={experience.intro}
+			headingId="experiencia-title"
+		/>
+
+		<ol class="c-timeline">
+			{experience.positions.map((position) => {
+				const isCurrent = isCurrentPosition(position);
+				return (
+					<li class="c-position">
+						<div class="c-position__period">
+							<span
+								class:list={[
+									"c-position__dates",
+									{ "c-position__dates--current": isCurrent },
+								]}
+							>
+								{formatPeriod(
+									position.period,
+									experience.presentLabel,
+								)}
+							</span>
+							{isCurrent && (
+								<Pill variant="accent">
+									{experience.currentLabel}
+								</Pill>
+							)}
+						</div>
+
+						<div class="c-position__track" aria-hidden="true">
+							<span
+								class:list={[
+									"c-position__node",
+									{ "c-position__node--current": isCurrent },
+								]}
+							/>
+						</div>
+
+						<div class="c-position__role">
+							<span class="c-position__company">
+								{position.company}
+							</span>
+							<h3 class="c-position__title">{position.role}</h3>
+							<span class="c-position__location">
+								{position.location}
+							</span>
+						</div>
+
+						<div class="c-position__impact">
+							<p class="c-position__summary">
+								{position.summary}
+							</p>
+							<ul class="c-position__achievements">
+								{position.achievements.map((achievement) => (
+									<li class="c-position__achievement">
+										{achievement}
+									</li>
+								))}
+							</ul>
+						</div>
+					</li>
+				);
+			})}
+		</ol>
+	</div>
+</section>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-position {
+		@include cluster(32px, flex-start);
+		@include divider(bottom);
+
+		padding-block: 34px;
+
+		@include respond-below("laptop") {
+			display: grid;
+			grid-template-columns: 28px 1fr;
+			gap: 16px 24px;
+		}
+
+		&__period {
+			@include stack(12px, flex-start);
+
+			flex-shrink: 0;
+			width: 180px;
+
+			@include respond-below("laptop") {
+				grid-column: 2;
+				width: auto;
+			}
+		}
+
+		&__dates {
+			@include typography("mono", 12px, $font-weight-semibold);
+
+			color: color("text-subtle");
+
+			&--current {
+				color: color("teal");
+			}
+		}
+
+		&__track {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			flex-shrink: 0;
+			align-self: stretch;
+			width: 28px;
+
+			@include respond-below("laptop") {
+				grid-row: 1 / span 3;
+				grid-column: 1;
+			}
+
+			&::before {
+				content: "";
+				position: absolute;
+				inset-block: 0;
+				left: 50%;
+				width: 2px;
+				background: linear-gradient(
+					180deg,
+					color("magenta"),
+					color-alpha("teal", 0.4)
+				);
+				transform: translateX(-50%);
+			}
+		}
+
+		&__node {
+			position: relative;
+			width: 11px;
+			height: 11px;
+			border: 2px solid color("magenta");
+			border-radius: 50%;
+			background: color("background");
+			box-shadow: 0 0 8px color-alpha("magenta", 0.8);
+
+			&--current {
+				border-color: color("teal");
+				background: color("teal");
+				box-shadow: 0 0 12px color("teal");
+			}
+		}
+
+		&__role {
+			@include stack(8px, flex-start);
+
+			flex-shrink: 0;
+			width: 300px;
+
+			@include respond-below("laptop") {
+				grid-column: 2;
+				width: auto;
+			}
+		}
+
+		&__company {
+			@include mono-label(12px, "magenta");
+		}
+
+		&__title {
+			@include typography("display", 28px, $font-weight-bold, 1.15);
+
+			color: color("text");
+		}
+
+		&__location {
+			@include typography("body", 14px);
+
+			color: color("text-subtle");
+		}
+
+		&__impact {
+			@include stack(16px);
+
+			flex: 1;
+			min-width: 0;
+
+			@include respond-below("laptop") {
+				grid-column: 2;
+			}
+		}
+
+		&__summary {
+			@include typography("body", 16px, $font-weight-regular, 1.65);
+
+			color: color("text-muted");
+		}
+
+		&__achievements {
+			@include stack(12px);
+		}
+
+		&__achievement {
+			@include cluster(12px, flex-start);
+			@include typography("body", 14px, $font-weight-regular, 1.55);
+
+			color: color("text");
+
+			&::before {
+				content: "↳";
+				font-family: font-family("mono");
+				color: color("teal");
+			}
+		}
+	}
+</style>

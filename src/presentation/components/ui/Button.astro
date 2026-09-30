@@ -1,0 +1,65 @@
+---
+import Icon from "./Icon.astro";
+import type { UiIconName } from "./icons";
+
+interface Props {
+	href: string;
+	variant?: "primary" | "ghost";
+	icon?: UiIconName;
+}
+
+const { href, variant = "primary", icon } = Astro.props;
+---
+
+<a class:list={["c-button", `c-button--${variant}`]} href={href}>
+	<slot />
+	{icon && <Icon name={icon} strokeWidth={1.7} />}
+</a>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-button {
+		@include cluster(12px);
+		@include typography("mono", 13px, $font-weight-semibold);
+
+		height: 52px;
+		padding-inline: 22px;
+		border: 1px solid transparent;
+		border-radius: $radius-sm;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		transition:
+			transform $transition-base,
+			box-shadow $transition-base,
+			border-color $transition-base;
+
+		&:hover {
+			transform: translateY(-2px);
+		}
+
+		&--primary {
+			@include neon-box("magenta", 0.6);
+
+			background: linear-gradient(
+				90deg,
+				color("magenta"),
+				color("salmon")
+			);
+			color: color("text");
+
+			&:hover {
+				@include neon-box("magenta", 1.2);
+			}
+		}
+
+		&--ghost {
+			border-color: color("teal");
+			color: color("teal");
+
+			&:hover {
+				@include neon-box("teal");
+			}
+		}
+	}
+</style>

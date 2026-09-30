@@ -1,0 +1,43 @@
+@use "../abstracts" as *;
+
+.l-section {
+	position: relative;
+	padding: 104px gutter("desktop");
+	background: color("background");
+
+	@include respond-below("laptop") {
+		padding-inline: gutter("tablet");
+	}
+
+	@include respond-below("mobile") {
+		padding: 72px gutter("mobile");
+	}
+
+	// Línea de neón que separa cada sección.
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: $gradient-neon;
+		opacity: 0.45;
+	}
+
+	&--alt {
+		background: color("background-alt");
+	}
+
+	&--compact {
+		padding-block: 96px;
+	}
+}
+
+.l-container {
+	@include stack(48px);
+
+	position: relative;
+	max-width: $container-max-width;
+	margin-inline: auto;
+}

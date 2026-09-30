@@ -1,0 +1,32 @@
+---
+import Pill from "./Pill.astro";
+
+interface Props {
+	items: readonly string[];
+	wrap?: boolean;
+}
+
+const { items, wrap = true } = Astro.props;
+---
+
+<ul class:list={["c-pill-list", { "c-pill-list--nowrap": !wrap }]}>
+	{items.map((item) => (
+		<li>
+			<Pill>{item}</Pill>
+		</li>
+	))}
+</ul>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-pill-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+
+		&--nowrap {
+			flex-wrap: nowrap;
+		}
+	}
+</style>

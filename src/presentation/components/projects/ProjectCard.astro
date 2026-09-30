@@ -1,0 +1,167 @@
+---
+import type { Project } from "@domain/entities/projects";
+import Icon from "../ui/Icon.astro";
+import PillList from "../ui/PillList.astro";
+import ProjectResult from "./ProjectResult.astro";
+
+interface Props {
+	project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class:list={["c-project-card", `c-project-card--${project.tone}`]}>
+	<div class="c-project-card__preview">
+		<img
+			class="c-project-card__image"
+			src={project.preview.src}
+			alt={project.preview.alt}
+			width="624"
+			height="250"
+			loading="lazy"
+		/>
+		<span class="c-project-card__badge">{project.code}</span>
+	</div>
+
+	<div class="c-project-card__content">
+		<header class="c-project-card__header">
+			<div class="c-project-card__name">
+				<p class="c-project-card__category">{project.category}</p>
+				<h3 class="c-project-card__title">
+					<a class="c-project-card__link" href={project.link.href}>
+						{project.title}
+					</a>
+				</h3>
+			</div>
+			<span class="c-project-card__arrow">
+				<Icon name="arrow-up-right" size={22} />
+			</span>
+		</header>
+
+		<p class="c-project-card__summary">{project.summary}</p>
+
+		<footer class="c-project-card__footer">
+			{project.results.map((result) => (
+				<ProjectResult result={result} />
+			))}
+			<PillList items={project.technologies} wrap={false} />
+		</footer>
+	</div>
+</article>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	// Tono semántico del dominio → color de la paleta.
+	$tones: (
+		"primary": "teal",
+		"secondary": "magenta",
+		"tertiary": "salmon",
+	);
+
+	.c-project-card {
+		@include surface;
+		@include stack;
+
+		position: relative;
+		height: 100%;
+		min-height: 515px;
+		overflow: hidden;
+		transition:
+			border-color $transition-base,
+			box-shadow $transition-base,
+			transform $transition-base;
+
+		&:hover {
+			border-color: var(--project-tone);
+			box-shadow:
+				0 0 8px var(--project-tone),
+				0 0 28px color-alpha("magenta", 0.25);
+			transform: translateY(-4px);
+		}
+
+		@each $tone, $color-name in $tones {
+			&--#{$tone} {
+				--project-tone: #{color($color-name)};
+			}
+		}
+
+		&__preview {
+			position: relative;
+			height: 250px;
+			padding: 24px;
+
+			&::after {
+				@include synthwave-tint;
+			}
+		}
+
+		&__image {
+			@include cover-image;
+		}
+
+		&__badge {
+			@include overlay-badge;
+
+			position: relative;
+			z-index: z("content");
+			display: inline-flex;
+			color: var(--project-tone);
+		}
+
+		&__content {
+			@include stack(16px);
+
+			padding: 24px;
+		}
+
+		&__header {
+			@include cluster(16px, flex-start, space-between);
+		}
+
+		&__name {
+			@include stack(8px);
+		}
+
+		&__category {
+			@include mono-label(12px);
+
+			color: var(--project-tone);
+		}
+
+		&__title {
+			@include typography("display", 28px, $font-weight-bold);
+
+			color: color("text");
+		}
+
+		// Toda la tarjeta es clicable manteniendo un único enlace accesible.
+		&__link::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+		}
+
+		&__arrow {
+			color: color("text-muted");
+			transition: color $transition-base;
+		}
+
+		&:hover &__arrow {
+			color: color("teal");
+		}
+
+		&__summary {
+			@include typography("body", 14px, $font-weight-regular, 1.55);
+
+			color: color("text-muted");
+		}
+
+		&__footer {
+			@include cluster(16px, flex-end, space-between);
+
+			flex-wrap: wrap;
+		}
+	}
+</style>

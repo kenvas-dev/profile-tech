@@ -1,0 +1,35 @@
+@use "sass:color" as sass-color;
+@use "sass:map";
+@use "variables" as *;
+
+@function color($name) {
+	@if not map.has-key($colors, $name) {
+		@error 'Color `#{$name}` no existe en $colors.';
+	}
+
+	@return map.get($colors, $name);
+}
+
+@function font-family($name) {
+	@if not map.has-key($font-families, $name) {
+		@error 'Familia `#{$name}` no existe en $font-families.';
+	}
+
+	@return map.get($font-families, $name);
+}
+
+@function z($layer) {
+	@if not map.has-key($z-layers, $layer) {
+		@error 'Capa `#{$layer}` no existe en $z-layers.';
+	}
+
+	@return map.get($z-layers, $layer);
+}
+
+@function gutter($name) {
+	@return map.get($gutters, $name);
+}
+
+@function color-alpha($name, $alpha) {
+	@return sass-color.change(color($name), $alpha: $alpha);
+}

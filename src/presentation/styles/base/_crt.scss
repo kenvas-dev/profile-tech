@@ -1,0 +1,17 @@
+@use "../abstracts" as *;
+
+// Scanlines tipo monitor CRT sobre toda la página.
+body::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: z("crt");
+	background: repeating-linear-gradient(
+		to bottom,
+		transparent 0,
+		transparent 2px,
+		color("scanline") 3px,
+		transparent 4px
+	);
+	pointer-events: none;
+}

@@ -1,0 +1,41 @@
+---
+interface Props {
+	glow?: boolean;
+}
+
+const { glow = false } = Astro.props;
+---
+
+<span
+	class:list={["c-status-dot", { "c-status-dot--glow": glow }]}
+	aria-hidden="true"
+></span>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-status-dot {
+		flex-shrink: 0;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: color("teal");
+
+		&--glow {
+			box-shadow: 0 0 10px color-alpha("teal", 0.9);
+			animation: blink 1.6s steps(2, jump-none) infinite;
+		}
+	}
+
+	@keyframes blink {
+		50% {
+			opacity: 0.35;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.c-status-dot--glow {
+			animation: none;
+		}
+	}
+</style>

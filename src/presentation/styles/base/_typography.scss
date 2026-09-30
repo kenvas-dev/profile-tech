@@ -1,0 +1,18 @@
+@use "../abstracts" as *;
+
+body {
+	@include typography("body", 16px);
+
+	background: color("background");
+	color: color("text");
+}
+
+::selection {
+	background: color("magenta");
+	color: color("text");
+}
+
+:focus-visible {
+	outline: 2px solid color("teal");
+	outline-offset: 3px;
+}

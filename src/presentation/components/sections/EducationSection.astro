@@ -1,0 +1,207 @@
+---
+import type { Education } from "@domain/entities/education";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+interface Props {
+	index: string;
+	education: Education;
+}
+
+const { index, education } = Astro.props;
+const { method } = education;
+const formatStepNumber = (position: number) =>
+	String(position + 1).padStart(2, "0");
+---
+
+<section
+	class="l-section l-section--alt"
+	id="formacion"
+	aria-labelledby="formacion-title"
+>
+	<div class="l-container">
+		<SectionHeader
+			index={index}
+			intro={education.intro}
+			headingId="formacion-title"
+		/>
+
+		<div class="c-education">
+			<div class="c-credentials">
+				<h3 class="c-credentials__label">
+					{education.credentialsLabel}
+				</h3>
+				<ul>
+					{education.credentials.map((credential) => (
+						<li class="c-credential">
+							<span class="c-credential__year">
+								{credential.year}
+							</span>
+							<div class="c-credential__detail">
+								<span class="c-credential__type">
+									{credential.type}
+								</span>
+								<h4 class="c-credential__title">
+									{credential.title}
+								</h4>
+								<span class="c-credential__institution">
+									{credential.institution}
+								</span>
+							</div>
+						</li>
+					))}
+				</ul>
+			</div>
+
+			<aside class="c-method" aria-labelledby="method-title">
+				<header class="c-method__header">
+					<h3 class="c-method__label" id="method-title">
+						{method.label}
+					</h3>
+					<span class="c-method__status">{method.status}</span>
+				</header>
+
+				<ol class="c-method__steps">
+					{method.steps.map((step, position) => (
+						<li class="c-method-step">
+							<span class="c-method-step__number">
+								{formatStepNumber(position)}
+							</span>
+							<div class="c-method-step__detail">
+								<h4 class="c-method-step__title">
+									{step.title}
+								</h4>
+								<p class="c-method-step__description">
+									{step.description}
+								</p>
+							</div>
+						</li>
+					))}
+				</ol>
+			</aside>
+		</div>
+	</div>
+</section>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-education {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 64px;
+		align-items: start;
+
+		@include respond-below("laptop") {
+			grid-template-columns: 1fr;
+			gap: 48px;
+		}
+	}
+
+	.c-credentials__label {
+		@include mono-label(12px, "salmon");
+	}
+
+	.c-credential {
+		@include cluster(24px, flex-start);
+		@include divider(bottom);
+
+		padding-block: 22px;
+
+		&__year {
+			@include typography("mono", 12px);
+
+			flex-shrink: 0;
+			width: 70px;
+			color: color("magenta");
+		}
+
+		&__detail {
+			@include stack(8px);
+
+			flex: 1;
+			min-width: 0;
+		}
+
+		&__type {
+			@include mono-label(10px);
+		}
+
+		&__title {
+			@include typography("display", 20px, $font-weight-bold);
+
+			color: color("text");
+		}
+
+		&__institution {
+			@include typography("body", 14px);
+
+			color: color("text-muted");
+		}
+	}
+
+	.c-method {
+		@include surface($background: "background", $border: "teal");
+		@include stack(32px);
+		@include neon-box("teal", 0.5);
+
+		padding: 32px;
+
+		@include respond-below("mobile") {
+			padding: 24px;
+		}
+
+		&__header {
+			@include cluster(16px, center, space-between);
+		}
+
+		&__label {
+			@include mono-label(12px, "teal");
+		}
+
+		&__status {
+			@include typography("mono", 10px);
+
+			color: color("teal");
+		}
+
+		&__steps {
+			@include stack(32px);
+		}
+	}
+
+	.c-method-step {
+		@include cluster(24px, flex-start);
+
+		&__number {
+			@include cluster($justify: center);
+			@include typography("mono", 11px);
+			@include neon-box("teal", 0.4);
+			@include neon-text("teal", 0.5);
+
+			flex-shrink: 0;
+			width: 38px;
+			height: 38px;
+			border: 1px solid color("teal");
+			border-radius: $radius-sm;
+			color: color("teal");
+		}
+
+		&__detail {
+			@include stack(8px);
+
+			padding-top: 6px;
+		}
+
+		&__title {
+			@include typography("display", 20px, $font-weight-bold);
+
+			color: color("text");
+		}
+
+		&__description {
+			@include typography("body", 14px, $font-weight-regular, 1.55);
+
+			color: color("text-muted");
+		}
+	}
+</style>

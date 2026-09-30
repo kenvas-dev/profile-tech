@@ -1,0 +1,47 @@
+---
+import type { PortfolioOverview } from "@application/use-cases/GetPortfolio";
+import FeaturedProjectCard from "../projects/FeaturedProjectCard.astro";
+import ProjectCard from "../projects/ProjectCard.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+interface Props {
+	index: string;
+	projects: PortfolioOverview["projects"];
+}
+
+const { index, projects } = Astro.props;
+---
+
+<section class="l-section" id="proyectos" aria-labelledby="proyectos-title">
+	<div class="l-container">
+		<SectionHeader
+			index={index}
+			intro={projects.intro}
+			headingId="proyectos-title"
+		/>
+
+		<FeaturedProjectCard project={projects.featured} />
+
+		<ul class="c-projects-grid">
+			{projects.others.map((project) => (
+				<li>
+					<ProjectCard project={project} />
+				</li>
+			))}
+		</ul>
+	</div>
+</section>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-projects-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 32px;
+
+		@include respond-below("tablet") {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

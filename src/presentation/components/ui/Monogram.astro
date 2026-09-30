@@ -1,0 +1,53 @@
+---
+interface Props {
+	initials: string;
+	name: string;
+	size?: "md" | "sm";
+	href?: string;
+}
+
+const { initials, name, size = "md", href } = Astro.props;
+const Tag = href ? "a" : "div";
+---
+
+<Tag class:list={["c-monogram", `c-monogram--${size}`]} href={href}>
+	<span class="c-monogram__badge" aria-hidden="true">
+		{initials}
+	</span>
+	<span class="c-monogram__name">{name}</span>
+</Tag>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-monogram {
+		@include cluster(12px);
+
+		&__badge {
+			@include cluster($justify: center);
+			@include typography("retro", 13px, $font-weight-black);
+			@include neon-box("magenta", 0.6);
+			@include neon-text("teal", 0.6);
+
+			width: 34px;
+			height: 34px;
+			background: color("midnight");
+			border: 1px solid color("magenta");
+			border-radius: $radius-sm;
+			color: color("teal");
+		}
+
+		&__name {
+			@include typography("retro", 14px, $font-weight-bold);
+
+			letter-spacing: 0.06em;
+			color: color("text");
+		}
+
+		&--sm &__badge {
+			width: 32px;
+			height: 32px;
+			font-size: 11px;
+		}
+	}
+</style>

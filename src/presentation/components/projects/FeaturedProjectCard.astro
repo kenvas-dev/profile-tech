@@ -1,0 +1,181 @@
+---
+import type { Project } from "@domain/entities/projects";
+import Icon from "../ui/Icon.astro";
+import PillList from "../ui/PillList.astro";
+import ProjectResult from "./ProjectResult.astro";
+
+interface Props {
+	project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="c-featured-project">
+	<div class="c-featured-project__preview">
+		<img
+			class="c-featured-project__image"
+			src={project.preview.src}
+			alt={project.preview.alt}
+			width="650"
+			height="480"
+			loading="lazy"
+		/>
+		<span class="c-featured-project__badge">
+			<span
+				class="c-featured-project__badge-dot"
+				aria-hidden="true"
+			></span>
+			{project.code}
+		</span>
+	</div>
+
+	<div class="c-featured-project__content">
+		<div class="c-featured-project__description">
+			<p class="c-featured-project__category">{project.category}</p>
+			<h3 class="c-featured-project__title">{project.title}</h3>
+			<p class="c-featured-project__summary">{project.summary}</p>
+			<PillList items={project.technologies} />
+		</div>
+
+		<footer class="c-featured-project__impact">
+			{project.results.map((result) => (
+				<ProjectResult result={result} />
+			))}
+			<a class="c-featured-project__link" href={project.link.href}>
+				{project.link.label}
+				<span class="c-featured-project__link-icon">
+					<Icon name="arrow-up-right" strokeWidth={1.7} />
+				</span>
+			</a>
+		</footer>
+	</div>
+</article>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-featured-project {
+		@include surface($border: "teal", $radius: $radius-lg);
+		@include neon-box("teal", 0.6);
+
+		display: flex;
+		min-height: 480px;
+		overflow: hidden;
+
+		@include respond-below("laptop") {
+			flex-direction: column;
+		}
+
+		&__preview {
+			position: relative;
+			flex: 0 0 650px;
+			padding: 32px;
+
+			@include respond-below("laptop") {
+				flex-basis: auto;
+				aspect-ratio: 650 / 480;
+			}
+
+			&::after {
+				@include synthwave-tint;
+			}
+		}
+
+		&__image {
+			@include cover-image;
+		}
+
+		&__badge {
+			@include overlay-badge;
+
+			position: relative;
+			display: inline-flex;
+			z-index: z("content");
+			padding: 8px 12px;
+			color: color("teal");
+		}
+
+		&__badge-dot {
+			width: 7px;
+			height: 7px;
+			border-radius: $radius-pill;
+			background: color("teal");
+			box-shadow: 0 0 8px color("teal");
+		}
+
+		&__content {
+			@include stack(48px);
+
+			justify-content: space-between;
+			flex: 1;
+			min-width: 0;
+			padding: 48px;
+
+			@include respond-below("mobile") {
+				padding: 24px;
+			}
+		}
+
+		&__description {
+			@include stack(24px, flex-start);
+		}
+
+		&__category {
+			@include cluster(12px);
+			@include mono-label(12px, "magenta");
+
+			&::after {
+				content: "";
+				width: 48px;
+				height: 1px;
+				background: color("border-strong");
+			}
+		}
+
+		&__title {
+			@include typography("retro", 34px, $font-weight-bold, 1.12);
+			@include gradient-text(
+				linear-gradient(90deg, color("salmon"), color("magenta"))
+			);
+
+			@include respond-below("mobile") {
+				font-size: 30px;
+			}
+		}
+
+		&__summary {
+			@include typography("body", 16px, $font-weight-regular, 1.7);
+
+			color: color("text-muted");
+		}
+
+		&__impact {
+			@include cluster(48px, flex-start);
+			@include divider(top);
+
+			flex-wrap: wrap;
+			padding-top: 24px;
+
+			@include respond-below("mobile") {
+				gap: 24px;
+			}
+		}
+
+		&__link {
+			@include cluster(8px);
+			@include typography("body", 14px);
+
+			color: color("text");
+			transition: color $transition-base;
+
+			&:hover {
+				color: color("teal");
+			}
+		}
+
+		&__link-icon {
+			color: color("teal");
+		}
+	}
+</style>

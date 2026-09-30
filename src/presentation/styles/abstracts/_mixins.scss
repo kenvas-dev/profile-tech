@@ -1,0 +1,128 @@
+@use "sass:map";
+@use "variables" as *;
+@use "functions" as *;
+
+/// Media query desktop-first: aplica estilos por debajo del breakpoint indicado.
+@mixin respond-below($breakpoint) {
+	@if not map.has-key($breakpoints, $breakpoint) {
+		@error 'Breakpoint `#{$breakpoint}` no existe en $breakpoints.';
+	}
+
+	@media (max-width: map.get($breakpoints, $breakpoint)) {
+		@content;
+	}
+}
+
+@mixin typography(
+	$family,
+	$size,
+	$weight: $font-weight-regular,
+	$line-height: normal
+) {
+	font-family: font-family($family);
+	font-size: $size;
+	font-weight: $weight;
+	line-height: $line-height;
+}
+
+/// Etiqueta monoespaciada en mayúsculas usada en todo el diseño.
+@mixin mono-label(
+	$size: 12px,
+	$color: "text-subtle",
+	$weight: $font-weight-regular
+) {
+	@include typography("mono", $size, $weight);
+
+	color: color($color);
+	text-transform: uppercase;
+}
+
+@mixin stack($gap: 0, $align: stretch) {
+	display: flex;
+	flex-direction: column;
+	align-items: $align;
+	gap: $gap;
+}
+
+@mixin cluster($gap: 0, $align: center, $justify: flex-start) {
+	display: flex;
+	align-items: $align;
+	justify-content: $justify;
+	gap: $gap;
+}
+
+@mixin surface($background: "surface", $border: "border", $radius: $radius-md) {
+	background: color($background);
+	border: 1px solid color($border);
+	border-radius: $radius;
+}
+
+@mixin divider($side: bottom) {
+	border-#{$side}: 1px solid color("border");
+}
+
+@mixin overlay-badge {
+	@include cluster(8px);
+	@include typography("mono", 10px);
+
+	padding: 7px 10px;
+	border-radius: $radius-sm;
+	background: color("overlay");
+}
+
+@mixin cover-image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+// -----------------------------------------------------------------------------
+// Efectos retro
+// -----------------------------------------------------------------------------
+
+/// Resplandor de neón para texto.
+@mixin neon-text($color: "magenta", $intensity: 1) {
+	text-shadow:
+		0 0 #{4px * $intensity} color-alpha($color, 0.8),
+		0 0 #{14px * $intensity} color-alpha($color, 0.55),
+		0 0 #{28px * $intensity} color-alpha($color, 0.35);
+}
+
+/// Resplandor de neón para cajas (bordes, botones, tarjetas).
+@mixin neon-box($color: "teal", $intensity: 1) {
+	box-shadow:
+		0 0 #{6px * $intensity} color-alpha($color, 0.55),
+		0 0 #{22px * $intensity} color-alpha($color, 0.3),
+		inset 0 0 #{10px * $intensity} color-alpha($color, 0.15);
+}
+
+/// Texto rellenado con un gradiente.
+@mixin gradient-text($gradient: $gradient-sunset) {
+	background: $gradient;
+	background-clip: text;
+	color: transparent;
+}
+
+/// Titular en tipografía retro (Orbitron).
+@mixin retro-heading($size, $weight: $font-weight-bold, $line-height: 1.12) {
+	@include typography("retro", $size, $weight, $line-height);
+
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+/// Capa duotono synthwave sobre imágenes (usar en ::after del contenedor).
+@mixin synthwave-tint {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		160deg,
+		color-alpha("magenta", 0.35),
+		color-alpha("midnight", 0.45)
+	);
+	mix-blend-mode: color;
+	pointer-events: none;
+}

@@ -1,0 +1,219 @@
+---
+import type { Contact } from "@domain/entities/contact";
+import Icon from "../ui/Icon.astro";
+import RetroSun from "../ui/RetroSun.astro";
+import SectionLabel from "../ui/SectionLabel.astro";
+import StatusDot from "../ui/StatusDot.astro";
+import SynthGrid from "../ui/SynthGrid.astro";
+
+interface Props {
+	index: string;
+	contact: Contact;
+}
+
+const { index, contact } = Astro.props;
+---
+
+<section
+	class="l-section c-contact"
+	id="contacto"
+	aria-labelledby="contacto-title"
+>
+	<div class="c-contact__sun">
+		<RetroSun size={360} />
+	</div>
+	<SynthGrid height={220} />
+
+	<div class="l-container c-contact__content">
+		<SectionLabel index={index} label={contact.label} />
+
+		<div class="c-contact__invitation">
+			<div class="c-contact__message">
+				<h2 class="c-contact__title" id="contacto-title">
+					{contact.title}
+				</h2>
+				<p class="c-contact__description">{contact.description}</p>
+				<a class="c-contact__email" href={`mailto:${contact.email}`}>
+					{contact.email}
+					<Icon name="arrow-up-right" size={25} strokeWidth={1.8} />
+				</a>
+			</div>
+
+			<aside class="c-channels" aria-label="Canales de contacto">
+				<p class="c-channels__status">
+					<StatusDot />
+					{contact.availability}
+				</p>
+				<ul>
+					{contact.channels.map((channel) => (
+						<li>
+							<a
+								class="c-channel"
+								href={channel.href}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<span class="c-channel__icon">
+									<Icon name={channel.icon} size={18} />
+								</span>
+								<span class="c-channel__label">
+									{channel.label}
+								</span>
+								<span class="c-channel__value">
+									{channel.value}
+								</span>
+								<span class="c-channel__arrow">
+									<Icon name="arrow-up-right" />
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</aside>
+		</div>
+	</div>
+</section>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-contact {
+		overflow: hidden;
+		min-height: 610px;
+		padding-block: 88px 260px;
+		background: $gradient-sky;
+
+		&__content {
+			z-index: z("content");
+		}
+
+		&__sun {
+			position: absolute;
+			bottom: 150px;
+			left: 58%;
+			opacity: 0.9;
+			transform: translateX(-50%);
+
+			@include respond-below("laptop") {
+				left: 50%;
+			}
+		}
+
+		&__invitation {
+			@include cluster(72px, flex-end);
+
+			@include respond-below("laptop") {
+				flex-direction: column;
+				align-items: stretch;
+				gap: 48px;
+			}
+		}
+
+		&__message {
+			@include stack(24px, flex-start);
+
+			flex: 1;
+			min-width: 0;
+		}
+
+		&__title {
+			@include typography("retro", 56px, $font-weight-bold, 1.1);
+			@include neon-text("magenta", 0.8);
+
+			color: color("text");
+
+			@include respond-below("mobile") {
+				font-size: 32px;
+			}
+		}
+
+		&__description {
+			@include typography("body", 18px, $font-weight-regular, 1.65);
+
+			max-width: 680px;
+			color: color("text-muted");
+		}
+
+		&__email {
+			@include cluster(16px);
+			@include typography("display", 32px, $font-weight-bold);
+			@include neon-text("teal", 0.7);
+
+			max-width: 100%;
+			padding-bottom: 8px;
+			border-bottom: 2px solid color("teal");
+			color: color("teal");
+			box-shadow: 0 6px 10px -6px color("teal");
+			overflow-wrap: anywhere;
+			transition: gap $transition-base;
+
+			@include respond-below("mobile") {
+				font-size: 22px;
+			}
+
+			&:hover {
+				gap: 24px;
+			}
+		}
+	}
+
+	.c-channels {
+		@include surface($background: "overlay", $border: "teal");
+		@include stack(24px);
+		@include neon-box("teal", 0.5);
+
+		backdrop-filter: blur(6px);
+		flex-shrink: 0;
+		width: 400px;
+		padding: 32px;
+
+		@include respond-below("laptop") {
+			width: 100%;
+			max-width: 480px;
+		}
+
+		@include respond-below("mobile") {
+			padding: 24px;
+		}
+
+		&__status {
+			@include cluster(12px);
+			@include mono-label(12px, "teal");
+		}
+	}
+
+	.c-channel {
+		@include cluster(16px);
+		@include divider(bottom);
+
+		padding-block: 16px;
+
+		&__icon {
+			color: color("teal");
+		}
+
+		&__label {
+			@include mono-label(12px);
+
+			flex-shrink: 0;
+			width: 100px;
+		}
+
+		&__value {
+			@include typography("body", 14px);
+
+			flex: 1;
+			min-width: 0;
+			color: color("text");
+		}
+
+		&__arrow {
+			color: color("text-subtle");
+			transition: color $transition-base;
+		}
+
+		&:hover &__arrow {
+			color: color("teal");
+		}
+	}
+</style>

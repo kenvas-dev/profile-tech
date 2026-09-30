@@ -1,0 +1,35 @@
+---
+import { getPortfolio } from "@infrastructure/di/container";
+import ContactSection from "@presentation/components/sections/ContactSection.astro";
+import EducationSection from "@presentation/components/sections/EducationSection.astro";
+import ExperienceSection from "@presentation/components/sections/ExperienceSection.astro";
+import HeroSection from "@presentation/components/sections/HeroSection.astro";
+import ProfileSection from "@presentation/components/sections/ProfileSection.astro";
+import ProjectsSection from "@presentation/components/sections/ProjectsSection.astro";
+import SiteFooter from "@presentation/components/sections/SiteFooter.astro";
+import SkillsSection from "@presentation/components/sections/SkillsSection.astro";
+import BaseLayout from "@presentation/layouts/BaseLayout.astro";
+
+const portfolio = await getPortfolio.execute("es");
+const { identity, hero } = portfolio;
+---
+
+<BaseLayout
+	title={`${identity.fullName} — ${hero.role.primary} + ${hero.role.secondary}`}
+	description={hero.valueProposition}
+>
+	<HeroSection
+		identity={identity}
+		navigation={portfolio.navigation}
+		hero={hero}
+	/>
+	<main>
+		<ProfileSection index="/01" profile={portfolio.profile} />
+		<SkillsSection index="/02" skills={portfolio.skills} />
+		<ExperienceSection index="/03" experience={portfolio.experience} />
+		<ProjectsSection index="/04" projects={portfolio.projects} />
+		<EducationSection index="/05" education={portfolio.education} />
+		<ContactSection index="/06" contact={portfolio.contact} />
+	</main>
+	<SiteFooter identity={identity} footer={portfolio.footer} />
+</BaseLayout>

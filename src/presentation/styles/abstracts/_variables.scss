@@ -1,0 +1,116 @@
+@use "sass:color";
+@use "sass:map";
+
+// -----------------------------------------------------------------------------
+// Design tokens — paleta synthwave 80s / 90s
+// -----------------------------------------------------------------------------
+
+// Paleta base
+$palette: (
+	"midnight": #3b0855,
+	"plum": #852467,
+	"salmon": #fd8083,
+	"magenta": #ee227d,
+	"steel": #498099,
+	"teal": #30c0b7,
+);
+$_background: #1a0228;
+
+// Colores semánticos (derivados de la paleta)
+$colors: map.merge(
+	$palette,
+	(
+		"background": $_background,
+		"background-alt": #22043a,
+		"surface": #2c0746,
+		"overlay": color.change($_background, $alpha: 0.85),
+		"scanline": color.change(#000, $alpha: 0.14),
+		"border": #4a1462,
+		"border-strong": #852467,
+		"text": #fff1f8,
+		"text-muted": #e0bfe0,
+		"text-subtle": #9f8fbf,
+	)
+);
+
+// Gradientes
+$gradient-sunset: linear-gradient(
+	180deg,
+	map.get($palette, "salmon") 0%,
+	map.get($palette, "magenta") 55%,
+	map.get($palette, "plum") 100%
+);
+$gradient-neon: linear-gradient(
+	90deg,
+	map.get($palette, "magenta") 0%,
+	map.get($palette, "salmon") 50%,
+	map.get($palette, "teal") 100%
+);
+$gradient-sky: linear-gradient(
+	180deg,
+	$_background 0%,
+	map.get($palette, "midnight") 70%,
+	map.get($palette, "plum") 100%
+);
+
+// Máscaras: el negro indica zona visible.
+$mask-visible: #000;
+
+// Tipografía
+$font-families: (
+	"retro": (
+		"Orbitron",
+		"Space Grotesk",
+		sans-serif,
+	),
+	"display": (
+		"Space Grotesk",
+		system-ui,
+		sans-serif,
+	),
+	"body": (
+		"Inter",
+		system-ui,
+		sans-serif,
+	),
+	"mono": (
+		"IBM Plex Mono",
+		ui-monospace,
+		monospace,
+	),
+);
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-black: 900;
+
+// Layout
+$container-max-width: 1280px;
+$gutters: (
+	"desktop": 80px,
+	"tablet": 40px,
+	"mobile": 16px,
+);
+$breakpoints: (
+	"mobile": 640px,
+	"tablet": 900px,
+	"laptop": 1100px,
+);
+
+// Bordes
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-pill: 999px;
+
+// Capas (z-index)
+$z-layers: (
+	"decoration": 0,
+	"content": 1,
+	"overlay": 2,
+	"crt": 100,
+);
+
+// Movimiento
+$transition-base: 0.2s ease;

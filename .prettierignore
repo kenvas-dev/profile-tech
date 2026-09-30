@@ -1,0 +1,8 @@
+# Generados
+dist/
+.astro/
+node_modules/
+package-lock.json
+
+# Recursos estáticos
+public/

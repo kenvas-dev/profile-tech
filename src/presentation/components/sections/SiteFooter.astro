@@ -1,0 +1,70 @@
+---
+import type { Footer } from "@domain/entities/contact";
+import type { Identity } from "@domain/entities/identity";
+import Monogram from "../ui/Monogram.astro";
+
+interface Props {
+	identity: Identity;
+	footer: Footer;
+}
+
+const { identity, footer } = Astro.props;
+---
+
+<footer class="c-site-footer">
+	<div class="c-site-footer__inner">
+		<Monogram
+			initials={identity.initials}
+			name={identity.fullName}
+			size="sm"
+		/>
+		<p class="c-site-footer__note">{footer.note}</p>
+		<p class="c-site-footer__copyright">{footer.copyright}</p>
+	</div>
+</footer>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-site-footer {
+		border-top: 1px solid color-alpha("magenta", 0.5);
+		box-shadow: 0 -1px 14px color-alpha("magenta", 0.35);
+		padding-inline: gutter("desktop");
+		background: color("background-alt");
+
+		@include respond-below("laptop") {
+			padding-inline: gutter("tablet");
+		}
+
+		@include respond-below("mobile") {
+			padding-inline: gutter("mobile");
+		}
+
+		&__inner {
+			@include cluster(24px, center, space-between);
+
+			max-width: $container-max-width;
+			min-height: 150px;
+			margin-inline: auto;
+
+			@include respond-below("tablet") {
+				flex-direction: column;
+				align-items: flex-start;
+				justify-content: center;
+				padding-block: 40px;
+			}
+		}
+
+		&__note {
+			@include typography("mono", 10px);
+
+			color: color("text-subtle");
+		}
+
+		&__copyright {
+			@include typography("body", 12px);
+
+			color: color("text-subtle");
+		}
+	}
+</style>

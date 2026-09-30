@@ -1,0 +1,40 @@
+---
+import { ICONS, type UiIconName } from "./icons";
+
+interface Props {
+	name: UiIconName;
+	size?: number;
+	strokeWidth?: number;
+	class?: string;
+}
+
+const { name, size = 16, strokeWidth = 1.5, class: className } = Astro.props;
+const { viewBox, paths, circles = [] } = ICONS[name];
+---
+
+<svg
+	class:list={["c-icon", className]}
+	width={size}
+	height={size}
+	viewBox={viewBox}
+	fill="none"
+	stroke="currentColor"
+	stroke-width={strokeWidth}
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	focusable="false"
+>
+	{paths.map((d) => (
+		<path d={d} />
+	))}
+	{circles.map(({ cx, cy, r }) => (
+		<circle cx={cx} cy={cy} r={r} />
+	))}
+</svg>
+
+<style lang="scss">
+	.c-icon {
+		flex-shrink: 0;
+	}
+</style>

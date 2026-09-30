@@ -1,0 +1,197 @@
+---
+import type { Skills } from "@domain/entities/skills";
+import Icon from "../ui/Icon.astro";
+import PillList from "../ui/PillList.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+interface Props {
+	index: string;
+	skills: Skills;
+}
+
+const { index, skills } = Astro.props;
+const { strengths } = skills;
+---
+
+<section class="l-section" id="stack" aria-labelledby="stack-title">
+	<div class="l-container">
+		<SectionHeader
+			index={index}
+			intro={skills.intro}
+			headingId="stack-title"
+		/>
+
+		<div class="c-skills">
+			<ul class="c-skills__groups">
+				{skills.groups.map((group) => (
+					<li class="c-skill-group">
+						<span class="c-skill-group__code">{group.code}</span>
+						<div class="c-skill-group__definition">
+							<h3 class="c-skill-group__title">{group.title}</h3>
+							<p class="c-skill-group__description">
+								{group.description}
+							</p>
+						</div>
+						<div class="c-skill-group__technologies">
+							<PillList items={group.technologies} />
+						</div>
+					</li>
+				))}
+			</ul>
+
+			<aside class="c-strengths" aria-label="Fortalezas">
+				<header class="c-strengths__header">
+					<span class="c-strengths__label">{strengths.label}</span>
+					<span class="c-strengths__version">
+						{strengths.version}
+					</span>
+				</header>
+
+				<ul class="c-strengths__list">
+					{strengths.items.map((strength) => (
+						<li class="c-strength">
+							<span class="c-strength__icon">
+								<Icon
+									name={strength.icon}
+									size={20}
+									strokeWidth={1.6}
+								/>
+							</span>
+							<h3 class="c-strength__title">{strength.title}</h3>
+							<p class="c-strength__description">
+								{strength.description}
+							</p>
+						</li>
+					))}
+				</ul>
+			</aside>
+		</div>
+	</div>
+</section>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-skills {
+		@include cluster(48px, flex-start);
+
+		@include respond-below("laptop") {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		&__groups {
+			flex: 0 1 850px;
+			min-width: 0;
+		}
+	}
+
+	.c-skill-group {
+		@include cluster(32px, flex-start);
+		@include divider(bottom);
+
+		min-height: 136px;
+		padding-block: 24px;
+
+		@include respond-below("tablet") {
+			flex-wrap: wrap;
+			gap: 16px 32px;
+		}
+
+		&__code {
+			@include typography("mono", 12px);
+			@include neon-text("magenta", 0.5);
+
+			flex-shrink: 0;
+			width: 54px;
+			color: color("magenta");
+		}
+
+		&__definition {
+			@include stack(8px);
+
+			flex-shrink: 0;
+			width: 285px;
+
+			@include respond-below("mobile") {
+				width: 100%;
+			}
+		}
+
+		&__title {
+			@include typography("display", 28px);
+
+			color: color("text");
+		}
+
+		&__description {
+			@include typography("body", 14px, $font-weight-regular, 1.55);
+
+			color: color("text-muted");
+		}
+
+		&__technologies {
+			flex: 1;
+			min-width: 0;
+			padding-top: 4px;
+
+			@include respond-below("tablet") {
+				flex-basis: 100%;
+			}
+		}
+	}
+
+	.c-strengths {
+		@include surface($border: "magenta");
+		@include stack(32px);
+		@include neon-box("magenta", 0.5);
+
+		background:
+			linear-gradient(180deg, color-alpha("plum", 0.25), transparent 60%),
+			color("surface");
+		flex: 1;
+		min-height: 408px;
+		padding: 32px;
+
+		&__header {
+			@include cluster(16px, center, space-between);
+		}
+
+		&__label {
+			@include typography("mono", 12px);
+
+			color: color("salmon");
+		}
+
+		&__version {
+			@include typography("mono", 10px);
+
+			color: color("text-subtle");
+		}
+
+		&__list {
+			@include stack(32px);
+		}
+	}
+
+	.c-strength {
+		@include stack(12px, flex-start);
+
+		&__icon {
+			color: color("teal");
+			filter: drop-shadow(0 0 6px color-alpha("teal", 0.8));
+		}
+
+		&__title {
+			@include typography("display", 20px, $font-weight-bold);
+
+			color: color("text");
+		}
+
+		&__description {
+			@include typography("body", 14px, $font-weight-regular, 1.55);
+
+			color: color("text-muted");
+		}
+	}
+</style>

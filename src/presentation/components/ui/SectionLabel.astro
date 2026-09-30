@@ -1,0 +1,39 @@
+---
+interface Props {
+	index: string;
+	label: string;
+}
+
+const { index, label } = Astro.props;
+---
+
+<p class="c-section-label">
+	<span class="c-section-label__index">{index}</span>
+	<span class="c-section-label__line" aria-hidden="true"></span>
+	<span class="c-section-label__text">{label}</span>
+</p>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-section-label {
+		@include cluster(12px);
+
+		&__index {
+			@include typography("mono", 12px, $font-weight-semibold);
+			@include neon-text("teal", 0.5);
+
+			color: color("teal");
+		}
+
+		&__line {
+			width: 32px;
+			height: 1px;
+			background: linear-gradient(90deg, color("teal"), color("magenta"));
+		}
+
+		&__text {
+			@include mono-label(12px, "text-muted", $font-weight-medium);
+		}
+	}
+</style>

@@ -1,0 +1,95 @@
+---
+import type { NavigationLink } from "@domain/entities/contact";
+import type { Identity } from "@domain/entities/identity";
+import Monogram from "../ui/Monogram.astro";
+
+interface Props {
+	identity: Identity;
+	navigation: readonly NavigationLink[];
+}
+
+const { identity, navigation } = Astro.props;
+---
+
+<header class="c-site-header">
+	<Monogram
+		initials={identity.initials}
+		name={identity.handle}
+		href="#inicio"
+	/>
+
+	<nav class="c-site-header__nav" aria-label="Principal">
+		<ul class="c-site-header__links">
+			{navigation.map((link) => (
+				<li>
+					<a class="c-site-header__link" href={link.href}>
+						{link.label}
+					</a>
+				</li>
+			))}
+		</ul>
+	</nav>
+
+	<p class="c-site-header__languages" aria-label="Idioma">
+		{identity.languages.map((language, index) => (
+			<span
+				class:list={[
+					"c-site-header__language",
+					{
+						"c-site-header__language--active":
+							language === identity.activeLanguage,
+					},
+				]}
+			>
+				{index > 0 && "/ "}
+				{language}
+			</span>
+		))}
+	</p>
+</header>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-site-header {
+		@include cluster(24px, center, space-between);
+
+		height: 88px;
+		border-bottom: 1px solid color-alpha("magenta", 0.4);
+
+		&__links {
+			@include cluster(32px);
+
+			@include respond-below("laptop") {
+				display: none;
+			}
+		}
+
+		&__link {
+			@include typography("body", 14px, $font-weight-medium);
+
+			color: color("text-muted");
+			transition: color $transition-base;
+
+			&:hover {
+				@include neon-text("teal", 0.6);
+
+				color: color("teal");
+			}
+		}
+
+		&__languages {
+			@include cluster(8px);
+		}
+
+		&__language {
+			@include typography("mono", 12px);
+
+			color: color("text-subtle");
+
+			&--active {
+				color: color("teal");
+			}
+		}
+	}
+</style>

@@ -1,0 +1,76 @@
+---
+interface Props {
+	/** Altura del suelo en píxeles. */
+	height?: number;
+	animated?: boolean;
+}
+
+const { height = 320, animated = true } = Astro.props;
+---
+
+<div
+	class:list={["c-synth-grid", { "c-synth-grid--animated": animated }]}
+	style={`--grid-height: ${height}px`}
+	aria-hidden="true"
+>
+	<div class="c-synth-grid__floor"></div>
+</div>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	$cell-size: 56px;
+	$line-width: 2px;
+
+	.c-synth-grid {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		height: var(--grid-height);
+		overflow: hidden;
+		perspective: 260px;
+		perspective-origin: 50% 0;
+		mask-image: linear-gradient(to top, $mask-visible 55%, transparent);
+		pointer-events: none;
+
+		&__floor {
+			position: absolute;
+			top: 0;
+			left: -50%;
+			width: 200%;
+			height: 200%;
+			transform: rotateX(62deg);
+			transform-origin: 50% 0;
+			background-image:
+				linear-gradient(
+					color("teal") $line-width,
+					transparent $line-width
+				),
+				linear-gradient(
+					90deg,
+					color("teal") $line-width,
+					transparent $line-width
+				);
+			background-size: $cell-size $cell-size;
+			background-position: center top;
+			filter: drop-shadow(0 0 4px color-alpha("teal", 0.8));
+		}
+
+		&--animated &__floor {
+			animation: grid-scroll 2.4s linear infinite;
+		}
+	}
+
+	@keyframes grid-scroll {
+		to {
+			background-position: center $cell-size;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.c-synth-grid--animated .c-synth-grid__floor {
+			animation: none;
+		}
+	}
+</style>

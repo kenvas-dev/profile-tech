@@ -1,0 +1,57 @@
+---
+interface Props {
+	/** Diámetro en píxeles. */
+	size?: number;
+}
+
+const { size = 420 } = Astro.props;
+---
+
+<div class="c-retro-sun" style={`--sun-size: ${size}px`} aria-hidden="true">
+	<div class="c-retro-sun__disc"></div>
+</div>
+
+<style lang="scss">
+	@use "sass:list";
+	@use "abstracts" as *;
+
+	// Franjas horizontales que se ensanchan hacia la base del sol.
+	$stripes: (
+		(52%, 54%),
+		(60%, 63%),
+		(68%, 72%),
+		(76%, 81%),
+		(84%, 90%),
+		(92%, 99%)
+	);
+
+	@function stripe-mask($stripes) {
+		$stops: ($mask-visible 0%);
+
+		@each $stripe in $stripes {
+			$start: list.nth($stripe, 1);
+			$end: list.nth($stripe, 2);
+			$stops: list.append($stops, $mask-visible $start, comma);
+			$stops: list.append($stops, transparent $start, comma);
+			$stops: list.append($stops, transparent $end, comma);
+			$stops: list.append($stops, $mask-visible $end, comma);
+		}
+
+		@return linear-gradient(to bottom, $stops);
+	}
+
+	.c-retro-sun {
+		width: var(--sun-size);
+		aspect-ratio: 1;
+		filter: drop-shadow(0 0 40px color-alpha("magenta", 0.6));
+		pointer-events: none;
+
+		&__disc {
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			background: $gradient-sunset;
+			mask-image: stripe-mask($stripes);
+		}
+	}
+</style>
