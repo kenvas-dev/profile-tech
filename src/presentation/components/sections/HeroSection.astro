@@ -1,9 +1,8 @@
 ---
 import type { NavigationLink } from "@domain/entities/contact";
 import type { Hero, Identity } from "@domain/entities/identity";
+import HeroPortrait from "../hero/HeroPortrait.astro";
 import Button from "../ui/Button.astro";
-import Icon from "../ui/Icon.astro";
-import RetroSun from "../ui/RetroSun.astro";
 import StatusDot from "../ui/StatusDot.astro";
 import SynthGrid from "../ui/SynthGrid.astro";
 import SiteHeader from "./SiteHeader.astro";
@@ -15,7 +14,6 @@ interface Props {
 }
 
 const { identity, navigation, hero } = Astro.props;
-const { portrait } = hero;
 ---
 
 <section class="c-hero" id="inicio" aria-labelledby="hero-title">
@@ -71,37 +69,7 @@ const { portrait } = hero;
 			</div>
 
 			<div class="c-hero__visual">
-				<div class="c-hero__sun">
-					<RetroSun size={540} />
-				</div>
-				<figure class="c-portrait">
-					<img
-						class="c-portrait__photo"
-						src={portrait.image.src}
-						alt={portrait.image.alt}
-						width="480"
-						height="610"
-						fetchpriority="high"
-					/>
-					<span class="c-portrait__frame" aria-hidden="true"></span>
-					<span class="c-portrait__code">
-						<Icon name="scan-line" size={14} />
-						{portrait.code}
-					</span>
-					<figcaption class="c-portrait__data">
-						<span class="c-portrait__location">
-							<span class="c-portrait__location-label">
-								{portrait.baseLabel}
-							</span>
-							<span class="c-portrait__location-value">
-								{portrait.location}
-							</span>
-						</span>
-						<span class="c-portrait__coordinates">
-							{portrait.coordinates}
-						</span>
-					</figcaption>
-				</figure>
+				<HeroPortrait portrait={hero.portrait} />
 			</div>
 		</div>
 	</div>
@@ -277,116 +245,14 @@ const { portrait } = hero;
 		}
 
 		&__visual {
-			position: relative;
 			flex-shrink: 0;
+			width: 480px;
 
 			@include respond-below("laptop") {
 				width: 100%;
-				max-width: 480px;
+				max-width: 440px;
+				margin-inline: auto;
 			}
-		}
-
-		&__sun {
-			position: absolute;
-			top: -150px;
-			left: 50%;
-			transform: translateX(-50%);
-
-			@include respond-below("mobile") {
-				top: -90px;
-				scale: 0.7;
-			}
-		}
-	}
-
-	.c-portrait {
-		position: relative;
-		flex-shrink: 0;
-		width: 480px;
-		height: 610px;
-		border-radius: $radius-lg;
-		overflow: hidden;
-		filter: drop-shadow(0 0 28px color-alpha("magenta", 0.45));
-
-		@include respond-below("laptop") {
-			width: 100%;
-			max-width: 480px;
-			height: auto;
-			aspect-ratio: 480 / 610;
-		}
-
-		&::before {
-			@include synthwave-tint;
-
-			z-index: z("content");
-		}
-
-		&::after {
-			content: "";
-			position: absolute;
-			inset: 0;
-			background: linear-gradient(
-				to bottom,
-				color-alpha("background", 0) 25%,
-				color-alpha("background", 0.8)
-			);
-			pointer-events: none;
-		}
-
-		&__photo {
-			@include cover-image;
-		}
-
-		&__frame {
-			@include neon-box("teal", 0.7);
-
-			position: absolute;
-			inset: 18px;
-			z-index: z("content");
-			border: 1px solid color("teal");
-			border-radius: $radius-md;
-		}
-
-		&__code {
-			@include overlay-badge;
-
-			position: absolute;
-			top: 30px;
-			left: 30px;
-			z-index: z("overlay");
-			color: color("teal");
-		}
-
-		&__data {
-			@include cluster(16px, flex-end, space-between);
-
-			position: absolute;
-			right: 30px;
-			bottom: 30px;
-			left: 30px;
-			z-index: z("overlay");
-		}
-
-		&__location {
-			@include stack(4px);
-		}
-
-		&__location-label {
-			@include typography("mono", 10px);
-
-			color: color("text-subtle");
-		}
-
-		&__location-value {
-			@include typography("body", 14px, $font-weight-semibold);
-
-			color: color("text");
-		}
-
-		&__coordinates {
-			@include typography("mono", 10px);
-
-			color: color("salmon");
 		}
 	}
 </style>

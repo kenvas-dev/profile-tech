@@ -1,13 +1,14 @@
 ---
 interface Props {
-	/** Diámetro en píxeles. */
-	size?: number;
+	/** Diámetro en píxeles, o cualquier longitud CSS (p. ej. "100%"). */
+	size?: number | string;
 }
 
 const { size = 420 } = Astro.props;
+const sunSize = typeof size === "number" ? `${size}px` : size;
 ---
 
-<div class="c-retro-sun" style={`--sun-size: ${size}px`} aria-hidden="true">
+<div class="c-retro-sun" style={`--sun-size: ${sunSize}`} aria-hidden="true">
 	<div class="c-retro-sun__disc"></div>
 </div>
 

@@ -2,9 +2,9 @@ import type { Portfolio } from "@domain/entities/portfolio";
 
 export const portfolioEs: Portfolio = {
 	identity: {
-		fullName: "Alex Rivera",
-		initials: "AR",
-		handle: "alex.rivera",
+		fullName: "Kevin Aquino",
+		initials: "KA",
+		handle: "kevin.aquino",
 		languages: ["ES", "EN"],
 		activeLanguage: "ES",
 	},
@@ -19,13 +19,13 @@ export const portfolioEs: Portfolio = {
 
 	hero: {
 		availability: "Disponible para nuevos proyectos · 2026",
-		context: "Portfolio / CV — contenido de ejemplo editable",
+		context: "Portfolio / CV — Frontend Engineering",
 		role: {
-			primary: "Product designer",
-			secondary: "creative technologist.",
+			primary: "Senior Frontend Developer",
+			secondary: "UI engineer.",
 		},
 		valueProposition:
-			"Diseño productos digitales que convierten complejidad en experiencias claras, combinando estrategia, sistemas visuales y prototipos que se sienten reales.",
+			"Desarrollo interfaces web rápidas, accesibles y escalables, convirtiendo diseños en componentes reutilizables con código limpio, buena arquitectura y atención al detalle.",
 		primaryAction: { label: "Ver proyectos", href: "#proyectos" },
 		secondaryAction: { label: "Contactar", href: "#contacto" },
 		professionalLinks: [
@@ -39,7 +39,7 @@ export const portfolioEs: Portfolio = {
 		portrait: {
 			image: {
 				src: "/images/retrato.jpg",
-				alt: "Retrato de Alex Rivera en su estudio",
+				alt: "Retrato de Kevin Aquino con gafas, iluminado por luces de neón",
 			},
 			code: "PROFILE_001",
 			baseLabel: "BASE",
@@ -50,14 +50,14 @@ export const portfolioEs: Portfolio = {
 
 	profile: {
 		label: "Perfil",
-		title: "Pensar en sistemas. Diseñar para personas.",
+		title: "Código limpio. Interfaces que escalan.",
 		biography:
-			"Soy Alex Rivera, diseñador de producto con experiencia creando plataformas B2B, herramientas de IA y productos de consumo. Trabajo de la estrategia al detalle visual, siempre cerca de negocio, tecnología y usuarios.",
-		focus: "Me especializo en convertir procesos densos en flujos comprensibles, construir sistemas que escalan y validar pronto con prototipos de alta fidelidad. Este texto, como todo el contenido del CV, está preparado para sustituirse por tu propia historia.",
+			"Soy Kevin Aquino, desarrollador frontend senior con más de 8 años construyendo aplicaciones web para plataformas B2B, fintech y productos de consumo. Trabajo del componente a la arquitectura, siempre cerca de diseño, backend y negocio.",
+		focus: "Me especializo en arquitecturas frontend mantenibles, design systems en código, rendimiento web y accesibilidad. Me gusta dejar bases sólidas: tipado estricto, tests y convenciones que permiten a un equipo crecer sin frenarse.",
 		metrics: [
-			{ value: "8+", label: "años diseñando productos" },
-			{ value: "24", label: "lanzamientos acompañados" },
-			{ value: "4", label: "sectores transformados" },
+			{ value: "8+", label: "años en desarrollo frontend" },
+			{ value: "30+", label: "proyectos en producción" },
+			{ value: "5", label: "equipos con design system propio" },
 			{ value: "ES / EN", label: "idiomas de trabajo" },
 		],
 	},
@@ -65,46 +65,50 @@ export const portfolioEs: Portfolio = {
 	skills: {
 		intro: {
 			label: "Stack & conocimiento",
-			title: "Herramientas para diseñar, validar y escalar.",
+			title: "Herramientas para construir, probar y escalar.",
 			description:
-				"Un stack híbrido: criterio de producto, craft visual y suficiente código para reducir la distancia entre idea y realidad.",
+				"Un stack moderno centrado en TypeScript: frameworks de componentes, estilos mantenibles y calidad automatizada de principio a fin.",
 		},
 		groups: [
 			{
 				code: "S.01",
-				title: "Estrategia de producto",
-				description: "Definición, foco y decisiones con evidencia.",
+				title: "Frameworks & lenguajes",
+				description:
+					"Una base sólida y tipada para cualquier producto.",
 				technologies: [
-					"Discovery",
-					"Research",
-					"Jobs to be done",
-					"Workshops",
-					"Roadmapping",
+					"TypeScript",
+					"JavaScript",
+					"React",
+					"Angular",
+					"Astro",
+					"Next.js",
 				],
 			},
 			{
 				code: "S.02",
-				title: "Diseño de experiencia",
-				description: "Flujos claros, accesibles y medibles.",
+				title: "UI & estilos",
+				description:
+					"Interfaces consistentes, accesibles y responsive.",
 				technologies: [
-					"UX/UI",
-					"Prototyping",
-					"IA",
-					"Usability testing",
+					"SCSS",
+					"BEM",
+					"Tailwind CSS",
+					"Design systems",
+					"Storybook",
 					"Accessibility",
 				],
 			},
 			{
 				code: "S.03",
-				title: "Sistemas & tecnología",
-				description: "Consistencia que acelera equipos.",
+				title: "Calidad & arquitectura",
+				description: "Código que crece al ritmo del equipo.",
 				technologies: [
-					"Design systems",
-					"Figma",
-					"Tokens",
-					"React",
-					"Storybook",
-					"AI tools",
+					"Clean code",
+					"Arquitectura hexagonal",
+					"Testing",
+					"Vitest",
+					"Playwright",
+					"CI/CD",
 				],
 			},
 		],
@@ -114,21 +118,21 @@ export const portfolioEs: Portfolio = {
 			items: [
 				{
 					icon: "radar",
-					title: "Visión sistémica",
+					title: "Visión de arquitectura",
 					description:
-						"Conecto patrones, actores y restricciones antes de dibujar pantallas.",
+						"Defino capas, contratos y dependencias antes de escribir el primer componente.",
 				},
 				{
 					icon: "waypoints",
-					title: "Facilitación",
+					title: "Puente entre diseño y backend",
 					description:
-						"Alineo perspectivas y convierto conversaciones en decisiones accionables.",
+						"Traduzco diseños y APIs en interfaces coherentes, alineando decisiones técnicas con cada equipo.",
 				},
 				{
 					icon: "sparkles",
-					title: "Craft con intención",
+					title: "Detalle y rendimiento",
 					description:
-						"Cada detalle visual refuerza jerarquía, confianza y comprensión.",
+						"Cuido cada interacción, cada milisegundo de carga y cada criterio de accesibilidad.",
 				},
 			],
 		},
@@ -137,49 +141,49 @@ export const portfolioEs: Portfolio = {
 	experience: {
 		intro: {
 			label: "Experiencia",
-			title: "Experiencia que deja producto, sistema y equipo mejores.",
+			title: "Experiencia construyendo productos que escalan.",
 			description:
-				"Trayectoria de ejemplo: sustituye empresas, fechas, ubicaciones y resultados por tu experiencia real.",
+				"Equipos de producto donde he liderado la arquitectura frontend, la calidad del código y la entrega continua.",
 		},
 		currentLabel: "ACTUAL",
 		presentLabel: "AHORA",
 		positions: [
 			{
 				company: "Nébula Labs",
-				role: "Lead Product Designer",
+				role: "Lead Frontend Engineer",
 				location: "Madrid · Híbrido",
 				period: { startYear: 2023, endYear: null },
 				summary:
-					"Lidero la experiencia de una plataforma de inteligencia operativa para equipos enterprise, desde visión de producto hasta delivery.",
+					"Lidero el frontend de una plataforma SaaS de inteligencia operativa: arquitectura, design system en código y calidad técnica del equipo.",
 				achievements: [
-					"Rediseñé el flujo principal y reduje un 38% el tiempo hasta valor.",
-					"Creé un design system adoptado por 5 squads y 3 productos.",
-					"Facilité discovery continuo con ventas, soporte y 18 clientes clave.",
+					"Migré la aplicación a una arquitectura modular y reduje un 40% el tiempo de carga inicial.",
+					"Construí una librería de componentes adoptada por 5 squads y 3 productos.",
+					"Implanté testing automatizado y CI que redujeron un 60% los bugs en producción.",
 				],
 			},
 			{
 				company: "Orbit Finance",
-				role: "Senior Product Designer",
+				role: "Senior Frontend Developer",
 				location: "Barcelona · Remoto",
 				period: { startYear: 2020, endYear: 2023 },
 				summary:
-					"Diseñé experiencias de onboarding, pagos y analítica para una fintech B2B en expansión europea.",
+					"Desarrollé los flujos de onboarding, pagos y analítica de una fintech B2B en expansión europea.",
 				achievements: [
-					"Aumenté la activación del onboarding del 54% al 71%.",
-					"Convertí la investigación mensual en un ritual compartido de producto.",
-					"Coordiné la accesibilidad WCAG AA en los flujos críticos.",
+					"Reconstruí el onboarding en React y la activación subió del 54% al 71%.",
+					"Llevé los flujos críticos al nivel de accesibilidad WCAG 2.1 AA.",
+					"Mentoricé a 4 desarrolladores junior en buenas prácticas y code review.",
 				],
 			},
 			{
 				company: "Studio Norte",
-				role: "UX/UI Designer",
+				role: "Frontend Developer",
 				location: "Valencia · Presencial",
 				period: { startYear: 2018, endYear: 2020 },
 				summary:
-					"Colaboré con startups y organizaciones culturales en estrategia, identidad digital y producto.",
+					"Desarrollé sitios y aplicaciones web para startups y organizaciones culturales.",
 				achievements: [
-					"Lancé 12 experiencias web y mobile junto a equipos multidisciplinares.",
-					"Prototipé conceptos para validar inversión antes de desarrollo.",
+					"Lancé 12 proyectos web y mobile junto a equipos de diseño y backend.",
+					"Introduje componentes reutilizables que aceleraron cada nuevo desarrollo.",
 				],
 			},
 		],
@@ -188,31 +192,26 @@ export const portfolioEs: Portfolio = {
 	projects: {
 		intro: {
 			label: "Trabajo seleccionado",
-			title: "Proyectos que mueven una métrica, no solo píxeles.",
+			title: "Código que mueve métricas, no solo píxeles.",
 			description:
-				"Casos de ejemplo con contexto, resultados y tecnologías. Cada bloque está listo para enlazar a un caso completo.",
+				"Casos seleccionados con contexto técnico, resultados y stack. Cada bloque está listo para enlazar a un caso completo.",
 		},
 		items: [
 			{
 				code: "CASE_STUDY_01",
-				category: "IA · B2B SaaS · 2026",
+				category: "SaaS · Dashboard · 2026",
 				title: "Nébula Command Center",
 				summary:
-					"Rediseño end-to-end de una plataforma de inteligencia operativa. Simplificamos señales complejas en decisiones priorizadas para líderes y equipos de campo.",
+					"Frontend de una plataforma de inteligencia operativa en tiempo real: visualización de datos, arquitectura modular y un rendimiento que soporta miles de eventos por minuto.",
 				preview: {
 					src: "/images/proyecto-nebula.jpg",
 					alt: "Dashboard de Nébula Command Center en un monitor de escritorio",
 				},
 				tone: "primary",
-				technologies: [
-					"Research",
-					"Product strategy",
-					"Figma",
-					"React",
-				],
+				technologies: ["React", "TypeScript", "WebSockets", "D3.js"],
 				results: [
-					{ value: "−38%", label: "tiempo hasta valor" },
-					{ value: "+21", label: "NPS de producto" },
+					{ value: "−40%", label: "tiempo de carga" },
+					{ value: "98", label: "Lighthouse performance" },
 				],
 				link: { label: "Ver caso", href: "#" },
 				featured: true,
@@ -222,13 +221,13 @@ export const portfolioEs: Portfolio = {
 				category: "Fintech · Activación",
 				title: "Orbit onboarding",
 				summary:
-					"Un onboarding progresivo que convirtió requisitos regulatorios en una experiencia guiada y transparente.",
+					"Onboarding progresivo en React que convirtió requisitos regulatorios en un flujo guiado, accesible y validado paso a paso.",
 				preview: {
 					src: "/images/proyecto-orbit.jpg",
 					alt: "Pantallas móviles del onboarding de Orbit",
 				},
 				tone: "secondary",
-				technologies: ["UX/UI", "Testing"],
+				technologies: ["React", "Testing"],
 				results: [{ value: "+17pp", label: "activación" }],
 				link: { label: "Ver caso Orbit onboarding", href: "#" },
 				featured: false,
@@ -238,13 +237,13 @@ export const portfolioEs: Portfolio = {
 				category: "Sistema · Escala",
 				title: "Atlas design system",
 				summary:
-					"Tokens, componentes y gobernanza para alinear producto, diseño e ingeniería en cinco squads.",
+					"Librería de componentes con tokens, Storybook y versionado semántico para alinear diseño e ingeniería en cinco squads.",
 				preview: {
 					src: "/images/proyecto-atlas.jpg",
 					alt: "Documentación de componentes del design system Atlas",
 				},
 				tone: "tertiary",
-				technologies: ["Tokens", "Storybook"],
+				technologies: ["Storybook", "SCSS"],
 				results: [{ value: "3×", label: "velocidad de entrega" }],
 				link: { label: "Ver caso Atlas design system", href: "#" },
 				featured: false,
@@ -255,29 +254,29 @@ export const portfolioEs: Portfolio = {
 	education: {
 		intro: {
 			label: "Aprendizaje & método",
-			title: "Curiosidad estructurada. Progreso visible.",
+			title: "Curiosidad estructurada. Código que evoluciona.",
 			description:
-				"Formación y certificaciones de ejemplo, más un método simple para convertir incertidumbre en dirección.",
+				"Formación, certificaciones y el método con el que llevo cada funcionalidad de la idea a producción.",
 		},
 		credentialsLabel: "Formación / Certificaciones",
 		credentials: [
 			{
 				year: 2025,
 				type: "Certificación",
-				title: "AI Product Management",
-				institution: "Product School · Online",
+				title: "Web Accessibility Specialist",
+				institution: "IAAP · Online",
 			},
 			{
 				year: 2022,
 				type: "Programa avanzado",
-				title: "Service Design",
-				institution: "Hyper Island · Madrid",
+				title: "Arquitectura Frontend Escalable",
+				institution: "Frontend Masters · Online",
 			},
 			{
 				year: 2018,
 				type: "Grado",
-				title: "Diseño y Tecnologías Creativas",
-				institution: "Universitat Politècnica de València",
+				title: "Ingeniería de Software",
+				institution: "Universidad Politécnica de Madrid",
 			},
 		],
 		method: {
@@ -285,24 +284,24 @@ export const portfolioEs: Portfolio = {
 			status: "● ITERATIVA",
 			steps: [
 				{
-					title: "Entender el sistema",
+					title: "Entender el problema",
 					description:
-						"Alineo objetivos, actores y señales antes de definir la solución.",
+						"Reviso diseño, requisitos y APIs antes de escribir una línea de código.",
 				},
 				{
-					title: "Reducir la incertidumbre",
+					title: "Diseñar la arquitectura",
 					description:
-						"Investigo lo necesario y hago explícitas las hipótesis críticas.",
+						"Defino capas, contratos y componentes para que el código escale.",
 				},
 				{
-					title: "Prototipar para decidir",
+					title: "Construir con calidad",
 					description:
-						"Materializo opciones pronto para aprender con usuarios y equipo.",
+						"Desarrollo con tipado estricto, tests y revisiones de código.",
 				},
 				{
-					title: "Medir y evolucionar",
+					title: "Medir y mejorar",
 					description:
-						"Lanzo con métricas claras y convierto hallazgos en siguientes pasos.",
+						"Mido rendimiento y accesibilidad, y convierto hallazgos en mejoras.",
 				},
 			],
 		},
@@ -312,7 +311,7 @@ export const portfolioEs: Portfolio = {
 		label: "Contacto",
 		title: "¿Construimos algo que merezca existir?",
 		description:
-			"Estoy disponible para retos de producto, colaboraciones selectas y conversaciones sobre diseño, tecnología e inteligencia artificial.",
+			"Estoy disponible para roles de frontend senior, colaboraciones y conversaciones sobre arquitectura web, design systems y rendimiento.",
 		email: "hola@alexrivera.design",
 		availability: "Disponible · Q4 2026",
 		channels: [
@@ -338,7 +337,7 @@ export const portfolioEs: Portfolio = {
 	},
 
 	footer: {
-		note: "DISEÑADO CON CURIOSIDAD · CONTENIDO EDITABLE",
-		copyright: "© 2026 Alex Rivera. Todos los derechos reservados.",
+		note: "CONSTRUIDO CON ASTRO · TYPESCRIPT · SCSS",
+		copyright: "© 2026 Kevin Aquino. Todos los derechos reservados.",
 	},
 };

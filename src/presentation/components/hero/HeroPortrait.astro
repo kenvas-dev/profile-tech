@@ -1,0 +1,179 @@
+---
+import type { Hero } from "@domain/entities/identity";
+import Icon from "../ui/Icon.astro";
+import RetroSun from "../ui/RetroSun.astro";
+
+interface Props {
+	portrait: Hero["portrait"];
+}
+
+const { portrait } = Astro.props;
+---
+
+<figure class="c-hero-portrait">
+	<div class="c-hero-portrait__stage">
+		<div class="c-hero-portrait__sun">
+			<RetroSun size="100%" />
+		</div>
+		<span class="c-hero-portrait__orbit" aria-hidden="true"></span>
+		<div class="c-hero-portrait__frame">
+			<img
+				class="c-hero-portrait__photo"
+				src={portrait.image.src}
+				alt={portrait.image.alt}
+				width="480"
+				height="480"
+				fetchpriority="high"
+			/>
+		</div>
+		<span class="c-hero-portrait__code">
+			<Icon name="scan-line" size={14} />
+			{portrait.code}
+		</span>
+	</div>
+
+	<figcaption class="c-hero-portrait__data">
+		<span class="c-hero-portrait__location">
+			<span class="c-hero-portrait__location-label">
+				{portrait.baseLabel}
+			</span>
+			<span class="c-hero-portrait__location-value">
+				{portrait.location}
+			</span>
+		</span>
+		<span class="c-hero-portrait__coordinates">{portrait.coordinates}</span>
+	</figcaption>
+</figure>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	$photo-size: 70%;
+	$sun-inset: 6%;
+	$orbit-size: 99%;
+	$ring-width: 3px;
+	$photo-scale: 84%; // La foto no llena el círculo: la cara queda más proporcionada.
+
+	.c-hero-portrait {
+		@include stack(20px, center);
+
+		width: 100%;
+
+		&__stage {
+			position: relative;
+			display: grid;
+			place-items: center;
+			width: 100%;
+			aspect-ratio: 1;
+		}
+
+		// El retrato es el sol: las franjas asoman como un anillo inferior.
+		&__sun {
+			position: absolute;
+			inset: $sun-inset;
+			z-index: z("decoration");
+		}
+
+		// Órbita HUD punteada que gira lentamente.
+		&__orbit {
+			position: absolute;
+			z-index: z("content");
+			width: $orbit-size;
+			aspect-ratio: 1;
+			border: 2px dashed color-alpha("teal", 0.7);
+			border-radius: 50%;
+			filter: drop-shadow(0 0 6px color-alpha("teal", 0.6));
+			animation: orbit-spin 40s linear infinite;
+		}
+
+		&__frame {
+			@include neon-box("magenta", 0.9);
+
+			position: relative;
+			z-index: z("content");
+			width: $photo-size;
+			aspect-ratio: 1;
+			overflow: hidden;
+			border: $ring-width solid color("salmon");
+			border-radius: 50%;
+			background: color("background");
+
+			// Tinte synthwave muy suave: la foto ya trae iluminación de neón.
+			&::after {
+				@include synthwave-tint;
+
+				opacity: 0.2;
+			}
+		}
+
+		&__photo {
+			position: absolute;
+			inset: calc((100% - #{$photo-scale}) / 2);
+			width: $photo-scale;
+			height: $photo-scale;
+			object-fit: cover;
+
+			// Bordes fundidos con el fondo oscuro del marco (viñeta natural).
+			mask-image: radial-gradient(
+				closest-side,
+				$mask-visible 72%,
+				transparent 100%
+			);
+		}
+
+		&__code {
+			@include overlay-badge;
+
+			position: absolute;
+			top: 9%;
+			left: 4%;
+			z-index: z("overlay");
+			border: 1px solid color-alpha("teal", 0.5);
+			color: color("teal");
+		}
+
+		&__data {
+			@include overlay-badge;
+			@include cluster(20px, center, space-between);
+			@include neon-box("teal", 0.4);
+
+			width: min(100%, 360px);
+			padding: 10px 16px;
+			border: 1px solid color("teal");
+		}
+
+		&__location {
+			@include cluster(10px);
+		}
+
+		&__location-label {
+			@include typography("mono", 10px);
+
+			color: color("text-subtle");
+		}
+
+		&__location-value {
+			@include typography("body", 13px, $font-weight-semibold);
+
+			color: color("text");
+		}
+
+		&__coordinates {
+			@include typography("mono", 10px);
+
+			color: color("salmon");
+		}
+	}
+
+	@keyframes orbit-spin {
+		to {
+			rotate: 360deg;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.c-hero-portrait__orbit {
+			animation: none;
+		}
+	}
+</style>
