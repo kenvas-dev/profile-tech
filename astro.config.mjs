@@ -8,6 +8,15 @@ const stylesPath = fileURLToPath(
 
 // https://astro.build/config
 export default defineConfig({
+	i18n: {
+		// Debe coincidir con LOCALES / DEFAULT_LOCALE de src/domain/entities/locale.ts
+		locales: ["es", "en"],
+		defaultLocale: "es",
+		routing: {
+			// Español en "/", inglés en "/en/"
+			prefixDefaultLocale: false,
+		},
+	},
 	vite: {
 		css: {
 			preprocessorOptions: {

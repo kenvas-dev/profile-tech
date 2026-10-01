@@ -1,10 +1,9 @@
+import type { Credential } from "@domain/entities/education";
 import { isCurrentPosition, type Position } from "@domain/entities/experience";
 import type { Portfolio } from "@domain/entities/portfolio";
 import type { Project } from "@domain/entities/projects";
-import type {
-	Locale,
-	PortfolioRepository,
-} from "@domain/ports/PortfolioRepository";
+import type { Locale } from "@domain/entities/locale";
+import type { PortfolioRepository } from "@domain/ports/PortfolioRepository";
 
 export interface PortfolioOverview extends Omit<Portfolio, "projects"> {
 	readonly projects: Portfolio["projects"] & {
@@ -19,6 +18,9 @@ const byMostRecent = (a: Position, b: Position): number => {
 	return b.period.startYear - a.period.startYear;
 };
 
+const byNewestCredential = (a: Credential, b: Credential): number =>
+	b.year - a.year;
+
 export class GetPortfolio {
 	constructor(private readonly repository: PortfolioRepository) {}
 
@@ -31,6 +33,12 @@ export class GetPortfolio {
 				...portfolio.experience,
 				positions: [...portfolio.experience.positions].sort(
 					byMostRecent,
+				),
+			},
+			education: {
+				...portfolio.education,
+				credentials: [...portfolio.education.credentials].sort(
+					byNewestCredential,
 				),
 			},
 			projects: {

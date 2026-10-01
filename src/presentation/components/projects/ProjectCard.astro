@@ -1,7 +1,9 @@
 ---
 import type { Project } from "@domain/entities/projects";
+import { resolveLocale, useTranslations } from "../../i18n/ui";
 import Icon from "../ui/Icon.astro";
 import PillList from "../ui/PillList.astro";
+import ProjectIllustration from "./ProjectIllustration.astro";
 import ProjectResult from "./ProjectResult.astro";
 
 interface Props {
@@ -9,18 +11,31 @@ interface Props {
 }
 
 const { project } = Astro.props;
+const t = useTranslations(resolveLocale(Astro.currentLocale));
 ---
 
 <article class:list={["c-project-card", `c-project-card--${project.tone}`]}>
-	<div class="c-project-card__preview">
-		<img
-			class="c-project-card__image"
-			src={project.preview.src}
-			alt={project.preview.alt}
-			width="624"
-			height="250"
-			loading="lazy"
-		/>
+	<div
+		class:list={[
+			"c-project-card__preview",
+			{ "c-project-card__preview--photo": project.preview },
+		]}
+	>
+		{project.preview ? (
+			<img
+				class="c-project-card__image"
+				src={project.preview.src}
+				alt={project.preview.alt}
+				width="624"
+				height="250"
+				loading="lazy"
+			/>
+		) : (
+			<ProjectIllustration
+				kind={project.kind}
+				label={t.projectIllustration(project.title)}
+			/>
+		)}
 		<span class="c-project-card__badge">{project.code}</span>
 	</div>
 
@@ -29,14 +44,23 @@ const { project } = Astro.props;
 			<div class="c-project-card__name">
 				<p class="c-project-card__category">{project.category}</p>
 				<h3 class="c-project-card__title">
-					<a class="c-project-card__link" href={project.link.href}>
-						{project.title}
-					</a>
+					{project.link ? (
+						<a
+							class="c-project-card__link"
+							href={project.link.href}
+						>
+							{project.title}
+						</a>
+					) : (
+						project.title
+					)}
 				</h3>
 			</div>
-			<span class="c-project-card__arrow">
-				<Icon name="arrow-up-right" size={22} />
-			</span>
+			{project.link && (
+				<span class="c-project-card__arrow">
+					<Icon name="arrow-up-right" size={22} />
+				</span>
+			)}
 		</header>
 
 		<p class="c-project-card__summary">{project.summary}</p>
@@ -45,7 +69,7 @@ const { project } = Astro.props;
 			{project.results.map((result) => (
 				<ProjectResult result={result} />
 			))}
-			<PillList items={project.technologies} wrap={false} />
+			<PillList items={project.technologies} />
 		</footer>
 	</div>
 </article>
@@ -92,7 +116,7 @@ const { project } = Astro.props;
 			height: 250px;
 			padding: 24px;
 
-			&::after {
+			&--photo::after {
 				@include synthwave-tint;
 			}
 		}

@@ -2,10 +2,9 @@ import type { Image, Link } from "./shared";
 
 export interface Identity {
 	readonly fullName: string;
-	readonly initials: string;
+	/** Marca que se muestra como logo en la cabecera y el pie. */
+	readonly logo: string;
 	readonly handle: string;
-	readonly languages: readonly string[];
-	readonly activeLanguage: string;
 }
 
 export interface Hero {

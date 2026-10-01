@@ -1,0 +1,388 @@
+---
+import { highlight, type Token } from "../../utils/highlight";
+import type { CodeFile } from "./CodeEditor.types";
+
+interface Props {
+	files: readonly CodeFile[];
+	/** Descripción accesible del editor. */
+	label: string;
+	branch?: string;
+	/** `sm` para columnas estrechas, `md` para bloques a todo el ancho. */
+	size?: "sm" | "md";
+}
+
+const { files, label, branch = "main", size = "sm" } = Astro.props;
+const highlighted = files.map((file) => highlight(file.code.trim()));
+const maxLines = Math.max(...highlighted.map((lines) => lines.length));
+
+const escapeHtml = (text: string) =>
+	text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/**
+ * El HTML del código se genera aquí (y no en la plantilla) para que ningún
+ * formateador pueda introducir espacios dentro del bloque de código.
+ */
+const renderLines = (lines: readonly Token[][]) =>
+	lines
+		.map(
+			(tokens) =>
+				`<span class="c-code-editor__line" data-code-line>${tokens
+					.map(
+						(token) =>
+							`<span class="c-code-editor__token c-code-editor__token--${token.type}" data-code-token>${escapeHtml(token.text)}</span>`,
+					)
+					.join("")}</span>`,
+		)
+		.join("");
+---
+
+<figure
+	class:list={["c-code-editor", `c-code-editor--${size}`]}
+	style={`--max-lines: ${maxLines}`}
+	aria-label={label}
+	data-code-editor
+>
+	<div class="c-code-editor__titlebar" aria-hidden="true">
+		<span class="c-code-editor__dot c-code-editor__dot--magenta"></span>
+		<span class="c-code-editor__dot c-code-editor__dot--salmon"></span>
+		<span class="c-code-editor__dot c-code-editor__dot--teal"></span>
+	</div>
+
+	<div class="c-code-editor__tabs" aria-hidden="true">
+		{files.map((file, index) => (
+			<span
+				class:list={[
+					"c-code-editor__tab",
+					{ "c-code-editor__tab--active": index === 0 },
+				]}
+				data-code-tab
+			>
+				{file.name}
+			</span>
+		))}
+	</div>
+
+	<div class="c-code-editor__body">
+		{highlighted.map((lines, index) => <pre
+			class:list={[
+				"c-code-editor__file",
+				{ "c-code-editor__file--active": index === 0 },
+			]}
+			data-code-file
+			data-language={files[index]?.language}
+		>
+					<code class="c-code-editor__code" set:html={renderLines(lines)} />
+				</pre>)}
+	</div>
+
+	<figcaption class="c-code-editor__status">
+		<span class="c-code-editor__branch">● {branch}</span>
+		<span data-code-language>{files[0]?.language}</span>
+	</figcaption>
+</figure>
+
+<script>
+	const TYPE_DELAY = { min: 22, max: 55 };
+	const LINE_PAUSE = 140;
+	const FILE_PAUSE = 2600;
+
+	const sleep = (ms: number) =>
+		new Promise((resolve) => setTimeout(resolve, ms));
+
+	const randomDelay = () =>
+		TYPE_DELAY.min + Math.random() * (TYPE_DELAY.max - TYPE_DELAY.min);
+
+	interface TypedToken {
+		readonly element: HTMLElement;
+		readonly text: string;
+	}
+
+	interface TypedLine {
+		readonly element: HTMLElement;
+		readonly tokens: readonly TypedToken[];
+	}
+
+	const snapshot = (file: HTMLElement): TypedLine[] =>
+		[...file.querySelectorAll<HTMLElement>("[data-code-line]")].map(
+			(line) => ({
+				element: line,
+				tokens: [
+					...line.querySelectorAll<HTMLElement>("[data-code-token]"),
+				].map((token) => ({
+					element: token,
+					text: token.textContent ?? "",
+				})),
+			}),
+		);
+
+	const setActive = (
+		elements: readonly HTMLElement[],
+		activeIndex: number,
+		modifier: string,
+	) =>
+		elements.forEach((element, index) =>
+			element.classList.toggle(modifier, index === activeIndex),
+		);
+
+	const clear = (lines: readonly TypedLine[]) =>
+		lines.forEach((line) => {
+			line.element.classList.add("c-code-editor__line--pending");
+			line.tokens.forEach((token) => (token.element.textContent = ""));
+		});
+
+	const type = async (lines: readonly TypedLine[], caret: HTMLElement) => {
+		for (const line of lines) {
+			line.element.classList.remove("c-code-editor__line--pending");
+			line.element.append(caret);
+
+			for (const token of line.tokens) {
+				token.element.after(caret);
+				for (const char of token.text) {
+					token.element.textContent += char;
+					await sleep(randomDelay());
+				}
+			}
+			await sleep(LINE_PAUSE);
+		}
+	};
+
+	const animate = async (editor: HTMLElement) => {
+		const files = [
+			...editor.querySelectorAll<HTMLElement>("[data-code-file]"),
+		];
+		const tabs = [
+			...editor.querySelectorAll<HTMLElement>("[data-code-tab]"),
+		];
+		const language = editor.querySelector<HTMLElement>(
+			"[data-code-language]",
+		);
+		const snapshots = files.map(snapshot);
+
+		const caret = document.createElement("span");
+		caret.className = "c-code-editor__caret";
+		caret.setAttribute("aria-hidden", "true");
+
+		for (let index = 0; ; index = (index + 1) % files.length) {
+			const lines = snapshots[index] ?? [];
+			setActive(files, index, "c-code-editor__file--active");
+			setActive(tabs, index, "c-code-editor__tab--active");
+			if (language)
+				language.textContent = files[index]?.dataset.language ?? "";
+
+			clear(lines);
+			await type(lines, caret);
+			await sleep(FILE_PAUSE);
+		}
+	};
+
+	const prefersReducedMotion = window.matchMedia(
+		"(prefers-reduced-motion: reduce)",
+	).matches;
+
+	if (!prefersReducedMotion) {
+		document
+			.querySelectorAll<HTMLElement>("[data-code-editor]")
+			.forEach((editor) => {
+				const observer = new IntersectionObserver(
+					(entries) => {
+						if (entries.some((entry) => entry.isIntersecting)) {
+							observer.disconnect();
+							void animate(editor);
+						}
+					},
+					{ threshold: 0.35 },
+				);
+				observer.observe(editor);
+			});
+	}
+</script>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	$line-height: 1.75;
+	$gutter-width: 3ch;
+
+	.c-code-editor {
+		@include surface($background: "background", $border: "border-strong");
+		@include typography("mono", 10.5px);
+
+		overflow: hidden;
+
+		// En móvil, el código cabe completo sin scroll horizontal.
+		@include respond-below("mobile") {
+			font-size: 9.5px;
+		}
+
+		&--md {
+			font-size: 13.5px;
+
+			@include respond-below("tablet") {
+				font-size: 11.5px;
+			}
+
+			@include respond-below("mobile") {
+				font-size: 9.5px;
+			}
+		}
+
+		&__titlebar {
+			@include cluster(6px);
+
+			padding: 10px 12px;
+			background: color("midnight");
+		}
+
+		&__dot {
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+
+			&--magenta {
+				background: color("magenta");
+			}
+
+			&--salmon {
+				background: color("salmon");
+			}
+
+			&--teal {
+				background: color("teal");
+			}
+		}
+
+		&__tabs {
+			display: flex;
+			overflow: hidden;
+			border-bottom: 1px solid color("border");
+			background: color-alpha("midnight", 0.5);
+		}
+
+		&__tab {
+			flex-shrink: 0;
+			padding: 7px 12px;
+			border-right: 1px solid color("border");
+			color: color("text-subtle");
+			white-space: nowrap;
+			transition:
+				color $transition-base,
+				background $transition-base;
+
+			&--active {
+				box-shadow: inset 0 -2px 0 color("teal");
+				background: color("background");
+				color: color("text");
+			}
+		}
+
+		&__body {
+			// Altura estable: no salta al cambiar de archivo ni al escribir.
+			min-height: calc(var(--max-lines) * #{$line-height}em + 28px);
+			padding: 14px 12px;
+			overflow-x: auto;
+		}
+
+		&__file {
+			display: none;
+			margin: 0;
+			font: inherit;
+			line-height: $line-height;
+			white-space: normal;
+
+			&--active {
+				display: block;
+			}
+		}
+
+		&__code {
+			display: block;
+			counter-reset: line;
+		}
+
+		// Líneas, tokens y cursor se generan fuera de la plantilla (set:html y JS),
+		// así que no reciben el atributo de alcance de Astro: se estilan con
+		// :global, siempre acotados al bloque .c-code-editor.
+		:global(.c-code-editor__line) {
+			display: block;
+			min-height: #{$line-height}em;
+			white-space: pre;
+			counter-increment: line;
+
+			&::before {
+				content: counter(line);
+				display: inline-block;
+				width: $gutter-width;
+				margin-right: 2ch;
+				color: color("border-strong");
+				text-align: right;
+				user-select: none;
+			}
+		}
+
+		:global(.c-code-editor__line--pending) {
+			display: none;
+		}
+
+		:global(.c-code-editor__token--keyword),
+		:global(.c-code-editor__token--at-rule) {
+			color: color("magenta");
+		}
+
+		:global(.c-code-editor__token--string),
+		:global(.c-code-editor__token--number) {
+			color: color("salmon");
+		}
+
+		:global(.c-code-editor__token--function),
+		:global(.c-code-editor__token--selector) {
+			color: color("teal");
+		}
+
+		:global(.c-code-editor__token--property) {
+			color: color("text-muted");
+		}
+
+		:global(.c-code-editor__token--comment) {
+			color: color("text-subtle");
+			font-style: italic;
+		}
+
+		:global(.c-code-editor__token--punctuation) {
+			color: color("text-subtle");
+		}
+
+		:global(.c-code-editor__token--plain) {
+			color: color("text");
+		}
+
+		:global(.c-code-editor__caret) {
+			display: inline-block;
+			width: 0.55em;
+			height: 1.15em;
+			margin-left: 1px;
+			vertical-align: text-bottom;
+			background: color("teal");
+			box-shadow: 0 0 6px color("teal");
+			animation: caret-blink 1s steps(2, jump-none) infinite;
+		}
+
+		&__status {
+			@include cluster(12px, center, space-between);
+
+			padding: 6px 12px;
+			background: color-alpha("teal", 0.15);
+			color: color("teal");
+			font-size: 0.92em;
+		}
+
+		&__branch {
+			color: color("text-muted");
+		}
+	}
+
+	@keyframes caret-blink {
+		50% {
+			opacity: 0;
+		}
+	}
+</style>

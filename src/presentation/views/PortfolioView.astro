@@ -1,0 +1,42 @@
+---
+import type { PortfolioOverview } from "@application/use-cases/GetPortfolio";
+import type { Locale } from "@domain/entities/locale";
+import ContactSection from "../components/sections/ContactSection.astro";
+import EducationSection from "../components/sections/EducationSection.astro";
+import ExperienceSection from "../components/sections/ExperienceSection.astro";
+import HeroSection from "../components/sections/HeroSection.astro";
+import ProfileSection from "../components/sections/ProfileSection.astro";
+import ProjectsSection from "../components/sections/ProjectsSection.astro";
+import SiteFooter from "../components/sections/SiteFooter.astro";
+import SkillsSection from "../components/sections/SkillsSection.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+interface Props {
+	locale: Locale;
+	portfolio: PortfolioOverview;
+}
+
+const { locale, portfolio } = Astro.props;
+const { identity, hero } = portfolio;
+---
+
+<BaseLayout
+	lang={locale}
+	title={`${identity.fullName} — ${hero.role.primary} + ${hero.role.secondary}`}
+	description={hero.valueProposition}
+>
+	<HeroSection
+		identity={identity}
+		navigation={portfolio.navigation}
+		hero={hero}
+	/>
+	<main>
+		<ProfileSection index="/01" profile={portfolio.profile} />
+		<SkillsSection index="/02" skills={portfolio.skills} />
+		<ExperienceSection index="/03" experience={portfolio.experience} />
+		<ProjectsSection index="/04" projects={portfolio.projects} />
+		<EducationSection index="/05" education={portfolio.education} />
+		<ContactSection index="/06" contact={portfolio.contact} />
+	</main>
+	<SiteFooter identity={identity} footer={portfolio.footer} />
+</BaseLayout>

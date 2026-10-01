@@ -1,6 +1,9 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
 import type { NavigationLink } from "@domain/entities/contact";
 import type { Identity } from "@domain/entities/identity";
+import { LOCALES } from "@domain/entities/locale";
+import { resolveLocale, useTranslations } from "../../i18n/ui";
 import Monogram from "../ui/Monogram.astro";
 
 interface Props {
@@ -9,16 +12,14 @@ interface Props {
 }
 
 const { identity, navigation } = Astro.props;
+const currentLocale = resolveLocale(Astro.currentLocale);
+const t = useTranslations(currentLocale);
 ---
 
 <header class="c-site-header">
-	<Monogram
-		initials={identity.initials}
-		name={identity.handle}
-		href="#inicio"
-	/>
+	<Monogram mark={identity.logo} name={identity.handle} href="#inicio" />
 
-	<nav class="c-site-header__nav" aria-label="Principal">
+	<nav class="c-site-header__nav" aria-label={t.mainNavigation}>
 		<ul class="c-site-header__links">
 			{navigation.map((link) => (
 				<li>
@@ -30,22 +31,36 @@ const { identity, navigation } = Astro.props;
 		</ul>
 	</nav>
 
-	<p class="c-site-header__languages" aria-label="Idioma">
-		{identity.languages.map((language, index) => (
-			<span
-				class:list={[
-					"c-site-header__language",
-					{
-						"c-site-header__language--active":
-							language === identity.activeLanguage,
-					},
-				]}
-			>
-				{index > 0 && "/ "}
-				{language}
-			</span>
+	<nav class="c-site-header__languages" aria-label={t.languageSwitcher}>
+		{LOCALES.map((locale, index) => (
+			<>
+				{index > 0 && (
+					<span class="c-site-header__separator" aria-hidden="true">
+						/
+					</span>
+				)}
+				{locale === currentLocale ? (
+					<span
+						class="c-site-header__language c-site-header__language--active"
+						aria-current="page"
+						title={t.languageNames[locale]}
+					>
+						{locale.toUpperCase()}
+					</span>
+				) : (
+					<a
+						class="c-site-header__language"
+						href={getRelativeLocaleUrl(locale)}
+						hreflang={locale}
+						lang={locale}
+						title={t.languageNames[locale]}
+					>
+						{locale.toUpperCase()}
+					</a>
+				)}
+			</>
 		))}
-	</p>
+	</nav>
 </header>
 
 <style lang="scss">
@@ -82,12 +97,26 @@ const { identity, navigation } = Astro.props;
 			@include cluster(8px);
 		}
 
-		&__language {
+		&__separator {
 			@include typography("mono", 12px);
 
 			color: color("text-subtle");
+		}
+
+		&__language {
+			@include typography("mono", 12px);
+
+			padding: 4px 2px;
+			color: color("text-subtle");
+			transition: color $transition-base;
+
+			&:hover {
+				color: color("text");
+			}
 
 			&--active {
+				@include neon-text("teal", 0.5);
+
 				color: color("teal");
 			}
 		}

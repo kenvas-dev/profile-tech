@@ -3,10 +3,8 @@ import type { Portfolio } from "@domain/entities/portfolio";
 export const portfolioEs: Portfolio = {
 	identity: {
 		fullName: "Kevin Aquino",
-		initials: "KA",
+		logo: "{UN1T7D}",
 		handle: "kevin.aquino",
-		languages: ["ES", "EN"],
-		activeLanguage: "ES",
 	},
 
 	navigation: [
@@ -31,9 +29,9 @@ export const portfolioEs: Portfolio = {
 		professionalLinks: [
 			{
 				label: "LINKEDIN ↗",
-				href: "https://www.linkedin.com/in/alexrivera",
+				href: "https://www.linkedin.com/in/kevin-v%C3%A1squez-46a0701b4",
 			},
-			{ label: "GITHUB ↗", href: "https://github.com/alexrivera" },
+			{ label: "GITHUB ↗", href: "https://github.com/kenvas-dev" },
 			{ label: "DESCARGAR CV ↓", href: "#" },
 		],
 		portrait: {
@@ -43,8 +41,8 @@ export const portfolioEs: Portfolio = {
 			},
 			code: "PROFILE_001",
 			baseLabel: "BASE",
-			location: "Madrid / Remoto",
-			coordinates: "40.4168° N · 003.7038° W",
+			location: "Quezaltepeque, SV",
+			coordinates: "13.8350° N · 089.2720° W",
 		},
 	},
 
@@ -52,12 +50,12 @@ export const portfolioEs: Portfolio = {
 		label: "Perfil",
 		title: "Código limpio. Interfaces que escalan.",
 		biography:
-			"Soy Kevin Aquino, desarrollador frontend senior con más de 8 años construyendo aplicaciones web para plataformas B2B, fintech y productos de consumo. Trabajo del componente a la arquitectura, siempre cerca de diseño, backend y negocio.",
-		focus: "Me especializo en arquitecturas frontend mantenibles, design systems en código, rendimiento web y accesibilidad. Me gusta dejar bases sólidas: tipado estricto, tests y convenciones que permiten a un equipo crecer sin frenarse.",
+			"Soy Kevin Aquino, desarrollador frontend senior con 5 años de experiencia, del backend al frontend. He participado en 7 proyectos junto a 3 equipos de diseño, convirtiendo ideas en productos sólidos.",
+		focus: "Mi base en backend me ayuda a construir interfaces que entienden los datos y las APIs que las alimentan. Me especializo en arquitectura frontend mantenible, design systems en código, rendimiento y accesibilidad.",
 		metrics: [
-			{ value: "8+", label: "años en desarrollo frontend" },
-			{ value: "30+", label: "proyectos en producción" },
-			{ value: "5", label: "equipos con design system propio" },
+			{ value: "5+", label: "años en desarrollo web" },
+			{ value: "7", label: "proyectos entregados" },
+			{ value: "3", label: "equipos de diseño" },
 			{ value: "ES / EN", label: "idiomas de trabajo" },
 		],
 	},
@@ -81,7 +79,11 @@ export const portfolioEs: Portfolio = {
 					"React",
 					"Angular",
 					"Astro",
-					"Next.js",
+					"Node.js",
+					"Express.js",
+					"NestJS",
+					"Dart",
+					"Flutter",
 				],
 			},
 			{
@@ -93,9 +95,11 @@ export const portfolioEs: Portfolio = {
 					"SCSS",
 					"BEM",
 					"Tailwind CSS",
+					"Material Angular",
+					"PrimeNG",
+					"Bulma",
+					"Bootstrap",
 					"Design systems",
-					"Storybook",
-					"Accessibility",
 				],
 			},
 			{
@@ -106,8 +110,8 @@ export const portfolioEs: Portfolio = {
 					"Clean code",
 					"Arquitectura hexagonal",
 					"Testing",
-					"Vitest",
-					"Playwright",
+					"DDD",
+					"TDD",
 					"CI/CD",
 				],
 			},
@@ -126,7 +130,7 @@ export const portfolioEs: Portfolio = {
 					icon: "waypoints",
 					title: "Puente entre diseño y backend",
 					description:
-						"Traduzco diseños y APIs en interfaces coherentes, alineando decisiones técnicas con cada equipo.",
+						"Mi experiencia en backend y con 3 equipos de diseño me permite unir APIs y diseños en interfaces coherentes.",
 				},
 				{
 					icon: "sparkles",
@@ -143,47 +147,49 @@ export const portfolioEs: Portfolio = {
 			label: "Experiencia",
 			title: "Experiencia construyendo productos que escalan.",
 			description:
-				"Equipos de producto donde he liderado la arquitectura frontend, la calidad del código y la entrega continua.",
+				"5 años recorriendo el stack completo: empecé como desarrollador full stack y hoy lidero el frontend, siempre cerca de los equipos de diseño.",
 		},
 		currentLabel: "ACTUAL",
 		presentLabel: "AHORA",
 		positions: [
 			{
-				company: "Nébula Labs",
-				role: "Lead Frontend Engineer",
-				location: "Madrid · Híbrido",
-				period: { startYear: 2023, endYear: null },
+				company: "Freelance",
+				role: "Full Stack Developer",
+				location: "El Salvador · Remoto",
+				period: { startYear: 2024, endYear: null },
 				summary:
-					"Lidero el frontend de una plataforma SaaS de inteligencia operativa: arquitectura, design system en código y calidad técnica del equipo.",
+					"Diseño y desarrollo sitios web a medida para profesionales y organizaciones, desde la arquitectura del frontend hasta los servicios backend, con Angular (v14+) y Node.js.",
 				achievements: [
-					"Migré la aplicación a una arquitectura modular y reduje un 40% el tiempo de carga inicial.",
-					"Construí una librería de componentes adoptada por 5 squads y 3 productos.",
-					"Implanté testing automatizado y CI que redujeron un 60% los bugs en producción.",
+					"Portafolios web para fotógrafos, centrados en la presentación de galerías de imágenes.",
+					"Blogs y landing pages informativas con diseño responsive y contenido fácil de actualizar.",
+					"Landing pages para iglesias y organizaciones, con información de actividades y canales de contacto.",
 				],
 			},
 			{
-				company: "Orbit Finance",
-				role: "Senior Frontend Developer",
-				location: "Barcelona · Remoto",
-				period: { startYear: 2020, endYear: 2023 },
+				company: "Entidad financiera",
+				role: "Frontend Lead",
+				location: "El Salvador · Desde oct. 2022",
+				period: { startYear: 2022, endYear: null },
 				summary:
-					"Desarrollé los flujos de onboarding, pagos y analítica de una fintech B2B en expansión europea.",
+					"Lidero el desarrollo frontend del CRM corporativo de una entidad financiera en El Salvador, la plataforma que orquesta los procesos clave de gestión de clientes. Defino la arquitectura de la aplicación, los estándares de código y la integración con los servicios internos para ofrecer una experiencia consistente, segura y escalable a los equipos de negocio.",
 				achievements: [
-					"Reconstruí el onboarding en React y la activación subió del 54% al 71%.",
-					"Llevé los flujos críticos al nivel de accesibilidad WCAG 2.1 AA.",
-					"Mentoricé a 4 desarrolladores junior en buenas prácticas y code review.",
+					"Diseñé una arquitectura frontend modular que permite incorporar nuevos flujos de gestión sin comprometer la mantenibilidad.",
+					"Establecí estándares de calidad para el equipo: componentes reutilizables, tipado estricto y revisiones de código.",
+					"Coordino la integración con servicios backend y equipos de diseño para entregar funcionalidades críticas de forma continua.",
 				],
 			},
 			{
-				company: "Studio Norte",
-				role: "Frontend Developer",
-				location: "Valencia · Presencial",
-				period: { startYear: 2018, endYear: 2020 },
+				company: "Waresoft",
+				role: "Full Stack Developer → Frontend Lead",
+				location: "Chile y El Salvador · Hasta oct. 2022",
+				period: { startYear: 2021, endYear: 2022 },
 				summary:
-					"Desarrollé sitios y aplicaciones web para startups y organizaciones culturales.",
+					"Desarrollé aplicaciones web y móviles para clientes de Chile y El Salvador, primero como desarrollador full stack y después liderando el frontend de proyectos con Angular.",
 				achievements: [
-					"Lancé 12 proyectos web y mobile junto a equipos de diseño y backend.",
-					"Introduje componentes reutilizables que aceleraron cada nuevo desarrollo.",
+					"Mundo Terrenos: plataforma de venta de inmuebles con mapas interactivos y geolocalización de propiedades mediante marcadores.",
+					"GIMH: aplicación de arrendamientos desarrollada full stack con React, Node.js, PostgreSQL y CouchDB.",
+					"Sherwin-Williams: desarrollo integral con Angular 12, del panel administrativo al sitio principal, y apoyo en la versión móvil con Flutter.",
+					"Diparvel: lideré el desarrollo frontend de la aplicación con Angular 14.",
 				],
 			},
 		],
@@ -192,60 +198,83 @@ export const portfolioEs: Portfolio = {
 	projects: {
 		intro: {
 			label: "Trabajo seleccionado",
-			title: "Código que mueve métricas, no solo píxeles.",
+			title: "Proyectos reales, de la banca a la web a medida.",
 			description:
-				"Casos seleccionados con contexto técnico, resultados y stack. Cada bloque está listo para enlazar a un caso completo.",
+				"Una selección de los proyectos en los que he participado: sector financiero, inmobiliario, retail y sitios a medida para profesionales y organizaciones.",
 		},
 		items: [
 			{
 				code: "CASE_STUDY_01",
-				category: "SaaS · Dashboard · 2026",
-				title: "Nébula Command Center",
+				kind: "crm",
+				category: "Sector financiero · CRM · 2022 – hoy",
+				title: "CRM de gestión de clientes",
 				summary:
-					"Frontend de una plataforma de inteligencia operativa en tiempo real: visualización de datos, arquitectura modular y un rendimiento que soporta miles de eventos por minuto.",
-				preview: {
-					src: "/images/proyecto-nebula.jpg",
-					alt: "Dashboard de Nébula Command Center en un monitor de escritorio",
-				},
+					"Plataforma corporativa que orquesta las funcionalidades principales en la gestión de clientes de una entidad financiera en El Salvador. Lidero su desarrollo frontend: arquitectura, estándares de código e integración con los servicios internos.",
 				tone: "primary",
-				technologies: ["React", "TypeScript", "WebSockets", "D3.js"],
-				results: [
-					{ value: "−40%", label: "tiempo de carga" },
-					{ value: "98", label: "Lighthouse performance" },
+				technologies: [
+					"Arquitectura frontend",
+					"Integración de servicios",
+					"Liderazgo técnico",
 				],
-				link: { label: "Ver caso", href: "#" },
+				results: [
+					{ value: "Lead", label: "desarrollo frontend" },
+					{ value: "2022+", label: "en evolución continua" },
+				],
 				featured: true,
 			},
 			{
 				code: "CASE_STUDY_02",
-				category: "Fintech · Activación",
-				title: "Orbit onboarding",
+				kind: "real-estate",
+				category: "Inmobiliaria · Chile · Waresoft",
+				title: "Mundo Terrenos",
 				summary:
-					"Onboarding progresivo en React que convirtió requisitos regulatorios en un flujo guiado, accesible y validado paso a paso.",
-				preview: {
-					src: "/images/proyecto-orbit.jpg",
-					alt: "Pantallas móviles del onboarding de Orbit",
-				},
+					"Plataforma de venta de inmuebles con mapas interactivos y marcadores para ubicar cada propiedad.",
 				tone: "secondary",
-				technologies: ["React", "Testing"],
-				results: [{ value: "+17pp", label: "activación" }],
-				link: { label: "Ver caso Orbit onboarding", href: "#" },
+				technologies: ["Mapas", "Geolocalización"],
+				results: [{ value: "Mapas", label: "búsqueda por ubicación" }],
 				featured: false,
 			},
 			{
 				code: "CASE_STUDY_03",
-				category: "Sistema · Escala",
-				title: "Atlas design system",
+				kind: "admin-panel",
+				category: "Retail · Web + Mobile · Waresoft",
+				title: "Sherwin-Williams",
 				summary:
-					"Librería de componentes con tokens, Storybook y versionado semántico para alinear diseño e ingeniería en cinco squads.",
-				preview: {
-					src: "/images/proyecto-atlas.jpg",
-					alt: "Documentación de componentes del design system Atlas",
-				},
+					"Desarrollo integral con Angular 12, del panel administrativo al sitio principal, y apoyo en la versión móvil construida con Flutter.",
 				tone: "tertiary",
-				technologies: ["Storybook", "SCSS"],
-				results: [{ value: "3×", label: "velocidad de entrega" }],
-				link: { label: "Ver caso Atlas design system", href: "#" },
+				technologies: ["Angular 12", "Flutter"],
+				results: [
+					{ value: "Web + App", label: "panel, sitio y móvil" },
+				],
+				featured: false,
+			},
+			{
+				code: "CASE_STUDY_04",
+				kind: "rentals",
+				category: "Arrendamientos · Full stack · Waresoft",
+				title: "GIMH",
+				summary:
+					"Aplicación de gestión de arrendamientos desarrollada de extremo a extremo, del frontend en React a la API y las bases de datos.",
+				tone: "primary",
+				technologies: ["React", "Node.js", "PostgreSQL", "CouchDB"],
+				results: [
+					{
+						value: "Full stack",
+						label: "de la UI a la base de datos",
+					},
+				],
+				featured: false,
+			},
+			{
+				code: "CASE_STUDY_05",
+				kind: "websites",
+				category: "Freelance · Web · 2024 – hoy",
+				title: "Sitios web a medida",
+				summary:
+					"Portafolios para fotógrafos, blogs y landing pages informativas para iglesias y organizaciones, desarrollados de principio a fin.",
+				tone: "secondary",
+				technologies: ["Angular 14+", "Node.js"],
+				results: [{ value: "2024+", label: "proyectos freelance" }],
 				featured: false,
 			},
 		],
@@ -263,20 +292,14 @@ export const portfolioEs: Portfolio = {
 			{
 				year: 2025,
 				type: "Certificación",
-				title: "Web Accessibility Specialist",
-				institution: "IAAP · Online",
+				title: "Desarrollo Full Stack",
+				institution: "Kodigo · El Salvador",
 			},
 			{
-				year: 2022,
-				type: "Programa avanzado",
-				title: "Arquitectura Frontend Escalable",
-				institution: "Frontend Masters · Online",
-			},
-			{
-				year: 2018,
-				type: "Grado",
-				title: "Ingeniería de Software",
-				institution: "Universidad Politécnica de Madrid",
+				year: 2024,
+				type: "Grado universitario",
+				title: "Licenciatura en Informática",
+				institution: "Universidad Tecnológica de El Salvador (UTEC)",
 			},
 		],
 		method: {
@@ -311,29 +334,45 @@ export const portfolioEs: Portfolio = {
 		label: "Contacto",
 		title: "¿Construimos algo que merezca existir?",
 		description:
-			"Estoy disponible para roles de frontend senior, colaboraciones y conversaciones sobre arquitectura web, design systems y rendimiento.",
-		email: "hola@alexrivera.design",
+			"Trabajo en remoto desde El Salvador (GMT-6) y estoy disponible para roles de frontend senior, colaboraciones y conversaciones sobre arquitectura web, design systems y rendimiento.",
+		email: "kevin.aquino.vasquez@gmail.com",
 		availability: "Disponible · Q4 2026",
 		channels: [
 			{
 				icon: "linkedin",
 				label: "LinkedIn",
-				value: "/in/alexrivera",
-				href: "https://www.linkedin.com/in/alexrivera",
+				value: "/in/kevin-vásquez",
+				href: "https://www.linkedin.com/in/kevin-v%C3%A1squez-46a0701b4",
 			},
 			{
 				icon: "github",
 				label: "GitHub",
-				value: "@alexrivera",
-				href: "https://github.com/alexrivera",
+				value: "@kenvas-dev",
+				href: "https://github.com/kenvas-dev",
 			},
 			{
 				icon: "map-pin",
 				label: "Base",
-				value: "Madrid · Remoto",
-				href: "https://maps.google.com/?q=Madrid",
+				value: "Quezaltepeque, El Salvador",
+				href: "https://maps.google.com/?q=Quezaltepeque,+El+Salvador",
 			},
 		],
+		builtWith: {
+			label: "SOURCE_CODE",
+			title: "Esta web está hecha con Astro",
+			description:
+				"TypeScript, SCSS con BEM y arquitectura hexagonal. Así se ve por dentro:",
+			technologies: [
+				"Astro",
+				"TypeScript",
+				"SCSS + BEM",
+				"Arquitectura hexagonal",
+				"i18n ES / EN",
+				"Stylelint",
+				"Prettier",
+				"Husky",
+			],
+		},
 	},
 
 	footer: {

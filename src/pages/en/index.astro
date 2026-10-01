@@ -2,7 +2,7 @@
 import { getPortfolio } from "@infrastructure/di/container";
 import PortfolioView from "@presentation/views/PortfolioView.astro";
 
-const locale = "es";
+const locale = "en";
 const portfolio = await getPortfolio.execute(locale);
 ---
 

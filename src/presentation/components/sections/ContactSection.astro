@@ -1,5 +1,7 @@
 ---
 import type { Contact } from "@domain/entities/contact";
+import { resolveLocale, useTranslations } from "../../i18n/ui";
+import BuiltWith from "../contact/BuiltWith.astro";
 import Icon from "../ui/Icon.astro";
 import RetroSun from "../ui/RetroSun.astro";
 import SectionLabel from "../ui/SectionLabel.astro";
@@ -12,6 +14,7 @@ interface Props {
 }
 
 const { index, contact } = Astro.props;
+const t = useTranslations(resolveLocale(Astro.currentLocale));
 ---
 
 <section
@@ -39,38 +42,42 @@ const { index, contact } = Astro.props;
 				</a>
 			</div>
 
-			<aside class="c-channels" aria-label="Canales de contacto">
-				<p class="c-channels__status">
-					<StatusDot />
-					{contact.availability}
-				</p>
-				<ul>
-					{contact.channels.map((channel) => (
-						<li>
-							<a
-								class="c-channel"
-								href={channel.href}
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								<span class="c-channel__icon">
-									<Icon name={channel.icon} size={18} />
-								</span>
-								<span class="c-channel__label">
-									{channel.label}
-								</span>
-								<span class="c-channel__value">
-									{channel.value}
-								</span>
-								<span class="c-channel__arrow">
-									<Icon name="arrow-up-right" />
-								</span>
-							</a>
-						</li>
-					))}
-				</ul>
-			</aside>
+			<div class="c-contact__aside">
+				<aside class="c-channels" aria-label={t.contactChannels}>
+					<p class="c-channels__status">
+						<StatusDot />
+						{contact.availability}
+					</p>
+					<ul>
+						{contact.channels.map((channel) => (
+							<li>
+								<a
+									class="c-channel"
+									href={channel.href}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<span class="c-channel__icon">
+										<Icon name={channel.icon} size={18} />
+									</span>
+									<span class="c-channel__label">
+										{channel.label}
+									</span>
+									<span class="c-channel__value">
+										{channel.value}
+									</span>
+									<span class="c-channel__arrow">
+										<Icon name="arrow-up-right" />
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</aside>
+			</div>
 		</div>
+
+		<BuiltWith builtWith={contact.builtWith} />
 	</div>
 </section>
 
@@ -100,12 +107,23 @@ const { index, contact } = Astro.props;
 		}
 
 		&__invitation {
-			@include cluster(72px, flex-end);
+			@include cluster(72px, flex-start);
 
 			@include respond-below("laptop") {
 				flex-direction: column;
 				align-items: stretch;
 				gap: 48px;
+			}
+		}
+
+		&__aside {
+			@include stack(24px);
+
+			flex-shrink: 0;
+			width: 400px;
+
+			@include respond-below("laptop") {
+				width: 100%;
 			}
 		}
 
@@ -163,14 +181,7 @@ const { index, contact } = Astro.props;
 		@include neon-box("teal", 0.5);
 
 		backdrop-filter: blur(6px);
-		flex-shrink: 0;
-		width: 400px;
 		padding: 32px;
-
-		@include respond-below("laptop") {
-			width: 100%;
-			max-width: 480px;
-		}
 
 		@include respond-below("mobile") {
 			padding: 24px;

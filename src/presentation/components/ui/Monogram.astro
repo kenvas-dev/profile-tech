@@ -1,18 +1,19 @@
 ---
 interface Props {
-	initials: string;
+	/** Marca o iniciales que se muestran en el distintivo. */
+	mark: string;
 	name: string;
 	size?: "md" | "sm";
 	href?: string;
 }
 
-const { initials, name, size = "md", href } = Astro.props;
+const { mark, name, size = "md", href } = Astro.props;
 const Tag = href ? "a" : "div";
 ---
 
 <Tag class:list={["c-monogram", `c-monogram--${size}`]} href={href}>
 	<span class="c-monogram__badge" aria-hidden="true">
-		{initials}
+		{mark}
 	</span>
 	<span class="c-monogram__name">{name}</span>
 </Tag>
@@ -25,13 +26,18 @@ const Tag = href ? "a" : "div";
 
 		&__badge {
 			@include cluster($justify: center);
-			@include typography("retro", 13px, $font-weight-black);
+
+			// Monoespaciada: las llaves de la marca {UN1T7D} se leen como código.
+			@include typography("mono", 13px, $font-weight-bold);
 			@include neon-box("magenta", 0.6);
 			@include neon-text("teal", 0.6);
 
-			width: 34px;
+			min-width: 34px;
 			height: 34px;
+			padding-inline: 10px;
 			background: color("midnight");
+			letter-spacing: 0.04em;
+			white-space: nowrap;
 			border: 1px solid color("magenta");
 			border-radius: $radius-sm;
 			color: color("teal");
@@ -45,8 +51,9 @@ const Tag = href ? "a" : "div";
 		}
 
 		&--sm &__badge {
-			width: 32px;
+			min-width: 32px;
 			height: 32px;
+			padding-inline: 8px;
 			font-size: 11px;
 		}
 	}

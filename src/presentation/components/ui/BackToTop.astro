@@ -1,0 +1,106 @@
+---
+import { resolveLocale, useTranslations } from "../../i18n/ui";
+import Icon from "./Icon.astro";
+
+const t = useTranslations(resolveLocale(Astro.currentLocale));
+---
+
+<button
+	class="c-back-to-top"
+	type="button"
+	aria-label={t.backToTop}
+	title={t.backToTop}
+	data-back-to-top
+>
+	<Icon name="arrow-up" size={20} strokeWidth={2} />
+</button>
+
+<script>
+	const button =
+		document.querySelector<HTMLButtonElement>("[data-back-to-top]");
+
+	if (button) {
+		let isTicking = false;
+
+		// Aparece tras bajar más de una pantalla.
+		const update = () => {
+			const isVisible = window.scrollY > window.innerHeight;
+			button.classList.toggle("c-back-to-top--visible", isVisible);
+			isTicking = false;
+		};
+
+		const requestUpdate = () => {
+			if (isTicking) return;
+			isTicking = true;
+			requestAnimationFrame(update);
+		};
+
+		// El scroll suave (o instantáneo con prefers-reduced-motion) lo define
+		// `scroll-behavior` en los estilos globales.
+		button.addEventListener("click", () => {
+			window.scrollTo({ top: 0 });
+			button.blur();
+		});
+
+		window.addEventListener("scroll", requestUpdate, { passive: true });
+		window.addEventListener("resize", requestUpdate);
+		update();
+	}
+</script>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	$size: 48px;
+	$offset: 24px;
+
+	.c-back-to-top {
+		@include cluster($justify: center);
+		@include neon-box("teal", 0.6);
+
+		position: fixed;
+		right: $offset;
+		bottom: $offset;
+		z-index: z("floating");
+		width: $size;
+		height: $size;
+		padding: 0;
+		border: 1px solid color("teal");
+		border-radius: $radius-sm;
+		background: color("overlay");
+		color: color("teal");
+		cursor: pointer;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(12px);
+		backdrop-filter: blur(6px);
+		transition:
+			opacity $transition-base,
+			visibility $transition-base,
+			transform $transition-base,
+			box-shadow $transition-base,
+			color $transition-base;
+
+		@include respond-below("mobile") {
+			right: 16px;
+			bottom: 16px;
+			width: 44px;
+			height: 44px;
+		}
+
+		&:hover {
+			@include neon-box("magenta", 1);
+
+			border-color: color("magenta");
+			color: color("text");
+			transform: translateY(-3px);
+		}
+
+		// Oculto también para el teclado (visibility) hasta que se necesita.
+		&--visible {
+			opacity: 1;
+			visibility: visible;
+			transform: translateY(0);
+		}
+	}
+</style>

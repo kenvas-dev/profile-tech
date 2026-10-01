@@ -1,13 +1,17 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { DEFAULT_LOCALE, LOCALES, type Locale } from "@domain/entities/locale";
+import BackToTop from "../components/ui/BackToTop.astro";
+import ScrollProgress from "../components/ui/ScrollProgress.astro";
 import "../styles/main.scss";
 
 interface Props {
 	title: string;
 	description: string;
-	lang?: string;
+	lang?: Locale;
 }
 
-const { title, description, lang = "es" } = Astro.props;
+const { title, description, lang = DEFAULT_LOCALE } = Astro.props;
 ---
 
 <!doctype html>
@@ -24,10 +28,24 @@ const { title, description, lang = "es" } = Astro.props;
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;700&display=swap"
 		/>
+		{LOCALES.map((locale) => (
+			<link
+				rel="alternate"
+				hreflang={locale}
+				href={getRelativeLocaleUrl(locale)}
+			/>
+		))}
+		<link
+			rel="alternate"
+			hreflang="x-default"
+			href={getRelativeLocaleUrl(DEFAULT_LOCALE)}
+		/>
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
 	<body>
+		<ScrollProgress />
 		<slot />
+		<BackToTop />
 	</body>
 </html>

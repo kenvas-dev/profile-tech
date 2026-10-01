@@ -1,8 +1,6 @@
+import type { Locale } from "@domain/entities/locale";
 import type { Portfolio } from "@domain/entities/portfolio";
-import type {
-	Locale,
-	PortfolioRepository,
-} from "@domain/ports/PortfolioRepository";
+import type { PortfolioRepository } from "@domain/ports/PortfolioRepository";
 
 /** Adaptador que sirve el contenido desde módulos estáticos, uno por idioma. */
 export class InMemoryPortfolioRepository implements PortfolioRepository {

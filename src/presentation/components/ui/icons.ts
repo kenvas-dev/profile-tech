@@ -1,7 +1,12 @@
 import type { IconName } from "@domain/entities/shared";
 
 export type UiIconName =
-	IconName | "arrow-up-right" | "arrow-down-right" | "send" | "scan-line";
+	| IconName
+	| "arrow-up"
+	| "arrow-up-right"
+	| "arrow-down-right"
+	| "send"
+	| "scan-line";
 
 interface IconDefinition {
 	readonly viewBox: string;
@@ -11,6 +16,10 @@ interface IconDefinition {
 
 /** Trazados exportados de Figma (Lucide). Se pintan con `currentColor`. */
 export const ICONS: Record<UiIconName, IconDefinition> = {
+	"arrow-up": {
+		viewBox: "0 0 16 16",
+		paths: ["M8 13V3", "M3.5 7.5 8 3l4.5 4.5"],
+	},
 	"arrow-up-right": {
 		viewBox: "0 0 16 16",
 		paths: ["M11.33 11.33V4.67H4.67M11.33 4.67 4.67 11.33"],

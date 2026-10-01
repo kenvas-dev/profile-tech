@@ -1,0 +1,137 @@
+---
+import type { BuiltWith } from "@domain/entities/contact";
+import { resolveLocale, useTranslations } from "../../i18n/ui";
+import CodeEditor from "../ui/CodeEditor.astro";
+import PillList from "../ui/PillList.astro";
+import type { CodeFile } from "../ui/CodeEditor.types";
+
+interface Props {
+	builtWith: BuiltWith;
+}
+
+const { builtWith } = Astro.props;
+const t = useTranslations(resolveLocale(Astro.currentLocale));
+
+/** Extractos (simplificados para caber en el editor) del código real del sitio. */
+const sourceFiles: readonly CodeFile[] = [
+	{
+		name: "astro.config.mjs",
+		language: "JavaScript",
+		code: `
+import { defineConfig } from "astro/config";
+
+export default defineConfig({
+  i18n: {
+    locales: ["es", "en"],
+    defaultLocale: "es",
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+});`,
+	},
+	{
+		name: "GetPortfolio.ts",
+		language: "TypeScript",
+		code: `
+// Caso de uso: depende solo del puerto
+export class GetPortfolio {
+  constructor(
+    private readonly repo: PortfolioRepository,
+  ) {}
+
+  execute(locale: Locale) {
+    return this.repo.findByLocale(locale);
+  }
+}`,
+	},
+	{
+		name: "_mixins.scss",
+		language: "SCSS",
+		code: `
+@mixin neon-text($color: "magenta") {
+  text-shadow:
+    0 0 4px color-alpha($color, 0.8),
+    0 0 14px color-alpha($color, 0.55);
+}
+
+.c-hero__name {
+  @include neon-text("magenta");
+}`,
+	},
+];
+---
+
+<section class="c-built-with" aria-labelledby="built-with-title">
+	<header class="c-built-with__info">
+		<span class="c-built-with__label">{builtWith.label}</span>
+		<h3 class="c-built-with__title" id="built-with-title">
+			{builtWith.title}
+		</h3>
+		<p class="c-built-with__description">{builtWith.description}</p>
+		<PillList items={builtWith.technologies} />
+	</header>
+
+	<div class="c-built-with__editor">
+		<CodeEditor files={sourceFiles} label={t.sourceCode} size="md" />
+	</div>
+</section>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	$info-width: 340px;
+
+	.c-built-with {
+		@include surface($background: "overlay", $border: "magenta");
+		@include neon-box("magenta", 0.4);
+
+		display: grid;
+		grid-template-columns: $info-width minmax(0, 1fr);
+		gap: 48px;
+		align-items: center;
+		padding: 40px;
+		backdrop-filter: blur(6px);
+
+		@include respond-below("laptop") {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 32px;
+			padding: 32px;
+		}
+
+		@include respond-below("mobile") {
+			padding: 16px;
+		}
+
+		&__info {
+			@include stack(16px, flex-start);
+		}
+
+		&__label {
+			@include typography("mono", 12px);
+
+			color: color("salmon");
+		}
+
+		&__title {
+			@include typography("retro", 26px, $font-weight-bold, 1.25);
+			@include neon-text("magenta", 0.5);
+
+			color: color("text");
+
+			@include respond-below("mobile") {
+				font-size: 20px;
+			}
+		}
+
+		&__description {
+			@include typography("body", 16px, $font-weight-regular, 1.6);
+
+			color: color("text-muted");
+		}
+
+		&__editor {
+			min-width: 0;
+		}
+	}
+</style>

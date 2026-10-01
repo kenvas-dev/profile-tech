@@ -10,6 +10,7 @@ Implementación en Astro del diseño de Figma _Portfolio profesional_, con arqui
 | `npm run dev`             | Servidor de desarrollo en `localhost:4321` |
 | `npm run build`           | Genera el sitio estático en `./dist/`      |
 | `npm run preview`         | Sirve el build localmente                  |
+| `npm run check`           | Comprueba los tipos de TypeScript y Astro  |
 | `npm run lint:styles`     | Valida SCSS y BEM con Stylelint            |
 | `npm run lint:styles:fix` | Corrige automáticamente lo que se pueda    |
 | `npm run format`          | Formatea todo el proyecto con Prettier     |
@@ -43,7 +44,9 @@ src/
 
 Las dependencias apuntan siempre hacia dentro: `presentation → application → domain ← infrastructure`.
 
-**Editar el contenido:** modifica `src/infrastructure/data/portfolio.es.ts`.
+**Editar el contenido:** cada idioma tiene su archivo en `src/infrastructure/data/` (`portfolio.es.ts`, `portfolio.en.ts`). TypeScript obliga a que ambos tengan la misma estructura (`npm run check`).
+
+**Idiomas:** español en `/` (por defecto) e inglés en `/en/`, con el routing i18n de Astro. Los textos de interfaz que no son contenido (aria-labels, etc.) están en `src/presentation/i18n/ui.ts`. Para añadir un idioma: agrégalo a `LOCALES` en `src/domain/entities/locale.ts` y a `i18n.locales` en `astro.config.mjs`, crea su archivo de datos, regístralo en `di/container.ts` y añade `src/pages/<idioma>/index.astro`.
 **Cambiar la fuente de datos** (CMS, API, Markdown): crea un nuevo adaptador que implemente `PortfolioRepository` y conéctalo en `di/container.ts`; la UI no cambia.
 
 ## Estilos (SCSS)

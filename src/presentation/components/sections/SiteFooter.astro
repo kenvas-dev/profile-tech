@@ -13,11 +13,7 @@ const { identity, footer } = Astro.props;
 
 <footer class="c-site-footer">
 	<div class="c-site-footer__inner">
-		<Monogram
-			initials={identity.initials}
-			name={identity.fullName}
-			size="sm"
-		/>
+		<Monogram mark={identity.logo} name={identity.fullName} size="sm" />
 		<p class="c-site-footer__note">{footer.note}</p>
 		<p class="c-site-footer__copyright">{footer.copyright}</p>
 	</div>

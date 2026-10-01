@@ -1,7 +1,9 @@
 ---
 import type { Project } from "@domain/entities/projects";
+import { resolveLocale, useTranslations } from "../../i18n/ui";
 import Icon from "../ui/Icon.astro";
 import PillList from "../ui/PillList.astro";
+import ProjectIllustration from "./ProjectIllustration.astro";
 import ProjectResult from "./ProjectResult.astro";
 
 interface Props {
@@ -9,18 +11,31 @@ interface Props {
 }
 
 const { project } = Astro.props;
+const t = useTranslations(resolveLocale(Astro.currentLocale));
 ---
 
 <article class="c-featured-project">
-	<div class="c-featured-project__preview">
-		<img
-			class="c-featured-project__image"
-			src={project.preview.src}
-			alt={project.preview.alt}
-			width="650"
-			height="480"
-			loading="lazy"
-		/>
+	<div
+		class:list={[
+			"c-featured-project__preview",
+			{ "c-featured-project__preview--photo": project.preview },
+		]}
+	>
+		{project.preview ? (
+			<img
+				class="c-featured-project__image"
+				src={project.preview.src}
+				alt={project.preview.alt}
+				width="650"
+				height="480"
+				loading="lazy"
+			/>
+		) : (
+			<ProjectIllustration
+				kind={project.kind}
+				label={t.projectIllustration(project.title)}
+			/>
+		)}
 		<span class="c-featured-project__badge">
 			<span
 				class="c-featured-project__badge-dot"
@@ -42,12 +57,14 @@ const { project } = Astro.props;
 			{project.results.map((result) => (
 				<ProjectResult result={result} />
 			))}
-			<a class="c-featured-project__link" href={project.link.href}>
-				{project.link.label}
-				<span class="c-featured-project__link-icon">
-					<Icon name="arrow-up-right" strokeWidth={1.7} />
-				</span>
-			</a>
+			{project.link && (
+				<a class="c-featured-project__link" href={project.link.href}>
+					{project.link.label}
+					<span class="c-featured-project__link-icon">
+						<Icon name="arrow-up-right" strokeWidth={1.7} />
+					</span>
+				</a>
+			)}
 		</footer>
 	</div>
 </article>
@@ -63,21 +80,25 @@ const { project } = Astro.props;
 		min-height: 480px;
 		overflow: hidden;
 
-		@include respond-below("laptop") {
+		@include respond-below("tablet") {
 			flex-direction: column;
 		}
 
 		&__preview {
 			position: relative;
-			flex: 0 0 650px;
+			flex: 0 0 51%; // 650px de 1280px en el diseño original
 			padding: 32px;
 
 			@include respond-below("laptop") {
+				flex-basis: 45%;
+			}
+
+			@include respond-below("tablet") {
 				flex-basis: auto;
 				aspect-ratio: 650 / 480;
 			}
 
-			&::after {
+			&--photo::after {
 				@include synthwave-tint;
 			}
 		}
@@ -111,6 +132,10 @@ const { project } = Astro.props;
 			flex: 1;
 			min-width: 0;
 			padding: 48px;
+
+			@include respond-below("laptop") {
+				padding: 32px;
+			}
 
 			@include respond-below("mobile") {
 				padding: 24px;

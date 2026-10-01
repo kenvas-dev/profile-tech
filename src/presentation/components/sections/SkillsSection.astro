@@ -1,5 +1,6 @@
 ---
 import type { Skills } from "@domain/entities/skills";
+import { resolveLocale, useTranslations } from "../../i18n/ui";
 import Icon from "../ui/Icon.astro";
 import PillList from "../ui/PillList.astro";
 import SectionHeader from "../ui/SectionHeader.astro";
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const { index, skills } = Astro.props;
+const t = useTranslations(resolveLocale(Astro.currentLocale));
 const { strengths } = skills;
 ---
 
@@ -39,7 +41,7 @@ const { strengths } = skills;
 				))}
 			</ul>
 
-			<aside class="c-strengths" aria-label="Fortalezas">
+			<aside class="c-strengths" aria-label={t.strengths}>
 				<header class="c-strengths__header">
 					<span class="c-strengths__label">{strengths.label}</span>
 					<span class="c-strengths__version">
@@ -72,17 +74,16 @@ const { strengths } = skills;
 <style lang="scss">
 	@use "abstracts" as *;
 
+	// Proporciones en lugar de anchos fijos: a 1280px reproduce el diseño
+	// (850px + 382px) y en pantallas intermedias las fortalezas no se estrechan.
 	.c-skills {
-		@include cluster(48px, flex-start);
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(300px, 30%);
+		gap: 48px;
+		align-items: start;
 
 		@include respond-below("laptop") {
-			flex-direction: column;
-			align-items: stretch;
-		}
-
-		&__groups {
-			flex: 0 1 850px;
-			min-width: 0;
+			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 
@@ -149,9 +150,16 @@ const { strengths } = skills;
 		background:
 			linear-gradient(180deg, color-alpha("plum", 0.25), transparent 60%),
 			color("surface");
-		flex: 1;
 		min-height: 408px;
 		padding: 32px;
+
+		@include respond-below("laptop") {
+			min-height: 0;
+		}
+
+		@include respond-below("mobile") {
+			padding: 24px;
+		}
 
 		&__header {
 			@include cluster(16px, center, space-between);
@@ -171,6 +179,13 @@ const { strengths } = skills;
 
 		&__list {
 			@include stack(32px);
+
+			// A todo el ancho, las fortalezas se reparten en columnas.
+			@include respond-below("laptop") {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+				gap: 32px;
+			}
 		}
 	}
 

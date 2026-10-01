@@ -20,6 +20,11 @@ export default {
 		],
 		// Un bloque no debe estilar a otro: como máximo bloque + elemento/modificador.
 		"selector-max-compound-selectors": 2,
+		// :global() es de Astro: estila HTML generado fuera de la plantilla (set:html, JS).
+		"selector-pseudo-class-no-unknown": [
+			true,
+			{ ignorePseudoClasses: ["global"] },
+		],
 		"selector-max-id": 0,
 		"max-nesting-depth": [3, { ignoreAtRules: ["include", "media"] }],
 		"declaration-no-important": [true, { severity: "warning" }],
