@@ -10,6 +10,7 @@ import ProjectsSection from "../components/sections/ProjectsSection.astro";
 import SiteFooter from "../components/sections/SiteFooter.astro";
 import SkillsSection from "../components/sections/SkillsSection.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import SeoHead from "../components/seo/SeoHead.astro";
 
 interface Props {
 	locale: Locale;
@@ -20,11 +21,8 @@ const { locale, portfolio } = Astro.props;
 const { identity, hero } = portfolio;
 ---
 
-<BaseLayout
-	lang={locale}
-	title={`${identity.fullName} — ${hero.role.primary} + ${hero.role.secondary}`}
-	description={hero.valueProposition}
->
+<BaseLayout lang={locale}>
+	<SeoHead slot="head" locale={locale} portfolio={portfolio} />
 	<HeroSection
 		identity={identity}
 		navigation={portfolio.navigation}

@@ -5,6 +5,14 @@ export interface Identity {
 	/** Marca que se muestra como logo en la cabecera y el pie. */
 	readonly logo: string;
 	readonly handle: string;
+	readonly address: Address;
+}
+
+export interface Address {
+	readonly locality: string;
+	readonly region: string;
+	/** Código ISO 3166-1 alfa-2. */
+	readonly countryCode: string;
 }
 
 export interface Hero {

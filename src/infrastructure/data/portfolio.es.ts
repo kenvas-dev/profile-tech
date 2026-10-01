@@ -1,10 +1,62 @@
 import type { Portfolio } from "@domain/entities/portfolio";
 
 export const portfolioEs: Portfolio = {
+	seo: {
+		title: "Kevin Aquino | Desarrollador Frontend Senior y Full Stack",
+		description:
+			"Desarrollador Frontend Senior y Full Stack en El Salvador con 5 años de experiencia en Angular, React, TypeScript y Node.js. Disponible para trabajo remoto.",
+		keywords: [
+			"Desarrollador Frontend",
+			"Desarrollador Frontend Senior",
+			"Desarrollador Full Stack",
+			"Programador Full Stack",
+			"Desarrollador Web",
+			"Desarrollador Angular",
+			"Desarrollador React",
+			"TypeScript",
+			"Node.js",
+			"Astro",
+			"Desarrollador en El Salvador",
+			"Desarrollador remoto",
+			"Kevin Aquino",
+			"UN1T7D",
+		],
+		jobTitles: [
+			"Desarrollador Frontend Senior",
+			"Desarrollador Full Stack",
+			"Frontend Lead",
+		],
+		expertise: [
+			"Desarrollo Frontend",
+			"Desarrollo Full Stack",
+			"Angular",
+			"React",
+			"TypeScript",
+			"JavaScript",
+			"Node.js",
+			"NestJS",
+			"Astro",
+			"Flutter",
+			"SCSS",
+			"Design systems",
+			"Arquitectura hexagonal",
+			"Accesibilidad web",
+		],
+		socialImage: {
+			src: "/og/og-es.jpg",
+			alt: "Kevin Aquino — Desarrollador Frontend Senior y Full Stack",
+		},
+	},
+
 	identity: {
 		fullName: "Kevin Aquino",
 		logo: "{UN1T7D}",
 		handle: "kevin.aquino",
+		address: {
+			locality: "Quezaltepeque",
+			region: "La Libertad",
+			countryCode: "SV",
+		},
 	},
 
 	navigation: [
@@ -50,7 +102,7 @@ export const portfolioEs: Portfolio = {
 		label: "Perfil",
 		title: "Código limpio. Interfaces que escalan.",
 		biography:
-			"Soy Kevin Aquino, desarrollador frontend senior con 5 años de experiencia, del backend al frontend. He participado en 7 proyectos junto a 3 equipos de diseño, convirtiendo ideas en productos sólidos.",
+			"Soy Kevin Aquino, desarrollador frontend senior y full stack con 5 años de experiencia, del backend al frontend. He participado en 7 proyectos junto a 3 equipos de diseño, convirtiendo ideas en productos sólidos.",
 		focus: "Mi base en backend me ayuda a construir interfaces que entienden los datos y las APIs que las alimentan. Me especializo en arquitectura frontend mantenible, design systems en código, rendimiento y accesibilidad.",
 		metrics: [
 			{ value: "5+", label: "años en desarrollo web" },

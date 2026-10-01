@@ -49,6 +49,15 @@ Las dependencias apuntan siempre hacia dentro: `presentation → application →
 **Idiomas:** español en `/` (por defecto) e inglés en `/en/`, con el routing i18n de Astro. Los textos de interfaz que no son contenido (aria-labels, etc.) están en `src/presentation/i18n/ui.ts`. Para añadir un idioma: agrégalo a `LOCALES` en `src/domain/entities/locale.ts` y a `i18n.locales` en `astro.config.mjs`, crea su archivo de datos, regístralo en `di/container.ts` y añade `src/pages/<idioma>/index.astro`.
 **Cambiar la fuente de datos** (CMS, API, Markdown): crea un nuevo adaptador que implemente `PortfolioRepository` y conéctalo en `di/container.ts`; la UI no cambia.
 
+## SEO
+
+- **Dominio:** `site` en `astro.config.mjs` se resuelve con `SITE_URL` → `VERCEL_PROJECT_PRODUCTION_URL` (lo inyecta Vercel) → `https://profile-tech.vercel.app`.
+- **Contenido SEO por idioma:** bloque `seo` de `src/infrastructure/data/portfolio.*.ts` (título, descripción, palabras clave, cargos, áreas de conocimiento e imagen social).
+- **`<head>`:** `src/presentation/components/seo/SeoHead.astro` genera canónica, `hreflang` absolutos (+ `x-default`), Open Graph, Twitter Card y JSON-LD.
+- **Datos estructurados:** `src/presentation/seo/structuredData.ts` construye `Person`, `WebSite` y `ProfilePage` (schema.org) a partir del contenido del portfolio.
+- **Rastreo:** `@astrojs/sitemap` (con alternativas por idioma) y `src/pages/robots.txt.ts`.
+- **Recursos:** `public/og/og-{es,en}.jpg` (1200×630), favicon, `apple-touch-icon.png`, iconos y `site.webmanifest`.
+
 ## Estilos (SCSS)
 
 ```

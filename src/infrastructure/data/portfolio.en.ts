@@ -1,10 +1,62 @@
 import type { Portfolio } from "@domain/entities/portfolio";
 
 export const portfolioEn: Portfolio = {
+	seo: {
+		title: "Kevin Aquino | Senior Frontend & Full Stack Developer",
+		description:
+			"Senior Frontend and Full Stack Developer based in El Salvador with 5 years of experience in Angular, React, TypeScript and Node.js. Available for remote work.",
+		keywords: [
+			"Frontend Developer",
+			"Senior Frontend Developer",
+			"Full Stack Developer",
+			"Full Stack Engineer",
+			"Web Developer",
+			"Angular Developer",
+			"React Developer",
+			"TypeScript",
+			"Node.js",
+			"Astro",
+			"Remote developer",
+			"Developer in El Salvador",
+			"Kevin Aquino",
+			"UN1T7D",
+		],
+		jobTitles: [
+			"Senior Frontend Developer",
+			"Full Stack Developer",
+			"Frontend Lead",
+		],
+		expertise: [
+			"Frontend development",
+			"Full stack development",
+			"Angular",
+			"React",
+			"TypeScript",
+			"JavaScript",
+			"Node.js",
+			"NestJS",
+			"Astro",
+			"Flutter",
+			"SCSS",
+			"Design systems",
+			"Hexagonal architecture",
+			"Web accessibility",
+		],
+		socialImage: {
+			src: "/og/og-en.jpg",
+			alt: "Kevin Aquino — Senior Frontend & Full Stack Developer",
+		},
+	},
+
 	identity: {
 		fullName: "Kevin Aquino",
 		logo: "{UN1T7D}",
 		handle: "kevin.aquino",
+		address: {
+			locality: "Quezaltepeque",
+			region: "La Libertad",
+			countryCode: "SV",
+		},
 	},
 
 	navigation: [
@@ -50,7 +102,7 @@ export const portfolioEn: Portfolio = {
 		label: "Profile",
 		title: "Clean code. Interfaces that scale.",
 		biography:
-			"I'm Kevin Aquino, a senior frontend developer with 5 years of experience across the stack, from backend to frontend. I've worked on 7 projects alongside 3 design teams, turning ideas into solid products.",
+			"I'm Kevin Aquino, a senior frontend and full stack developer with 5 years of experience, from backend to frontend. I've worked on 7 projects alongside 3 design teams, turning ideas into solid products.",
 		focus: "My backend background helps me build interfaces that understand the data and APIs behind them. I specialize in maintainable frontend architecture, design systems in code, performance and accessibility.",
 		metrics: [
 			{ value: "5+", label: "years in web development" },
