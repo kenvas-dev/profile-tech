@@ -1,50 +1,46 @@
 ---
-import { resolveLocale, useTranslations } from "../../i18n/ui";
+/**
+ * Botón flotante «volver arriba». Aparece tras bajar una pantalla; mientras está oculto no es enfocable.
+ */
+import { getUiTranslationsFor } from "../../i18n/ui";
 import Icon from "./Icon.astro";
 
-const t = useTranslations(resolveLocale(Astro.currentLocale));
+const uiText = getUiTranslationsFor(Astro.currentLocale);
 ---
 
 <button
 	class="c-back-to-top"
 	type="button"
-	aria-label={t.backToTop}
-	title={t.backToTop}
+	aria-label={uiText.backToTopLabel}
+	title={uiText.backToTopLabel}
 	data-back-to-top
 >
-	<Icon name="arrow-up" size={20} strokeWidth={2} />
+	<Icon iconName="arrow-up" size={20} strokeWidth={2} />
 </button>
 
 <script>
-	const button =
+	import { onScrollFrame } from "../../scripts/onScrollFrame";
+
+	const backToTopButton =
 		document.querySelector<HTMLButtonElement>("[data-back-to-top]");
 
-	if (button) {
-		let isTicking = false;
-
-		// Aparece tras bajar más de una pantalla.
-		const update = () => {
-			const isVisible = window.scrollY > window.innerHeight;
-			button.classList.toggle("c-back-to-top--visible", isVisible);
-			isTicking = false;
-		};
-
-		const requestUpdate = () => {
-			if (isTicking) return;
-			isTicking = true;
-			requestAnimationFrame(update);
-		};
-
+	if (backToTopButton) {
 		// El scroll suave (o instantáneo con prefers-reduced-motion) lo define
 		// `scroll-behavior` en los estilos globales.
-		button.addEventListener("click", () => {
+		backToTopButton.addEventListener("click", () => {
 			window.scrollTo({ top: 0 });
-			button.blur();
+			backToTopButton.blur();
 		});
 
-		window.addEventListener("scroll", requestUpdate, { passive: true });
-		window.addEventListener("resize", requestUpdate);
-		update();
+		// Aparece tras bajar más de una pantalla.
+		onScrollFrame(() => {
+			const hasScrolledPastFirstScreen =
+				window.scrollY > window.innerHeight;
+			backToTopButton.classList.toggle(
+				"c-back-to-top--visible",
+				hasScrolledPastFirstScreen,
+			);
+		});
 	}
 </script>
 
@@ -55,20 +51,20 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 	$offset: 24px;
 
 	.c-back-to-top {
-		@include cluster($justify: center);
+		@include flex-row($justify: center);
 		@include neon-box("teal", 0.6);
 
 		position: fixed;
 		right: $offset;
 		bottom: $offset;
-		z-index: z("floating");
+		z-index: z-layer("floating");
 		width: $size;
 		height: $size;
 		padding: 0;
-		border: 1px solid color("teal");
+		border: 1px solid color-token("teal");
 		border-radius: $radius-sm;
-		background: color("overlay");
-		color: color("teal");
+		background: color-token("overlay");
+		color: color-token("teal");
 		cursor: pointer;
 		opacity: 0;
 		visibility: hidden;
@@ -91,8 +87,8 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		&:hover {
 			@include neon-box("magenta", 1);
 
-			border-color: color("magenta");
-			color: color("text");
+			border-color: color-token("magenta");
+			color: color-token("text");
 			transform: translateY(-3px);
 		}
 

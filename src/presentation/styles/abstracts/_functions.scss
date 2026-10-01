@@ -1,8 +1,21 @@
+////
+/// Funciones de acceso a los design tokens.
+/// Validan la clave y fallan en compilación si no existe, para que un token
+/// mal escrito nunca llegue a producción como CSS inválido.
+/// @group abstracts
+////
+
 @use "sass:color" as sass-color;
 @use "sass:map";
 @use "variables" as *;
 
-@function color($name) {
+/// Devuelve un color del mapa `$colors`.
+/// @param {String} $name - Nombre del token (p. ej. `"teal"`, `"background"`).
+/// @return {Color}
+/// @throw Si el token no existe.
+/// @example scss
+///   color: color-token("text-muted");
+@function color-token($name) {
 	@if not map.has-key($colors, $name) {
 		@error 'Color `#{$name}` no existe en $colors.';
 	}
@@ -10,6 +23,20 @@
 	@return map.get($colors, $name);
 }
 
+/// Devuelve un color del mapa `$colors` con la opacidad indicada.
+/// @param {String} $name - Nombre del token.
+/// @param {Number} $alpha - Opacidad entre 0 y 1.
+/// @return {Color}
+/// @example scss
+///   box-shadow: 0 0 8px color-alpha("magenta", 0.5);
+@function color-alpha($name, $alpha) {
+	@return sass-color.change(color-token($name), $alpha: $alpha);
+}
+
+/// Devuelve una pila tipográfica del mapa `$font-families`.
+/// @param {String} $name - `"retro"`, `"display"`, `"body"` o `"mono"`.
+/// @return {List}
+/// @throw Si la familia no existe.
 @function font-family($name) {
 	@if not map.has-key($font-families, $name) {
 		@error 'Familia `#{$name}` no existe en $font-families.';
@@ -18,7 +45,11 @@
 	@return map.get($font-families, $name);
 }
 
-@function z($layer) {
+/// Devuelve el `z-index` de una capa semántica de `$z-layers`.
+/// @param {String} $layer - `"decoration"`, `"content"`, `"overlay"`, `"floating"`, `"progress"` o `"crt"`.
+/// @return {Number}
+/// @throw Si la capa no existe.
+@function z-layer($layer) {
 	@if not map.has-key($z-layers, $layer) {
 		@error 'Capa `#{$layer}` no existe en $z-layers.';
 	}
@@ -26,10 +57,14 @@
 	@return map.get($z-layers, $layer);
 }
 
-@function gutter($name) {
-	@return map.get($gutters, $name);
-}
+/// Devuelve el margen lateral de página para un tamaño de pantalla.
+/// @param {String} $screen - `"desktop"`, `"tablet"` o `"mobile"`.
+/// @return {Number}
+/// @throw Si el tamaño no existe.
+@function gutter-size($screen) {
+	@if not map.has-key($gutters, $screen) {
+		@error 'Margen `#{$screen}` no existe en $gutters.';
+	}
 
-@function color-alpha($name, $alpha) {
-	@return sass-color.change(color($name), $alpha: $alpha);
+	@return map.get($gutters, $screen);
 }

@@ -1,25 +1,34 @@
 ---
+/**
+ * Barra superior: logo, navegación por secciones y selector de idioma.
+ */
 import { getRelativeLocaleUrl } from "astro:i18n";
 import type { NavigationLink } from "@domain/entities/contact";
 import type { Identity } from "@domain/entities/identity";
 import { LOCALES } from "@domain/entities/locale";
-import { resolveLocale, useTranslations } from "../../i18n/ui";
+import { getUiTranslations, resolveLocale } from "../../i18n/ui";
 import Monogram from "../ui/Monogram.astro";
 
 interface Props {
+	/** Datos de la persona (logo y alias). */
 	identity: Identity;
+	/** Enlaces a las secciones. */
 	navigation: readonly NavigationLink[];
 }
 
 const { identity, navigation } = Astro.props;
 const currentLocale = resolveLocale(Astro.currentLocale);
-const t = useTranslations(currentLocale);
+const uiText = getUiTranslations(currentLocale);
 ---
 
 <header class="c-site-header">
-	<Monogram mark={identity.logo} name={identity.handle} href="#inicio" />
+	<Monogram
+		brandMark={identity.brandMark}
+		displayName={identity.username}
+		href="#inicio"
+	/>
 
-	<nav class="c-site-header__nav" aria-label={t.mainNavigation}>
+	<nav class="c-site-header__nav" aria-label={uiText.mainNavigationLabel}>
 		<ul class="c-site-header__links">
 			{navigation.map((link) => (
 				<li>
@@ -31,7 +40,10 @@ const t = useTranslations(currentLocale);
 		</ul>
 	</nav>
 
-	<nav class="c-site-header__languages" aria-label={t.languageSwitcher}>
+	<nav
+		class="c-site-header__languages"
+		aria-label={uiText.languageSwitcherLabel}
+	>
 		{LOCALES.map((locale, index) => (
 			<>
 				{index > 0 && (
@@ -43,7 +55,7 @@ const t = useTranslations(currentLocale);
 					<span
 						class="c-site-header__language c-site-header__language--active"
 						aria-current="page"
-						title={t.languageNames[locale]}
+						title={uiText.languageNames[locale]}
 					>
 						{locale.toUpperCase()}
 					</span>
@@ -53,7 +65,7 @@ const t = useTranslations(currentLocale);
 						href={getRelativeLocaleUrl(locale)}
 						hreflang={locale}
 						lang={locale}
-						title={t.languageNames[locale]}
+						title={uiText.languageNames[locale]}
 					>
 						{locale.toUpperCase()}
 					</a>
@@ -67,13 +79,13 @@ const t = useTranslations(currentLocale);
 	@use "abstracts" as *;
 
 	.c-site-header {
-		@include cluster(24px, center, space-between);
+		@include flex-row(24px, center, space-between);
 
 		height: 88px;
 		border-bottom: 1px solid color-alpha("magenta", 0.4);
 
 		&__links {
-			@include cluster(32px);
+			@include flex-row(32px);
 
 			@include respond-below("laptop") {
 				display: none;
@@ -83,41 +95,41 @@ const t = useTranslations(currentLocale);
 		&__link {
 			@include typography("body", 14px, $font-weight-medium);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 			transition: color $transition-base;
 
 			&:hover {
 				@include neon-text("teal", 0.6);
 
-				color: color("teal");
+				color: color-token("teal");
 			}
 		}
 
 		&__languages {
-			@include cluster(8px);
+			@include flex-row(8px);
 		}
 
 		&__separator {
 			@include typography("mono", 12px);
 
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 		}
 
 		&__language {
 			@include typography("mono", 12px);
 
 			padding: 4px 2px;
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 			transition: color $transition-base;
 
 			&:hover {
-				color: color("text");
+				color: color-token("text");
 			}
 
 			&--active {
 				@include neon-text("teal", 0.5);
 
-				color: color("teal");
+				color: color-token("teal");
 			}
 		}
 	}

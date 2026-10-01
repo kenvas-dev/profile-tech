@@ -1,35 +1,44 @@
 ---
+/**
+ * Etiqueta de sección con índice y línea de neón (`/01 —— PERFIL`).
+ */
 interface Props {
-	index: string;
-	label: string;
+	/** Índice visible (p. ej. `/01`). */
+	sectionIndex: string;
+	/** Nombre de la sección. */
+	sectionLabel: string;
 }
 
-const { index, label } = Astro.props;
+const { sectionIndex, sectionLabel } = Astro.props;
 ---
 
 <p class="c-section-label">
-	<span class="c-section-label__index">{index}</span>
+	<span class="c-section-label__index">{sectionIndex}</span>
 	<span class="c-section-label__line" aria-hidden="true"></span>
-	<span class="c-section-label__text">{label}</span>
+	<span class="c-section-label__text">{sectionLabel}</span>
 </p>
 
 <style lang="scss">
 	@use "abstracts" as *;
 
 	.c-section-label {
-		@include cluster(12px);
+		@include flex-row(12px);
 
 		&__index {
 			@include typography("mono", 12px, $font-weight-semibold);
 			@include neon-text("teal", 0.5);
 
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__line {
 			width: 32px;
 			height: 1px;
-			background: linear-gradient(90deg, color("teal"), color("magenta"));
+			background: linear-gradient(
+				90deg,
+				color-token("teal"),
+				color-token("magenta")
+			);
 		}
 
 		&__text {

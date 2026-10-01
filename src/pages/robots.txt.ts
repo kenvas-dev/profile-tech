@@ -1,3 +1,7 @@
+/**
+ * Endpoint de `robots.txt` (adaptador de entrada).
+ * @packageDocumentation
+ */
 import type { APIRoute } from "astro";
 
 /** robots.txt generado con la URL del sitio para enlazar el sitemap. */

@@ -1,3 +1,7 @@
+/**
+ * Datos estructurados schema.org (JSON-LD) para buscadores.
+ * @packageDocumentation
+ */
 import type { PortfolioOverview } from "@application/use-cases/GetPortfolio";
 import type { IconName } from "@domain/entities/shared";
 
@@ -35,7 +39,7 @@ export const buildStructuredData = (
 		"@type": "Person",
 		"@id": personId,
 		name: identity.fullName,
-		alternateName: plainBrand(identity.logo),
+		alternateName: plainBrand(identity.brandMark),
 		url: urls.page.href,
 		image: absolute(hero.portrait.image.src),
 		jobTitle: seo.jobTitles,
@@ -48,22 +52,22 @@ export const buildStructuredData = (
 			addressCountry: identity.address.countryCode,
 		},
 		sameAs: contact.channels
-			.filter((channel) => SOCIAL_PROFILES.includes(channel.icon))
+			.filter((channel) => SOCIAL_PROFILES.includes(channel.iconName))
 			.map((channel) => channel.href),
 		knowsAbout: seo.expertise,
 		knowsLanguage: urls.languages,
 		alumniOf: education.credentials.map((credential) => ({
 			"@type": "EducationalOrganization",
-			name: credential.institution,
+			name: credential.institutionName,
 		})),
 		hasCredential: education.credentials.map((credential) => ({
 			"@type": "EducationalOccupationalCredential",
 			name: credential.title,
-			credentialCategory: credential.type,
-			dateCreated: String(credential.year),
+			credentialCategory: credential.credentialType,
+			dateCreated: String(credential.completionYear),
 			recognizedBy: {
 				"@type": "EducationalOrganization",
-				name: credential.institution,
+				name: credential.institutionName,
 			},
 		})),
 	};

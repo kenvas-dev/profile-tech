@@ -1,7 +1,11 @@
 ---
+/**
+ * Dato de resultado de un proyecto (valor destacado y descripción).
+ */
 import type { Metric } from "@domain/entities/shared";
 
 interface Props {
+	/** Valor y etiqueta del resultado. */
 	result: Metric;
 }
 
@@ -17,7 +21,7 @@ const { result } = Astro.props;
 	@use "abstracts" as *;
 
 	.c-project-result {
-		@include stack(4px, flex-start);
+		@include flex-column(4px, flex-start);
 
 		white-space: nowrap;
 
@@ -25,7 +29,7 @@ const { result } = Astro.props;
 			@include typography("retro", 26px, $font-weight-bold);
 			@include neon-text("teal", 0.6);
 
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__label {

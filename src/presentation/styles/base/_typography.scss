@@ -1,18 +1,20 @@
+/// Tipografía y colores base del documento, selección y foco.
+
 @use "../abstracts" as *;
 
 body {
 	@include typography("body", 16px);
 
-	background: color("background");
-	color: color("text");
+	background: color-token("background");
+	color: color-token("text");
 }
 
 ::selection {
-	background: color("magenta");
-	color: color("text");
+	background: color-token("magenta");
+	color: color-token("text");
 }
 
 :focus-visible {
-	outline: 2px solid color("teal");
+	outline: 2px solid color-token("teal");
 	outline-offset: 3px;
 }

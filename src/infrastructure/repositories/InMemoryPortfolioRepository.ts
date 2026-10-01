@@ -1,9 +1,17 @@
+/**
+ * Adaptador de salida en memoria.
+ * @packageDocumentation
+ */
 import type { Locale } from "@domain/entities/locale";
 import type { Portfolio } from "@domain/entities/portfolio";
 import type { PortfolioRepository } from "@domain/ports/PortfolioRepository";
 
-/** Adaptador que sirve el contenido desde módulos estáticos, uno por idioma. */
+/**
+ * Implementa {@link PortfolioRepository} con contenido estático (un módulo por
+ * idioma). Para usar un CMS o una API basta con otro adaptador del mismo puerto.
+ */
 export class InMemoryPortfolioRepository implements PortfolioRepository {
+	/** @param contentByLocale Contenido disponible, indexado por idioma. */
 	constructor(
 		private readonly contentByLocale: Partial<Record<Locale, Portfolio>>,
 	) {}

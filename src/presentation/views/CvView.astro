@@ -1,4 +1,7 @@
 ---
+/**
+ * CV en formato A4 con la estética del sitio, a partir del mismo contenido que la web. Pensado para imprimirse a PDF.
+ */
 import type { PortfolioOverview } from "@application/use-cases/GetPortfolio";
 import { isCurrentPosition } from "@domain/entities/experience";
 import type { Locale } from "@domain/entities/locale";
@@ -6,12 +9,14 @@ import Icon from "../components/ui/Icon.astro";
 import PillList from "../components/ui/PillList.astro";
 import RetroSun from "../components/ui/RetroSun.astro";
 import SectionLabel from "../components/ui/SectionLabel.astro";
-import { useTranslations } from "../i18n/ui";
+import { getUiTranslations } from "../i18n/ui";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { formatPeriod } from "../utils/formatPeriod";
 
 interface Props {
+	/** Idioma del CV. */
 	locale: Locale;
+	/** Contenido ya procesado por el caso de uso. */
 	portfolio: PortfolioOverview;
 }
 
@@ -27,26 +32,26 @@ const {
 	education,
 	contact,
 } = portfolio;
-const t = useTranslations(locale);
+const uiText = getUiTranslations(locale);
 
 const website = Astro.site?.host ?? "";
-const allProjects = [projects.featured, ...projects.others];
+const allProjects = [projects.featuredProject, ...projects.otherProjects];
 const channelHref = (icon: string) =>
-	contact.channels.find((channel) => channel.icon === icon);
+	contact.channels.find((channel) => channel.iconName === icon);
 const linkedin = channelHref("linkedin");
 const github = channelHref("github");
 ---
 
-<BaseLayout lang={locale} interactive={false}>
+<BaseLayout locale={locale} isInteractive={false}>
 	<Fragment slot="head">
-		<title>{t.cv.documentTitle(identity.fullName)}</title>
+		<title>{uiText.cv.documentTitle(identity.fullName)}</title>
 		<meta name="robots" content="noindex, follow" />
 	</Fragment>
 
 	<article class="c-cv">
 		<header class="c-cv__header">
 			<div class="c-cv__identity">
-				<span class="c-cv__brand">{identity.logo}</span>
+				<span class="c-cv__brand">{identity.brandMark}</span>
 				<h1 class="c-cv__name">{identity.fullName}</h1>
 				<p class="c-cv__role">
 					{seo.jobTitles.slice(0, 2).join(" · ")}
@@ -70,37 +75,42 @@ const github = channelHref("github");
 
 		<ul class="c-cv__contact">
 			<li class="c-cv__contact-item">
-				<Icon name="send" size={12} />
+				<Icon iconName="send" size={12} />
 				<a href={`mailto:${contact.email}`}>{contact.email}</a>
 			</li>
 			{linkedin && (
 				<li class="c-cv__contact-item">
-					<Icon name="linkedin" size={12} />
-					<a href={linkedin.href}>linkedin.com{linkedin.value}</a>
+					<Icon iconName="linkedin" size={12} />
+					<a href={linkedin.href}>
+						linkedin.com{linkedin.displayValue}
+					</a>
 				</li>
 			)}
 			{github && (
 				<li class="c-cv__contact-item">
-					<Icon name="github" size={12} />
+					<Icon iconName="github" size={12} />
 					<a href={github.href}>
-						github.com/{github.value.replace("@", "")}
+						github.com/{github.displayValue.replace("@", "")}
 					</a>
 				</li>
 			)}
 			<li class="c-cv__contact-item">
-				<Icon name="arrow-up-right" size={12} />
+				<Icon iconName="arrow-up-right" size={12} />
 				<a href={Astro.site?.href}>{website}</a>
 			</li>
 			<li class="c-cv__contact-item">
-				<Icon name="map-pin" size={12} />
-				<span>{hero.portrait.location}</span>
+				<Icon iconName="map-pin" size={12} />
+				<span>{hero.portrait.locationName}</span>
 			</li>
 		</ul>
 
 		<div class="c-cv__body">
 			<aside class="c-cv__sidebar">
 				<section class="c-cv__section">
-					<SectionLabel index="/01" label={profile.label} />
+					<SectionLabel
+						sectionIndex="/01"
+						sectionLabel={profile.sectionLabel}
+					/>
 					<p class="c-cv__text">{profile.biography}</p>
 					<dl class="c-cv__metrics">
 						{profile.metrics.slice(0, 3).map((metric) => (
@@ -117,8 +127,11 @@ const github = channelHref("github");
 				</section>
 
 				<section class="c-cv__section">
-					<SectionLabel index="/02" label={skills.intro.label} />
-					{skills.groups.map((group) => (
+					<SectionLabel
+						sectionIndex="/02"
+						sectionLabel={skills.intro.sectionLabel}
+					/>
+					{skills.skillGroups.map((group) => (
 						<div class="c-cv__skill-group">
 							<h3 class="c-cv__skill-title">{group.title}</h3>
 							<PillList items={group.technologies} />
@@ -128,42 +141,49 @@ const github = channelHref("github");
 
 				<section class="c-cv__section c-cv__section--keep">
 					<SectionLabel
-						index="/03"
-						label={education.credentialsLabel}
+						sectionIndex="/03"
+						sectionLabel={education.credentialsLabel}
 					/>
 					{education.credentials.map((credential) => (
 						<div class="c-cv__credential">
 							<span class="c-cv__credential-year">
-								{credential.year} · {credential.type}
+								{credential.completionYear} ·{" "}
+								{credential.credentialType}
 							</span>
 							<h3 class="c-cv__credential-title">
 								{credential.title}
 							</h3>
 							<span class="c-cv__credential-institution">
-								{credential.institution}
+								{credential.institutionName}
 							</span>
 						</div>
 					))}
 				</section>
 
 				<section class="c-cv__section c-cv__section--keep">
-					<SectionLabel index="/04" label={t.cv.languages} />
-					<p class="c-cv__text">{t.cv.languageList}</p>
+					<SectionLabel
+						sectionIndex="/04"
+						sectionLabel={uiText.cv.languagesHeading}
+					/>
+					<p class="c-cv__text">{uiText.cv.spokenLanguages}</p>
 				</section>
 			</aside>
 
 			<main class="c-cv__main">
 				<section class="c-cv__section">
-					<SectionLabel index="/05" label={experience.intro.label} />
+					<SectionLabel
+						sectionIndex="/05"
+						sectionLabel={experience.intro.sectionLabel}
+					/>
 					{experience.positions.map((position) => (
 						<div class="c-cv__position">
 							<div class="c-cv__position-header">
 								<div>
 									<span class="c-cv__company">
-										{position.company}
+										{position.companyName}
 									</span>
 									<h3 class="c-cv__position-title">
-										{position.role}
+										{position.jobTitle}
 									</h3>
 								</div>
 								<span
@@ -177,12 +197,12 @@ const github = channelHref("github");
 								>
 									{formatPeriod(
 										position.period,
-										experience.presentLabel,
+										experience.presentDateLabel,
 									)}
 								</span>
 							</div>
 							<span class="c-cv__location">
-								{position.location}
+								{position.workLocation}
 							</span>
 							<p class="c-cv__text">{position.summary}</p>
 							<ul class="c-cv__achievements">
@@ -197,7 +217,10 @@ const github = channelHref("github");
 				</section>
 
 				<section class="c-cv__section c-cv__section--new-page">
-					<SectionLabel index="/06" label={projects.intro.label} />
+					<SectionLabel
+						sectionIndex="/06"
+						sectionLabel={projects.intro.sectionLabel}
+					/>
 					<div class="c-cv__projects">
 						{allProjects.map((project) => (
 							<div class="c-cv__project">
@@ -238,7 +261,7 @@ const github = channelHref("github");
 	}
 
 	:global(html) {
-		background: color("background");
+		background: color-token("background");
 		print-color-adjust: exact;
 	}
 
@@ -251,13 +274,13 @@ const github = channelHref("github");
 				color-alpha("magenta", 0.22),
 				transparent 70%
 			),
-			color("background");
-		color: color("text");
+			color-token("background");
+		color: color-token("text");
 		font-size: 10.5px;
 		print-color-adjust: exact;
 
 		&__header {
-			@include cluster(24px, center, space-between);
+			@include flex-row(24px, center, space-between);
 
 			position: relative;
 			padding: $page-padding $page-padding 20px;
@@ -278,7 +301,7 @@ const github = channelHref("github");
 		}
 
 		&__identity {
-			@include stack(6px, flex-start);
+			@include flex-column(6px, flex-start);
 
 			flex: 1;
 			min-width: 0;
@@ -289,10 +312,10 @@ const github = channelHref("github");
 			@include neon-text("teal", 0.4);
 
 			padding: 3px 8px;
-			border: 1px solid color("magenta");
+			border: 1px solid color-token("magenta");
 			border-radius: $radius-sm;
-			background: color("midnight");
-			color: color("teal");
+			background: color-token("midnight");
+			color: color-token("teal");
 		}
 
 		&__name {
@@ -302,20 +325,20 @@ const github = channelHref("github");
 			@include neon-text("magenta", 0.5);
 
 			margin-top: 4px;
-			color: color("salmon");
+			color: color-token("salmon");
 		}
 
 		&__role {
 			@include typography("display", 15px, $font-weight-bold);
 
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__summary {
 			@include typography("body", 11px, $font-weight-regular, 1.55);
 
 			max-width: 430px;
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__portrait {
@@ -338,32 +361,32 @@ const github = channelHref("github");
 			position: relative;
 			width: 132px;
 			height: 132px;
-			border: 3px solid color("salmon");
+			border: 3px solid color-token("salmon");
 			border-radius: 50%;
 			object-fit: cover;
 		}
 
 		&__contact {
-			@include cluster(8px 18px);
+			@include flex-row(8px 18px);
 
 			flex-wrap: wrap;
 			padding: 12px $page-padding;
-			border-bottom: 1px solid color("border");
+			border-bottom: 1px solid color-token("border");
 			background: color-alpha("midnight", 0.6);
 		}
 
 		&__contact-item {
-			@include cluster(6px);
+			@include flex-row(6px);
 			@include typography("mono", 9.5px);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 
 			a {
 				color: inherit;
 			}
 
 			:global(.c-icon) {
-				color: color("teal");
+				color: color-token("teal");
 			}
 		}
 
@@ -379,11 +402,11 @@ const github = channelHref("github");
 
 		&__sidebar,
 		&__main {
-			@include stack(22px);
+			@include flex-column(22px);
 		}
 
 		&__section {
-			@include stack(10px);
+			@include flex-column(10px);
 
 			&--keep {
 				break-inside: avoid;
@@ -397,7 +420,7 @@ const github = channelHref("github");
 		&__text {
 			@include typography("body", 10.5px, $font-weight-regular, 1.55);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__metrics {
@@ -407,7 +430,7 @@ const github = channelHref("github");
 		}
 
 		&__metric {
-			@include stack(2px);
+			@include flex-column(2px);
 
 			flex-direction: column-reverse;
 		}
@@ -416,7 +439,7 @@ const github = channelHref("github");
 			@include typography("retro", 18px, $font-weight-bold);
 			@include neon-text("teal", 0.4);
 
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__metric-label {
@@ -424,20 +447,20 @@ const github = channelHref("github");
 		}
 
 		&__skill-group {
-			@include stack(6px);
+			@include flex-column(6px);
 		}
 
 		&__skill-title {
 			@include typography("display", 11.5px, $font-weight-bold);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__credential {
-			@include stack(2px);
+			@include flex-column(2px);
 
 			padding-bottom: 8px;
-			border-bottom: 1px solid color("border");
+			border-bottom: 1px solid color-token("border");
 		}
 
 		&__credential-year {
@@ -447,25 +470,25 @@ const github = channelHref("github");
 		&__credential-title {
 			@include typography("display", 12px, $font-weight-bold);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__credential-institution {
 			@include typography("body", 10px);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__position {
-			@include stack(5px);
+			@include flex-column(5px);
 
 			padding: 12px 0 12px 14px;
-			border-left: 2px solid color("magenta");
+			border-left: 2px solid color-token("magenta");
 			break-inside: avoid;
 		}
 
 		&__position-header {
-			@include cluster(12px, flex-start, space-between);
+			@include flex-row(12px, flex-start, space-between);
 		}
 
 		&__company {
@@ -475,39 +498,39 @@ const github = channelHref("github");
 		&__position-title {
 			@include typography("display", 14px, $font-weight-bold, 1.2);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__period {
 			@include typography("mono", 9px, $font-weight-semibold);
 
 			flex-shrink: 0;
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 
 			&--current {
-				color: color("teal");
+				color: color-token("teal");
 			}
 		}
 
 		&__location {
 			@include typography("body", 9.5px);
 
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 		}
 
 		&__achievements {
-			@include stack(3px);
+			@include flex-column(3px);
 		}
 
 		&__achievement {
-			@include cluster(6px, flex-start);
+			@include flex-row(6px, flex-start);
 			@include typography("body", 10px, $font-weight-regular, 1.45);
 
-			color: color("text");
+			color: color-token("text");
 
 			&::before {
 				content: "↳";
-				color: color("teal");
+				color: color-token("teal");
 				font-family: font-family("mono");
 			}
 		}
@@ -520,7 +543,7 @@ const github = channelHref("github");
 
 		&__project {
 			@include surface($border: "border-strong");
-			@include stack(4px);
+			@include flex-column(4px);
 
 			padding: 10px 12px;
 			break-inside: avoid;
@@ -533,19 +556,19 @@ const github = channelHref("github");
 		&__project-title {
 			@include typography("display", 12px, $font-weight-bold);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__project-summary {
 			@include typography("body", 9.5px, $font-weight-regular, 1.45);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__project-stack {
 			@include typography("mono", 8.5px);
 
-			color: color("teal");
+			color: color-token("teal");
 		}
 	}
 </style>

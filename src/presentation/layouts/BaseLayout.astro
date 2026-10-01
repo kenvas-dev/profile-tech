@@ -1,20 +1,24 @@
 ---
+/**
+ * Documento HTML base: metadatos comunes, iconos, fuentes y estilos globales. Cada página aporta su `<head>` específico mediante el slot `head`.
+ */
 import { DEFAULT_LOCALE, type Locale } from "@domain/entities/locale";
 import BackToTop from "../components/ui/BackToTop.astro";
 import ScrollProgress from "../components/ui/ScrollProgress.astro";
 import "../styles/main.scss";
 
 interface Props {
-	lang?: Locale;
+	/** Idioma del documento (`<html lang>`). */
+	locale?: Locale;
 	/** false en páginas para imprimir (CV): sin barra de progreso ni botón flotante. */
-	interactive?: boolean;
+	isInteractive?: boolean;
 }
 
-const { lang = DEFAULT_LOCALE, interactive = true } = Astro.props;
+const { locale = DEFAULT_LOCALE, isInteractive = true } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={locale}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,8 +44,8 @@ const { lang = DEFAULT_LOCALE, interactive = true } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body>
-		{interactive && <ScrollProgress />}
+		{isInteractive && <ScrollProgress />}
 		<slot />
-		{interactive && <BackToTop />}
+		{isInteractive && <BackToTop />}
 	</body>
 </html>

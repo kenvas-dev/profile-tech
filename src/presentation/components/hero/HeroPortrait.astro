@@ -1,10 +1,14 @@
 ---
-import type { Hero } from "@domain/entities/identity";
+/**
+ * Retrato circular del hero integrado en el sol retro, con órbita HUD animada y datos de ubicación.
+ */
+import type { Portrait } from "@domain/entities/identity";
 import Icon from "../ui/Icon.astro";
 import RetroSun from "../ui/RetroSun.astro";
 
 interface Props {
-	portrait: Hero["portrait"];
+	/** Imagen y metadatos del retrato. */
+	portrait: Portrait;
 }
 
 const { portrait } = Astro.props;
@@ -27,18 +31,18 @@ const { portrait } = Astro.props;
 			/>
 		</div>
 		<span class="c-hero-portrait__code">
-			<Icon name="scan-line" size={14} />
-			{portrait.code}
+			<Icon iconName="scan-line" size={14} />
+			{portrait.badgeCode}
 		</span>
 	</div>
 
 	<figcaption class="c-hero-portrait__data">
 		<span class="c-hero-portrait__location">
 			<span class="c-hero-portrait__location-label">
-				{portrait.baseLabel}
+				{portrait.locationLabel}
 			</span>
 			<span class="c-hero-portrait__location-value">
-				{portrait.location}
+				{portrait.locationName}
 			</span>
 		</span>
 		<span class="c-hero-portrait__coordinates">{portrait.coordinates}</span>
@@ -55,7 +59,7 @@ const { portrait } = Astro.props;
 	$photo-scale: 84%; // La foto no llena el círculo: la cara queda más proporcionada.
 
 	.c-hero-portrait {
-		@include stack(20px, center);
+		@include flex-column(20px, center);
 
 		width: 100%;
 
@@ -71,13 +75,13 @@ const { portrait } = Astro.props;
 		&__sun {
 			position: absolute;
 			inset: $sun-inset;
-			z-index: z("decoration");
+			z-index: z-layer("decoration");
 		}
 
 		// Órbita HUD punteada que gira lentamente.
 		&__orbit {
 			position: absolute;
-			z-index: z("content");
+			z-index: z-layer("content");
 			width: $orbit-size;
 			aspect-ratio: 1;
 			border: 2px dashed color-alpha("teal", 0.7);
@@ -90,13 +94,13 @@ const { portrait } = Astro.props;
 			@include neon-box("magenta", 0.9);
 
 			position: relative;
-			z-index: z("content");
+			z-index: z-layer("content");
 			width: $photo-size;
 			aspect-ratio: 1;
 			overflow: hidden;
-			border: $ring-width solid color("salmon");
+			border: $ring-width solid color-token("salmon");
 			border-radius: 50%;
-			background: color("background");
+			background: color-token("background");
 
 			// Tinte synthwave muy suave: la foto ya trae iluminación de neón.
 			&::after {
@@ -127,41 +131,41 @@ const { portrait } = Astro.props;
 			position: absolute;
 			top: 9%;
 			left: 4%;
-			z-index: z("overlay");
+			z-index: z-layer("overlay");
 			border: 1px solid color-alpha("teal", 0.5);
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__data {
 			@include overlay-badge;
-			@include cluster(20px, center, space-between);
+			@include flex-row(20px, center, space-between);
 			@include neon-box("teal", 0.4);
 
 			width: min(100%, 360px);
 			padding: 10px 16px;
-			border: 1px solid color("teal");
+			border: 1px solid color-token("teal");
 		}
 
 		&__location {
-			@include cluster(10px);
+			@include flex-row(10px);
 		}
 
 		&__location-label {
 			@include typography("mono", 10px);
 
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 		}
 
 		&__location-value {
 			@include typography("body", 13px, $font-weight-semibold);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__coordinates {
 			@include typography("mono", 10px);
 
-			color: color("salmon");
+			color: color-token("salmon");
 		}
 	}
 

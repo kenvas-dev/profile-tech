@@ -1,4 +1,7 @@
 ---
+/**
+ * Vista completa del portfolio: compone el layout, el SEO y todas las secciones en orden.
+ */
 import type { PortfolioOverview } from "@application/use-cases/GetPortfolio";
 import type { Locale } from "@domain/entities/locale";
 import ContactSection from "../components/sections/ContactSection.astro";
@@ -13,7 +16,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SeoHead from "../components/seo/SeoHead.astro";
 
 interface Props {
+	/** Idioma de la página. */
 	locale: Locale;
+	/** Contenido ya procesado por el caso de uso. */
 	portfolio: PortfolioOverview;
 }
 
@@ -21,7 +26,7 @@ const { locale, portfolio } = Astro.props;
 const { identity, hero } = portfolio;
 ---
 
-<BaseLayout lang={locale}>
+<BaseLayout locale={locale}>
 	<SeoHead slot="head" locale={locale} portfolio={portfolio} />
 	<HeroSection
 		identity={identity}
@@ -29,12 +34,15 @@ const { identity, hero } = portfolio;
 		hero={hero}
 	/>
 	<main>
-		<ProfileSection index="/01" profile={portfolio.profile} />
-		<SkillsSection index="/02" skills={portfolio.skills} />
-		<ExperienceSection index="/03" experience={portfolio.experience} />
-		<ProjectsSection index="/04" projects={portfolio.projects} />
-		<EducationSection index="/05" education={portfolio.education} />
-		<ContactSection index="/06" contact={portfolio.contact} />
+		<ProfileSection sectionIndex="/01" profile={portfolio.profile} />
+		<SkillsSection sectionIndex="/02" skills={portfolio.skills} />
+		<ExperienceSection
+			sectionIndex="/03"
+			experience={portfolio.experience}
+		/>
+		<ProjectsSection sectionIndex="/04" projects={portfolio.projects} />
+		<EducationSection sectionIndex="/05" education={portfolio.education} />
+		<ContactSection sectionIndex="/06" contact={portfolio.contact} />
 	</main>
 	<SiteFooter identity={identity} footer={portfolio.footer} />
 </BaseLayout>

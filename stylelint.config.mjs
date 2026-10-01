@@ -37,14 +37,16 @@ export default {
 			{
 				ignoreFunctions: [
 					// Funciones propias (abstracts/_functions.scss y componentes).
-					"color",
+					"color-token",
 					"color-alpha",
 					"font-family",
-					"gutter",
-					"z",
+					"gutter-size",
+					"z-layer",
 					"stripe-mask",
 					// Falso positivo del plugin con argumentos multilínea.
 					"linear-gradient",
+					"radial-gradient",
+					"repeating-linear-gradient",
 				],
 			},
 		],

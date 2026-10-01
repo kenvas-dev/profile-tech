@@ -1,16 +1,20 @@
 ---
+/**
+ * Mini sección «Esta web está hecha con Astro»: herramientas del proyecto y editor con extractos animados del código fuente.
+ */
 import type { BuiltWith } from "@domain/entities/contact";
-import { resolveLocale, useTranslations } from "../../i18n/ui";
+import { getUiTranslationsFor } from "../../i18n/ui";
 import CodeEditor from "../ui/CodeEditor.astro";
 import PillList from "../ui/PillList.astro";
 import type { CodeFile } from "../ui/CodeEditor.types";
 
 interface Props {
+	/** Textos y tecnologías de la sección. */
 	builtWith: BuiltWith;
 }
 
 const { builtWith } = Astro.props;
-const t = useTranslations(resolveLocale(Astro.currentLocale));
+const uiText = getUiTranslationsFor(Astro.currentLocale);
 
 /** Extractos (simplificados para caber en el editor) del código real del sitio. */
 const sourceFiles: readonly CodeFile[] = [
@@ -64,7 +68,7 @@ export class GetPortfolio {
 
 <section class="c-built-with" aria-labelledby="built-with-title">
 	<header class="c-built-with__info">
-		<span class="c-built-with__label">{builtWith.label}</span>
+		<span class="c-built-with__label">{builtWith.sectionLabel}</span>
 		<h3 class="c-built-with__title" id="built-with-title">
 			{builtWith.title}
 		</h3>
@@ -73,7 +77,11 @@ export class GetPortfolio {
 	</header>
 
 	<div class="c-built-with__editor">
-		<CodeEditor files={sourceFiles} label={t.sourceCode} size="md" />
+		<CodeEditor
+			files={sourceFiles}
+			accessibleLabel={uiText.sourceCodeLabel}
+			size="md"
+		/>
 	</div>
 </section>
 
@@ -104,20 +112,20 @@ export class GetPortfolio {
 		}
 
 		&__info {
-			@include stack(16px, flex-start);
+			@include flex-column(16px, flex-start);
 		}
 
 		&__label {
 			@include typography("mono", 12px);
 
-			color: color("salmon");
+			color: color-token("salmon");
 		}
 
 		&__title {
 			@include typography("retro", 26px, $font-weight-bold, 1.25);
 			@include neon-text("magenta", 0.5);
 
-			color: color("text");
+			color: color-token("text");
 
 			@include respond-below("mobile") {
 				font-size: 20px;
@@ -127,7 +135,7 @@ export class GetPortfolio {
 		&__description {
 			@include typography("body", 16px, $font-weight-regular, 1.6);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__editor {

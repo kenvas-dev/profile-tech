@@ -1,6 +1,9 @@
 ---
+/**
+ * Sección de contacto: invitación, correo, canales y la mini sección «hecho con Astro».
+ */
 import type { Contact } from "@domain/entities/contact";
-import { resolveLocale, useTranslations } from "../../i18n/ui";
+import { getUiTranslationsFor } from "../../i18n/ui";
 import BuiltWith from "../contact/BuiltWith.astro";
 import Icon from "../ui/Icon.astro";
 import RetroSun from "../ui/RetroSun.astro";
@@ -9,12 +12,14 @@ import StatusDot from "../ui/StatusDot.astro";
 import SynthGrid from "../ui/SynthGrid.astro";
 
 interface Props {
-	index: string;
+	/** Índice visible de la sección. */
+	sectionIndex: string;
+	/** Contenido de contacto. */
 	contact: Contact;
 }
 
-const { index, contact } = Astro.props;
-const t = useTranslations(resolveLocale(Astro.currentLocale));
+const { sectionIndex, contact } = Astro.props;
+const uiText = getUiTranslationsFor(Astro.currentLocale);
 ---
 
 <section
@@ -25,10 +30,13 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 	<div class="c-contact__sun">
 		<RetroSun size={360} />
 	</div>
-	<SynthGrid height={220} />
+	<SynthGrid heightInPixels={220} />
 
 	<div class="l-container c-contact__content">
-		<SectionLabel index={index} label={contact.label} />
+		<SectionLabel
+			sectionIndex={sectionIndex}
+			sectionLabel={contact.sectionLabel}
+		/>
 
 		<div class="c-contact__invitation">
 			<div class="c-contact__message">
@@ -38,15 +46,22 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 				<p class="c-contact__description">{contact.description}</p>
 				<a class="c-contact__email" href={`mailto:${contact.email}`}>
 					{contact.email}
-					<Icon name="arrow-up-right" size={25} strokeWidth={1.8} />
+					<Icon
+						iconName="arrow-up-right"
+						size={25}
+						strokeWidth={1.8}
+					/>
 				</a>
 			</div>
 
 			<div class="c-contact__aside">
-				<aside class="c-channels" aria-label={t.contactChannels}>
+				<aside
+					class="c-channels"
+					aria-label={uiText.contactChannelsLabel}
+				>
 					<p class="c-channels__status">
 						<StatusDot />
-						{contact.availability}
+						{contact.availabilityStatus}
 					</p>
 					<ul>
 						{contact.channels.map((channel) => (
@@ -58,16 +73,19 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 									rel="noopener noreferrer"
 								>
 									<span class="c-channel__icon">
-										<Icon name={channel.icon} size={18} />
+										<Icon
+											iconName={channel.iconName}
+											size={18}
+										/>
 									</span>
 									<span class="c-channel__label">
-										{channel.label}
+										{channel.platformLabel}
 									</span>
 									<span class="c-channel__value">
-										{channel.value}
+										{channel.displayValue}
 									</span>
 									<span class="c-channel__arrow">
-										<Icon name="arrow-up-right" />
+										<Icon iconName="arrow-up-right" />
 									</span>
 								</a>
 							</li>
@@ -91,7 +109,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		background: $gradient-sky;
 
 		&__content {
-			z-index: z("content");
+			z-index: z-layer("content");
 		}
 
 		&__sun {
@@ -107,7 +125,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		}
 
 		&__invitation {
-			@include cluster(72px, flex-start);
+			@include flex-row(72px, flex-start);
 
 			@include respond-below("laptop") {
 				flex-direction: column;
@@ -117,7 +135,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		}
 
 		&__aside {
-			@include stack(24px);
+			@include flex-column(24px);
 
 			flex-shrink: 0;
 			width: 400px;
@@ -128,7 +146,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		}
 
 		&__message {
-			@include stack(24px, flex-start);
+			@include flex-column(24px, flex-start);
 
 			flex: 1;
 			min-width: 0;
@@ -138,7 +156,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 			@include typography("retro", 56px, $font-weight-bold, 1.1);
 			@include neon-text("magenta", 0.8);
 
-			color: color("text");
+			color: color-token("text");
 
 			@include respond-below("mobile") {
 				font-size: 32px;
@@ -149,19 +167,19 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 			@include typography("body", 18px, $font-weight-regular, 1.65);
 
 			max-width: 680px;
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__email {
-			@include cluster(16px);
+			@include flex-row(16px);
 			@include typography("display", 32px, $font-weight-bold);
 			@include neon-text("teal", 0.7);
 
 			max-width: 100%;
 			padding-bottom: 8px;
-			border-bottom: 2px solid color("teal");
-			color: color("teal");
-			box-shadow: 0 6px 10px -6px color("teal");
+			border-bottom: 2px solid color-token("teal");
+			color: color-token("teal");
+			box-shadow: 0 6px 10px -6px color-token("teal");
 			overflow-wrap: anywhere;
 			transition: gap $transition-base;
 
@@ -177,7 +195,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 
 	.c-channels {
 		@include surface($background: "overlay", $border: "teal");
-		@include stack(24px);
+		@include flex-column(24px);
 		@include neon-box("teal", 0.5);
 
 		backdrop-filter: blur(6px);
@@ -188,19 +206,19 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		}
 
 		&__status {
-			@include cluster(12px);
+			@include flex-row(12px);
 			@include mono-label(12px, "teal");
 		}
 	}
 
 	.c-channel {
-		@include cluster(16px);
+		@include flex-row(16px);
 		@include divider(bottom);
 
 		padding-block: 16px;
 
 		&__icon {
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__label {
@@ -215,16 +233,16 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 
 			flex: 1;
 			min-width: 0;
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__arrow {
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 			transition: color $transition-base;
 		}
 
 		&:hover &__arrow {
-			color: color("teal");
+			color: color-token("teal");
 		}
 	}
 </style>

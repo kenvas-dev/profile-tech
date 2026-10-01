@@ -65,18 +65,39 @@ Las páginas `/cv` y `/en/cv` (`src/presentation/views/CvView.astro`) maquetan e
 
 `npm run cv:pdf` compila el sitio, imprime ambas páginas con Chrome headless (`scripts/generate-cv.mjs`, ruta configurable con `CHROME_PATH`) y guarda `public/cv/kevin-aquino-cv-{es,en}.pdf`, que enlaza el botón «Descargar CV». **Ejecútalo cada vez que cambies el contenido** y commitea los PDF: Vercel no tiene Chrome para generarlos.
 
+## Convenciones de código
+
+**Nombres**
+
+- Propiedades y variables descriptivas, sin abreviaturas: `companyName`, `completionYear`, `sectionLabel`, nunca `name`, `year` o `label` cuando sean ambiguos.
+- Booleanos con prefijo `is` / `has` / `should`: `isFeatured`, `hasGlow`, `shouldWrap`, `isInteractive`.
+- Constantes de módulo en `UPPER_SNAKE_CASE` (`LOCALES`, `PROJECT_METADATA`); tipos e interfaces en `PascalCase`.
+- Funciones con verbo (`getUiTranslations`, `buildStructuredData`, `formatPeriod`); comparadores `by…` (`byMostRecentPosition`).
+- En SCSS: funciones y mixins en kebab-case descriptivo (`color-token()`, `z-layer()`, `flex-row`, `page-gutter`).
+
+**Documentación**
+
+- TypeScript: TSDoc (`/** … */`) en todo lo exportado, con `@packageDocumentation` al inicio de cada módulo y `@param` / `@returns` / `@throws` cuando aporta información.
+- Componentes Astro: un bloque `/** … */` al inicio del frontmatter con el propósito del componente y un comentario por cada prop.
+- SCSS: SassDoc (`///`) en tokens, funciones y mixins, con `@param`, `@return`, `@throw` y `@example`.
+
+**Fuente única de datos**
+
+- Los hechos que no dependen del idioma (enlaces, correo, fechas, tecnologías, metadatos de proyectos) viven en `portfolio.shared.ts`; los archivos de idioma solo contienen texto traducible.
+- Los textos de interfaz que no son contenido (aria-labels, textos del CV) viven en `src/presentation/i18n/ui.ts`.
+
 ## Estilos (SCSS)
 
 ```
 presentation/styles/
-├── abstracts/   # _variables (tokens de Figma), _functions, _mixins — no generan CSS
+├── abstracts/   # _variables (tokens), _functions, _mixins — documentados con SassDoc; no generan CSS
 ├── base/        # _reset, _typography
 ├── layout/      # _section (.l-section, .l-container)
 └── main.scss    # Punto de entrada global
 ```
 
 - Módulos con `@use` / `@forward` (sin `@import`) y parciales con prefijo `_`.
-- Tokens en mapas (`$colors`, `$font-families`, `$breakpoints`) accedidos vía `color()`, `font-family()`, `gutter()`.
+- Tokens en mapas (`$colors`, `$font-families`, `$breakpoints`, `$z-layers`) accedidos vía `color-token()`, `font-family()`, `gutter-size()` y `z-layer()`.
 - Paleta synthwave en `$palette` (`midnight`, `plum`, `salmon`, `magenta`, `steel`, `teal`); los colores semánticos (`background`, `surface`, `text`…) derivan de ella en `$colors`.
 - Efectos retro reutilizables en `_mixins.scss`: `neon-text`, `neon-box`, `gradient-text`, `retro-heading`, `synthwave-tint`. Decoración en `ui/SynthGrid.astro` y `ui/RetroSun.astro`; scanlines CRT en `base/_crt.scss`.
 - **BEM con namespace obligatorio:** `c-bloque__elemento--modificador` para componentes y `l-` para layout. Un elemento siempre vive dentro de su bloque, y un bloque nunca estila a otro: se usan _mixes_ (`class="l-container c-contact__content"`).

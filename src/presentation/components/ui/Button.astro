@@ -1,26 +1,32 @@
 ---
+/**
+ * Enlace con apariencia de botón.
+ */
 import Icon from "./Icon.astro";
 import type { UiIconName } from "./icons";
 
 interface Props {
+	/** Destino del enlace. */
 	href: string;
+	/** `primary` (relleno con degradado) o `ghost` (solo borde). */
 	variant?: "primary" | "ghost";
-	icon?: UiIconName;
+	/** Icono opcional tras el texto. */
+	iconName?: UiIconName;
 }
 
-const { href, variant = "primary", icon } = Astro.props;
+const { href, variant = "primary", iconName } = Astro.props;
 ---
 
 <a class:list={["c-button", `c-button--${variant}`]} href={href}>
 	<slot />
-	{icon && <Icon name={icon} strokeWidth={1.7} />}
+	{iconName && <Icon iconName={iconName} strokeWidth={1.7} />}
 </a>
 
 <style lang="scss">
 	@use "abstracts" as *;
 
 	.c-button {
-		@include cluster(12px);
+		@include flex-row(12px);
 		@include typography("mono", 13px, $font-weight-semibold);
 
 		height: 52px;
@@ -43,10 +49,10 @@ const { href, variant = "primary", icon } = Astro.props;
 
 			background: linear-gradient(
 				90deg,
-				color("magenta"),
-				color("salmon")
+				color-token("magenta"),
+				color-token("salmon")
 			);
-			color: color("text");
+			color: color-token("text");
 
 			&:hover {
 				@include neon-box("magenta", 1.2);
@@ -54,8 +60,8 @@ const { href, variant = "primary", icon } = Astro.props;
 		}
 
 		&--ghost {
-			border-color: color("teal");
-			color: color("teal");
+			border-color: color-token("teal");
+			color: color-token("teal");
 
 			&:hover {
 				@include neon-box("teal");

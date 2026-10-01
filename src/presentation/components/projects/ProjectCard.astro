@@ -1,20 +1,26 @@
 ---
+/**
+ * Tarjeta compacta de proyecto para la rejilla. El tono de acento del dominio se traduce aquí a un color de la paleta.
+ */
 import type { Project } from "@domain/entities/projects";
-import { resolveLocale, useTranslations } from "../../i18n/ui";
+import { getUiTranslationsFor } from "../../i18n/ui";
 import Icon from "../ui/Icon.astro";
 import PillList from "../ui/PillList.astro";
 import ProjectIllustration from "./ProjectIllustration.astro";
 import ProjectResult from "./ProjectResult.astro";
 
 interface Props {
+	/** Proyecto a mostrar. */
 	project: Project;
 }
 
 const { project } = Astro.props;
-const t = useTranslations(resolveLocale(Astro.currentLocale));
+const uiText = getUiTranslationsFor(Astro.currentLocale);
 ---
 
-<article class:list={["c-project-card", `c-project-card--${project.tone}`]}>
+<article
+	class:list={["c-project-card", `c-project-card--${project.accentTone}`]}
+>
 	<div
 		class:list={[
 			"c-project-card__preview",
@@ -32,11 +38,11 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 			/>
 		) : (
 			<ProjectIllustration
-				kind={project.kind}
-				label={t.projectIllustration(project.title)}
+				productKind={project.productKind}
+				accessibleLabel={uiText.projectIllustrationAlt(project.title)}
 			/>
 		)}
-		<span class="c-project-card__badge">{project.code}</span>
+		<span class="c-project-card__badge">{project.caseStudyCode}</span>
 	</div>
 
 	<div class="c-project-card__content">
@@ -58,7 +64,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 			</div>
 			{project.link && (
 				<span class="c-project-card__arrow">
-					<Icon name="arrow-up-right" size={22} />
+					<Icon iconName="arrow-up-right" size={22} />
 				</span>
 			)}
 		</header>
@@ -86,7 +92,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 
 	.c-project-card {
 		@include surface;
-		@include stack;
+		@include flex-column;
 
 		position: relative;
 		height: 100%;
@@ -107,7 +113,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 
 		@each $tone, $color-name in $tones {
 			&--#{$tone} {
-				--project-tone: #{color($color-name)};
+				--project-tone: #{color-token($color-name)};
 			}
 		}
 
@@ -129,23 +135,23 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 			@include overlay-badge;
 
 			position: relative;
-			z-index: z("content");
+			z-index: z-layer("content");
 			display: inline-flex;
 			color: var(--project-tone);
 		}
 
 		&__content {
-			@include stack(16px);
+			@include flex-column(16px);
 
 			padding: 24px;
 		}
 
 		&__header {
-			@include cluster(16px, flex-start, space-between);
+			@include flex-row(16px, flex-start, space-between);
 		}
 
 		&__name {
-			@include stack(8px);
+			@include flex-column(8px);
 		}
 
 		&__category {
@@ -157,7 +163,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		&__title {
 			@include typography("display", 28px, $font-weight-bold);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		// Toda la tarjeta es clicable manteniendo un único enlace accesible.
@@ -168,22 +174,22 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		}
 
 		&__arrow {
-			color: color("text-muted");
+			color: color-token("text-muted");
 			transition: color $transition-base;
 		}
 
 		&:hover &__arrow {
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__summary {
 			@include typography("body", 14px, $font-weight-regular, 1.55);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__footer {
-			@include cluster(16px, flex-end, space-between);
+			@include flex-row(16px, flex-end, space-between);
 
 			flex-wrap: wrap;
 		}

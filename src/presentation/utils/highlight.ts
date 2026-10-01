@@ -1,4 +1,11 @@
-export type TokenType =
+/**
+ * Resaltador de sintaxis mínimo (sin dependencias) para el `CodeEditor`.
+ * Reconoce lo necesario para TypeScript, JavaScript y SCSS en extractos cortos.
+ * @packageDocumentation
+ */
+
+/** Categoría de un fragmento de código; cada una tiene su color en el editor. */
+export type TokenCategory =
 	| "comment"
 	| "string"
 	| "keyword"
@@ -10,8 +17,9 @@ export type TokenType =
 	| "punctuation"
 	| "plain";
 
+/** Fragmento de código con su categoría. */
 export interface Token {
-	readonly type: TokenType;
+	readonly category: TokenCategory;
 	readonly text: string;
 }
 
@@ -19,7 +27,7 @@ const KEYWORDS =
 	"import|from|export|default|const|type|class|async|await|return|private|readonly|as|typeof|new";
 
 /** Reglas evaluadas en orden; la primera que coincide al inicio del texto gana. */
-const RULES: readonly (readonly [TokenType, RegExp])[] = [
+const TOKEN_RULES: readonly (readonly [TokenCategory, RegExp])[] = [
 	["comment", /^\/\/.*/],
 	["string", /^"(?:[^"\\]|\\.)*"/],
 	["at-rule", /^@[\w-]+/],
@@ -33,29 +41,41 @@ const RULES: readonly (readonly [TokenType, RegExp])[] = [
 	["plain", /^\s+/],
 ];
 
+/** Divide una línea en tokens; fusiona los fragmentos `plain` consecutivos. */
 const tokenizeLine = (line: string): Token[] => {
 	const tokens: Token[] = [];
-	let rest = line;
+	let remainingText = line;
 
-	const push = (type: TokenType, text: string) => {
-		const last = tokens.at(-1);
-		if (last && last.type === type && type === "plain") {
-			tokens[tokens.length - 1] = { type, text: last.text + text };
+	const appendToken = (category: TokenCategory, text: string) => {
+		const previousToken = tokens.at(-1);
+		if (previousToken?.category === "plain" && category === "plain") {
+			tokens[tokens.length - 1] = {
+				category,
+				text: previousToken.text + text,
+			};
 		} else {
-			tokens.push({ type, text });
+			tokens.push({ category, text });
 		}
 	};
 
-	while (rest.length > 0) {
-		const rule = RULES.find(([, pattern]) => pattern.test(rest));
-		const match = rule ? (rule[1].exec(rest)?.[0] ?? rest[0]) : rest[0];
-		push(rule?.[0] ?? "plain", match);
-		rest = rest.slice(match.length);
+	while (remainingText.length > 0) {
+		const matchingRule = TOKEN_RULES.find(([, pattern]) =>
+			pattern.test(remainingText),
+		);
+		const matchedText = matchingRule
+			? (matchingRule[1].exec(remainingText)?.[0] ?? remainingText[0])
+			: remainingText[0];
+		appendToken(matchingRule?.[0] ?? "plain", matchedText);
+		remainingText = remainingText.slice(matchedText.length);
 	}
 
 	return tokens;
 };
 
-/** Divide el código en líneas de tokens para pintarlo con resaltado de sintaxis. */
+/**
+ * Divide el código en líneas de tokens para pintarlo con resaltado de sintaxis.
+ * @param code Código fuente (puede contener varias líneas).
+ * @returns Una lista de tokens por línea.
+ */
 export const highlight = (code: string): Token[][] =>
 	code.split("\n").map(tokenizeLine);

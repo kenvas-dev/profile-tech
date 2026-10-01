@@ -1,9 +1,12 @@
 ---
-import { getPortfolio } from "@infrastructure/di/container";
+/**
+ * Página principal en español (`/`). Adaptador de entrada: obtiene el contenido mediante el caso de uso y delega el render en `PortfolioView`.
+ */
+import { getPortfolioUseCase } from "@infrastructure/di/container";
 import PortfolioView from "@presentation/views/PortfolioView.astro";
 
 const locale = "es";
-const portfolio = await getPortfolio.execute(locale);
+const portfolio = await getPortfolioUseCase.execute(locale);
 ---
 
 <PortfolioView locale={locale} portfolio={portfolio} />

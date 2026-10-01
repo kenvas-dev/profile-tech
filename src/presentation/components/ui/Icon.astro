@@ -1,15 +1,27 @@
 ---
+/**
+ * Icono SVG en línea que hereda el color del texto (`currentColor`).
+ */
 import { ICONS, type UiIconName } from "./icons";
 
 interface Props {
-	name: UiIconName;
+	/** Nombre del icono en el registro `icons.ts`. */
+	iconName: UiIconName;
+	/** Ancho y alto en píxeles. */
 	size?: number;
+	/** Grosor del trazo. */
 	strokeWidth?: number;
+	/** Clase adicional opcional. */
 	class?: string;
 }
 
-const { name, size = 16, strokeWidth = 1.5, class: className } = Astro.props;
-const { viewBox, paths, circles = [] } = ICONS[name];
+const {
+	iconName,
+	size = 16,
+	strokeWidth = 1.5,
+	class: className,
+} = Astro.props;
+const { viewBox, paths, circles = [] } = ICONS[iconName];
 ---
 
 <svg
@@ -25,8 +37,8 @@ const { viewBox, paths, circles = [] } = ICONS[name];
 	aria-hidden="true"
 	focusable="false"
 >
-	{paths.map((d) => (
-		<path d={d} />
+	{paths.map((pathData) => (
+		<path d={pathData} />
 	))}
 	{circles.map(({ cx, cy, r }) => (
 		<circle cx={cx} cy={cy} r={r} />

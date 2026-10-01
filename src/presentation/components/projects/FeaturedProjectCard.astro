@@ -1,17 +1,21 @@
 ---
+/**
+ * Tarjeta grande del proyecto destacado: vista previa (foto o ilustración), descripción, stack y resultados.
+ */
 import type { Project } from "@domain/entities/projects";
-import { resolveLocale, useTranslations } from "../../i18n/ui";
+import { getUiTranslationsFor } from "../../i18n/ui";
 import Icon from "../ui/Icon.astro";
 import PillList from "../ui/PillList.astro";
 import ProjectIllustration from "./ProjectIllustration.astro";
 import ProjectResult from "./ProjectResult.astro";
 
 interface Props {
+	/** Proyecto a mostrar. */
 	project: Project;
 }
 
 const { project } = Astro.props;
-const t = useTranslations(resolveLocale(Astro.currentLocale));
+const uiText = getUiTranslationsFor(Astro.currentLocale);
 ---
 
 <article class="c-featured-project">
@@ -32,8 +36,8 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 			/>
 		) : (
 			<ProjectIllustration
-				kind={project.kind}
-				label={t.projectIllustration(project.title)}
+				productKind={project.productKind}
+				accessibleLabel={uiText.projectIllustrationAlt(project.title)}
 			/>
 		)}
 		<span class="c-featured-project__badge">
@@ -41,7 +45,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 				class="c-featured-project__badge-dot"
 				aria-hidden="true"
 			></span>
-			{project.code}
+			{project.caseStudyCode}
 		</span>
 	</div>
 
@@ -61,7 +65,7 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 				<a class="c-featured-project__link" href={project.link.href}>
 					{project.link.label}
 					<span class="c-featured-project__link-icon">
-						<Icon name="arrow-up-right" strokeWidth={1.7} />
+						<Icon iconName="arrow-up-right" strokeWidth={1.7} />
 					</span>
 				</a>
 			)}
@@ -112,21 +116,21 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 
 			position: relative;
 			display: inline-flex;
-			z-index: z("content");
+			z-index: z-layer("content");
 			padding: 8px 12px;
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__badge-dot {
 			width: 7px;
 			height: 7px;
 			border-radius: $radius-pill;
-			background: color("teal");
-			box-shadow: 0 0 8px color("teal");
+			background: color-token("teal");
+			box-shadow: 0 0 8px color-token("teal");
 		}
 
 		&__content {
-			@include stack(48px);
+			@include flex-column(48px);
 
 			justify-content: space-between;
 			flex: 1;
@@ -143,25 +147,29 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		}
 
 		&__description {
-			@include stack(24px, flex-start);
+			@include flex-column(24px, flex-start);
 		}
 
 		&__category {
-			@include cluster(12px);
+			@include flex-row(12px);
 			@include mono-label(12px, "magenta");
 
 			&::after {
 				content: "";
 				width: 48px;
 				height: 1px;
-				background: color("border-strong");
+				background: color-token("border-strong");
 			}
 		}
 
 		&__title {
 			@include typography("retro", 34px, $font-weight-bold, 1.12);
 			@include gradient-text(
-				linear-gradient(90deg, color("salmon"), color("magenta"))
+				linear-gradient(
+					90deg,
+					color-token("salmon"),
+					color-token("magenta")
+				)
 			);
 
 			@include respond-below("mobile") {
@@ -172,11 +180,11 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		&__summary {
 			@include typography("body", 16px, $font-weight-regular, 1.7);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__impact {
-			@include cluster(48px, flex-start);
+			@include flex-row(48px, flex-start);
 			@include divider(top);
 
 			flex-wrap: wrap;
@@ -188,19 +196,19 @@ const t = useTranslations(resolveLocale(Astro.currentLocale));
 		}
 
 		&__link {
-			@include cluster(8px);
+			@include flex-row(8px);
 			@include typography("body", 14px);
 
-			color: color("text");
+			color: color-token("text");
 			transition: color $transition-base;
 
 			&:hover {
-				color: color("teal");
+				color: color-token("teal");
 			}
 		}
 
 		&__link-icon {
-			color: color("teal");
+			color: color-token("teal");
 		}
 	}
 </style>

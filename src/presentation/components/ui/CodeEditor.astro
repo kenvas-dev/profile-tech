@@ -1,17 +1,27 @@
 ---
+/**
+ * Ventana tipo IDE con pestañas, números de línea y resaltado. Escribe el código carácter a carácter cuando entra en pantalla y alterna los archivos en bucle; con `prefers-reduced-motion` o sin JavaScript muestra el código estático.
+ */
 import { highlight, type Token } from "../../utils/highlight";
 import type { CodeFile } from "./CodeEditor.types";
 
 interface Props {
+	/** Archivos a mostrar, en orden de pestaña. */
 	files: readonly CodeFile[];
 	/** Descripción accesible del editor. */
-	label: string;
-	branch?: string;
+	accessibleLabel: string;
+	/** Rama mostrada en la barra de estado. */
+	branchName?: string;
 	/** `sm` para columnas estrechas, `md` para bloques a todo el ancho. */
 	size?: "sm" | "md";
 }
 
-const { files, label, branch = "main", size = "sm" } = Astro.props;
+const {
+	files,
+	accessibleLabel,
+	branchName = "main",
+	size = "sm",
+} = Astro.props;
 const highlighted = files.map((file) => highlight(file.code.trim()));
 const maxLines = Math.max(...highlighted.map((lines) => lines.length));
 
@@ -29,7 +39,7 @@ const renderLines = (lines: readonly Token[][]) =>
 				`<span class="c-code-editor__line" data-code-line>${tokens
 					.map(
 						(token) =>
-							`<span class="c-code-editor__token c-code-editor__token--${token.type}" data-code-token>${escapeHtml(token.text)}</span>`,
+							`<span class="c-code-editor__token c-code-editor__token--${token.category}" data-code-token>${escapeHtml(token.text)}</span>`,
 					)
 					.join("")}</span>`,
 		)
@@ -39,7 +49,7 @@ const renderLines = (lines: readonly Token[][]) =>
 <figure
 	class:list={["c-code-editor", `c-code-editor--${size}`]}
 	style={`--max-lines: ${maxLines}`}
-	aria-label={label}
+	aria-label={accessibleLabel}
 	data-code-editor
 >
 	<div class="c-code-editor__titlebar" aria-hidden="true">
@@ -76,7 +86,7 @@ const renderLines = (lines: readonly Token[][]) =>
 	</div>
 
 	<figcaption class="c-code-editor__status">
-		<span class="c-code-editor__branch">● {branch}</span>
+		<span class="c-code-editor__branch">● {branchName}</span>
 		<span data-code-language>{files[0]?.language}</span>
 	</figcaption>
 </figure>
@@ -227,10 +237,10 @@ const renderLines = (lines: readonly Token[][]) =>
 		}
 
 		&__titlebar {
-			@include cluster(6px);
+			@include flex-row(6px);
 
 			padding: 10px 12px;
-			background: color("midnight");
+			background: color-token("midnight");
 		}
 
 		&__dot {
@@ -239,39 +249,39 @@ const renderLines = (lines: readonly Token[][]) =>
 			border-radius: 50%;
 
 			&--magenta {
-				background: color("magenta");
+				background: color-token("magenta");
 			}
 
 			&--salmon {
-				background: color("salmon");
+				background: color-token("salmon");
 			}
 
 			&--teal {
-				background: color("teal");
+				background: color-token("teal");
 			}
 		}
 
 		&__tabs {
 			display: flex;
 			overflow: hidden;
-			border-bottom: 1px solid color("border");
+			border-bottom: 1px solid color-token("border");
 			background: color-alpha("midnight", 0.5);
 		}
 
 		&__tab {
 			flex-shrink: 0;
 			padding: 7px 12px;
-			border-right: 1px solid color("border");
-			color: color("text-subtle");
+			border-right: 1px solid color-token("border");
+			color: color-token("text-subtle");
 			white-space: nowrap;
 			transition:
 				color $transition-base,
 				background $transition-base;
 
 			&--active {
-				box-shadow: inset 0 -2px 0 color("teal");
-				background: color("background");
-				color: color("text");
+				box-shadow: inset 0 -2px 0 color-token("teal");
+				background: color-token("background");
+				color: color-token("text");
 			}
 		}
 
@@ -313,7 +323,7 @@ const renderLines = (lines: readonly Token[][]) =>
 				display: inline-block;
 				width: $gutter-width;
 				margin-right: 2ch;
-				color: color("border-strong");
+				color: color-token("border-strong");
 				text-align: right;
 				user-select: none;
 			}
@@ -325,34 +335,34 @@ const renderLines = (lines: readonly Token[][]) =>
 
 		:global(.c-code-editor__token--keyword),
 		:global(.c-code-editor__token--at-rule) {
-			color: color("magenta");
+			color: color-token("magenta");
 		}
 
 		:global(.c-code-editor__token--string),
 		:global(.c-code-editor__token--number) {
-			color: color("salmon");
+			color: color-token("salmon");
 		}
 
 		:global(.c-code-editor__token--function),
 		:global(.c-code-editor__token--selector) {
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		:global(.c-code-editor__token--property) {
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		:global(.c-code-editor__token--comment) {
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 			font-style: italic;
 		}
 
 		:global(.c-code-editor__token--punctuation) {
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 		}
 
 		:global(.c-code-editor__token--plain) {
-			color: color("text");
+			color: color-token("text");
 		}
 
 		:global(.c-code-editor__caret) {
@@ -361,22 +371,22 @@ const renderLines = (lines: readonly Token[][]) =>
 			height: 1.15em;
 			margin-left: 1px;
 			vertical-align: text-bottom;
-			background: color("teal");
-			box-shadow: 0 0 6px color("teal");
+			background: color-token("teal");
+			box-shadow: 0 0 6px color-token("teal");
 			animation: caret-blink 1s steps(2, jump-none) infinite;
 		}
 
 		&__status {
-			@include cluster(12px, center, space-between);
+			@include flex-row(12px, center, space-between);
 
 			padding: 6px 12px;
 			background: color-alpha("teal", 0.15);
-			color: color("teal");
+			color: color-token("teal");
 			font-size: 0.92em;
 		}
 
 		&__branch {
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 	}
 

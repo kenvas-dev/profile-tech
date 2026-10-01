@@ -1,29 +1,34 @@
 ---
+/**
+ * Sección de proyectos: proyecto destacado y rejilla con el resto.
+ */
 import type { PortfolioOverview } from "@application/use-cases/GetPortfolio";
 import FeaturedProjectCard from "../projects/FeaturedProjectCard.astro";
 import ProjectCard from "../projects/ProjectCard.astro";
 import SectionHeader from "../ui/SectionHeader.astro";
 
 interface Props {
-	index: string;
+	/** Índice visible de la sección. */
+	sectionIndex: string;
+	/** Proyectos separados en destacado y resto. */
 	projects: PortfolioOverview["projects"];
 }
 
-const { index, projects } = Astro.props;
+const { sectionIndex, projects } = Astro.props;
 ---
 
 <section class="l-section" id="proyectos" aria-labelledby="proyectos-title">
 	<div class="l-container">
 		<SectionHeader
-			index={index}
+			sectionIndex={sectionIndex}
 			intro={projects.intro}
 			headingId="proyectos-title"
 		/>
 
-		<FeaturedProjectCard project={projects.featured} />
+		<FeaturedProjectCard project={projects.featuredProject} />
 
 		<ul class="c-projects-grid">
-			{projects.others.map((project) => (
+			{projects.otherProjects.map((project) => (
 				<li>
 					<ProjectCard project={project} />
 				</li>

@@ -1,15 +1,20 @@
 ---
+/**
+ * Lista de pills.
+ */
 import Pill from "./Pill.astro";
 
 interface Props {
+	/** Textos de cada pill. */
 	items: readonly string[];
-	wrap?: boolean;
+	/** Si las pills pueden pasar a varias líneas. */
+	shouldWrap?: boolean;
 }
 
-const { items, wrap = true } = Astro.props;
+const { items, shouldWrap = true } = Astro.props;
 ---
 
-<ul class:list={["c-pill-list", { "c-pill-list--nowrap": !wrap }]}>
+<ul class:list={["c-pill-list", { "c-pill-list--nowrap": !shouldWrap }]}>
 	{items.map((item) => (
 		<li>
 			<Pill>{item}</Pill>

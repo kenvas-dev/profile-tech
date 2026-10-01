@@ -1,20 +1,41 @@
 ---
+/**
+ * Ilustración SVG de un proyecto cuando no hay captura real: una ventana de navegador con un motivo distinto por tipo de producto. Los colores salen de los tokens de la paleta.
+ */
 import type { ProjectKind } from "@domain/entities/projects";
 
 interface Props {
-	kind: ProjectKind;
-	/** Descripción accesible de la ilustración. */
-	label: string;
+	/** Tipo de producto: decide el motivo que se dibuja. */
+	productKind: ProjectKind;
+	/** Descripción accesible de la ilustración (`aria-label`). */
+	accessibleLabel: string;
 }
 
-const { kind, label } = Astro.props;
+const { productKind, accessibleLabel } = Astro.props;
 
-// Ventana de navegador común: 520×300 dentro de un lienzo de 600×360.
-const win = { x: 40, y: 30, w: 520, h: 300, bar: 28 };
-const content = { x: win.x, y: win.y + win.bar, w: win.w, h: win.h - win.bar };
+/** Ventana de navegador común: 520×300 dentro de un lienzo de 600×360. */
+const browserWindow = {
+	x: 40,
+	y: 30,
+	width: 520,
+	height: 300,
+	titleBarHeight: 28,
+};
 
-const range = (n: number) => Array.from({ length: n }, (_, i) => i);
-const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
+/** Área útil bajo la barra de título de la ventana. */
+const contentArea = {
+	x: browserWindow.x,
+	y: browserWindow.y + browserWindow.titleBarHeight,
+	width: browserWindow.width,
+	height: browserWindow.height - browserWindow.titleBarHeight,
+};
+
+/** `[0, 1, …, length - 1]`, para repetir elementos del dibujo. */
+const createSequence = (length: number) =>
+	Array.from({ length }, (_, index) => index);
+
+/** Tonos de la paleta usados para rellenar bloques decorativos. */
+const PALETTE_TONES = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 ---
 
 <div class="c-project-illustration">
@@ -23,20 +44,20 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 		viewBox="0 0 600 360"
 		preserveAspectRatio="xMidYMid meet"
 		role="img"
-		aria-label={label}
+		aria-label={accessibleLabel}
 	>
 		<!-- Ventana -->
 		<rect
 			class="c-project-illustration__window"
-			x={win.x}
-			y={win.y}
-			width={win.w}
-			height={win.h}
+			x={browserWindow.x}
+			y={browserWindow.y}
+			width={browserWindow.width}
+			height={browserWindow.height}
 			rx="10"
 		/>
 		<path
 			class="c-project-illustration__bar"
-			d={`M${win.x} ${win.y + 10} a10 10 0 0 1 10 -10 h${win.w - 20} a10 10 0 0 1 10 10 v${win.bar - 10} h-${win.w} z`}
+			d={`M${browserWindow.x} ${browserWindow.y + 10} a10 10 0 0 1 10 -10 h${browserWindow.width - 20} a10 10 0 0 1 10 10 v${browserWindow.titleBarHeight - 10} h-${browserWindow.width} z`}
 		/>
 		<circle
 			class="c-project-illustration__fill c-project-illustration__fill--magenta"
@@ -65,37 +86,37 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 			rx="6"
 		/>
 
-		{kind === "crm" && (
+		{productKind === "crm" && (
 			<g>
 				{/* Menú lateral */}
 				<rect
 					class="c-project-illustration__panel"
-					x={content.x}
-					y={content.y}
+					x={contentArea.x}
+					y={contentArea.y}
 					width="96"
-					height={content.h}
+					height={contentArea.height}
 				/>
-				{range(6).map((i) => (
+				{createSequence(6).map((index) => (
 					<rect
 						class:list={[
 							"c-project-illustration__fill",
-							i === 1
+							index === 1
 								? "c-project-illustration__fill--teal"
 								: "c-project-illustration__fill--soft",
 						]}
 						x="56"
-						y={80 + i * 30}
-						width={i === 1 ? 64 : 52}
+						y={80 + index * 30}
+						width={index === 1 ? 64 : 52}
 						height="10"
 						rx="5"
 					/>
 				))}
 				{/* KPIs */}
-				{(["magenta", "teal", "salmon"] as const).map((tone, i) => (
+				{(["magenta", "teal", "salmon"] as const).map((tone, index) => (
 					<g>
 						<rect
 							class="c-project-illustration__card"
-							x={152 + i * 134}
+							x={152 + index * 134}
 							y="74"
 							width="122"
 							height="62"
@@ -103,7 +124,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 						/>
 						<rect
 							class="c-project-illustration__line"
-							x={166 + i * 134}
+							x={166 + index * 134}
 							y="88"
 							width="54"
 							height="8"
@@ -114,9 +135,9 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 								"c-project-illustration__fill",
 								`c-project-illustration__fill--${tone}`,
 							]}
-							x={166 + i * 134}
+							x={166 + index * 134}
 							y="106"
-							width={60 + i * 10}
+							width={60 + index * 10}
 							height="16"
 							rx="4"
 						/>
@@ -131,13 +152,13 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 					height="164"
 					rx="8"
 				/>
-				{range(7).map((i) => (
+				{createSequence(7).map((index) => (
 					<rect
 						class="c-project-illustration__fill c-project-illustration__fill--plum"
-						x={172 + i * 32}
-						y={290 - [50, 80, 64, 104, 90, 122, 110][i]}
+						x={172 + index * 32}
+						y={290 - [50, 80, 64, 104, 90, 122, 110][index]}
 						width="18"
-						height={[50, 80, 64, 104, 90, 122, 110][i]}
+						height={[50, 80, 64, 104, 90, 122, 110][index]}
 						rx="3"
 					/>
 				))}
@@ -187,23 +208,23 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 			</g>
 		)}
 
-		{kind === "real-estate" && (
+		{productKind === "real-estate" && (
 			<g>
 				{/* Mapa */}
 				<rect
 					class="c-project-illustration__panel"
-					x={content.x}
-					y={content.y}
+					x={contentArea.x}
+					y={contentArea.y}
 					width="372"
-					height={content.h}
+					height={contentArea.height}
 				/>
 				{[
 					"M40 120 L412 210",
 					"M40 260 L412 150",
 					"M150 58 L230 330",
 					"M320 58 L280 330",
-				].map((d) => (
-					<path class="c-project-illustration__street" d={d} />
+				].map((pathData) => (
+					<path class="c-project-illustration__street" d={pathData} />
 				))}
 				{[
 					"70,70 140,86 126,128 58,112",
@@ -243,12 +264,12 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 					</g>
 				))}
 				{/* Listado de inmuebles */}
-				{range(3).map((i) => (
+				{createSequence(3).map((index) => (
 					<g>
 						<rect
 							class="c-project-illustration__card"
 							x="426"
-							y={72 + i * 84}
+							y={72 + index * 84}
 							width="120"
 							height="72"
 							rx="8"
@@ -256,10 +277,10 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 						<rect
 							class:list={[
 								"c-project-illustration__fill",
-								`c-project-illustration__fill--${palette[i]}`,
+								`c-project-illustration__fill--${PALETTE_TONES[index]}`,
 							]}
 							x="436"
-							y={82 + i * 84}
+							y={82 + index * 84}
 							width="34"
 							height="34"
 							rx="6"
@@ -267,7 +288,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 						<rect
 							class="c-project-illustration__line"
 							x="478"
-							y={86 + i * 84}
+							y={86 + index * 84}
 							width="56"
 							height="8"
 							rx="4"
@@ -275,7 +296,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 						<rect
 							class="c-project-illustration__fill c-project-illustration__fill--soft"
 							x="478"
-							y={102 + i * 84}
+							y={102 + index * 84}
 							width="40"
 							height="7"
 							rx="3.5"
@@ -283,7 +304,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 						<rect
 							class="c-project-illustration__fill c-project-illustration__fill--teal"
 							x="436"
-							y={124 + i * 84}
+							y={124 + index * 84}
 							width="60"
 							height="8"
 							rx="4"
@@ -293,7 +314,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 			</g>
 		)}
 
-		{kind === "rentals" && (
+		{productKind === "rentals" && (
 			<g>
 				{/* Calendario de reservas */}
 				<rect
@@ -304,13 +325,13 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 					height="12"
 					rx="6"
 				/>
-				{range(35).map((i) => {
-					const col = i % 7;
-					const row = Math.floor(i / 7);
+				{createSequence(35).map((index) => {
+					const col = index % 7;
+					const row = Math.floor(index / 7);
 					const booked = [3, 4, 5, 11, 12, 22, 23, 24, 25].includes(
-						i,
+						index,
 					);
-					const pending = [16, 17, 30, 31].includes(i);
+					const pending = [16, 17, 30, 31].includes(index);
 					return (
 						<rect
 							class:list={[
@@ -387,16 +408,16 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 			</g>
 		)}
 
-		{kind === "admin-panel" && (
+		{productKind === "admin-panel" && (
 			<g>
 				{/* Paleta de colores */}
-				{palette.map((tone, i) => (
+				{PALETTE_TONES.map((tone, index) => (
 					<rect
 						class:list={[
 							"c-project-illustration__fill",
 							`c-project-illustration__fill--${tone}`,
 						]}
-						x={60 + i * 62}
+						x={60 + index * 62}
 						y="74"
 						width="52"
 						height="36"
@@ -420,21 +441,21 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 					height="26"
 					rx="8"
 				/>
-				{range(5).map((i) => (
+				{createSequence(5).map((index) => (
 					<g>
 						<circle
 							class:list={[
 								"c-project-illustration__fill",
-								`c-project-illustration__fill--${palette[i]}`,
+								`c-project-illustration__fill--${PALETTE_TONES[index]}`,
 							]}
 							cx="82"
-							cy={170 + i * 30}
+							cy={170 + index * 30}
 							r="8"
 						/>
 						<rect
 							class="c-project-illustration__line"
 							x="100"
-							y={166 + i * 30}
+							y={166 + index * 30}
 							width="110"
 							height="8"
 							rx="4"
@@ -442,7 +463,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 						<rect
 							class="c-project-illustration__fill c-project-illustration__fill--soft"
 							x="230"
-							y={166 + i * 30}
+							y={166 + index * 30}
 							width="56"
 							height="8"
 							rx="4"
@@ -450,7 +471,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 						<rect
 							class="c-project-illustration__fill c-project-illustration__fill--teal"
 							x="306"
-							y={164 + i * 30}
+							y={164 + index * 30}
 							width="38"
 							height="12"
 							rx="6"
@@ -474,14 +495,14 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 					height="8"
 					rx="4"
 				/>
-				{range(6).map((i) => (
+				{createSequence(6).map((index) => (
 					<rect
 						class:list={[
 							"c-project-illustration__fill",
-							`c-project-illustration__fill--${palette[(i + 1) % palette.length]}`,
+							`c-project-illustration__fill--${PALETTE_TONES[(index + 1) % PALETTE_TONES.length]}`,
 						]}
-						x={422 + (i % 2) * 52}
-						y={94 + Math.floor(i / 2) * 58}
+						x={422 + (index % 2) * 52}
+						y={94 + Math.floor(index / 2) * 58}
 						width="44"
 						height="48"
 						rx="8"
@@ -498,31 +519,31 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 			</g>
 		)}
 
-		{kind === "websites" && (
+		{productKind === "websites" && (
 			<g>
 				{/* Galería de fotografía */}
-				{range(6).map((i) => (
+				{createSequence(6).map((index) => (
 					<rect
 						class:list={[
 							"c-project-illustration__fill",
-							`c-project-illustration__fill--${palette[i % palette.length]}`,
+							`c-project-illustration__fill--${PALETTE_TONES[index % PALETTE_TONES.length]}`,
 						]}
-						x={60 + (i % 3) * 78}
-						y={74 + Math.floor(i / 3) * 78}
+						x={60 + (index % 3) * 78}
+						y={74 + Math.floor(index / 3) * 78}
 						width="70"
 						height="70"
 						rx="6"
-						opacity={0.55 + (i % 3) * 0.15}
+						opacity={0.55 + (index % 3) * 0.15}
 					/>
 				))}
 				{/* Blog */}
-				{range(4).map((i) => (
+				{createSequence(4).map((index) => (
 					<g>
 						<rect
 							class="c-project-illustration__line"
 							x="60"
-							y={244 + i * 18}
-							width={[210, 180, 200, 140][i]}
+							y={244 + index * 18}
+							width={[210, 180, 200, 140][index]}
 							height="8"
 							rx="4"
 						/>
@@ -543,13 +564,13 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 					cy="150"
 					r="46"
 				/>
-				{range(4).map((i) => (
+				{createSequence(4).map((index) => (
 					<rect
 						class="c-project-illustration__panel"
 						x="380"
-						y={156 + i * 10}
+						y={156 + index * 10}
 						width="96"
-						height={2 + i}
+						height={2 + index}
 					/>
 				))}
 				<rect
@@ -589,7 +610,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 	.c-project-illustration {
 		position: absolute;
 		inset: 0;
-		z-index: z("decoration");
+		z-index: z-layer("decoration");
 		background:
 			linear-gradient(color-alpha("teal", 0.08) 1px, transparent 1px),
 			linear-gradient(
@@ -602,7 +623,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 				color-alpha("magenta", 0.35),
 				transparent 60%
 			),
-			color("background");
+			color-token("background");
 		background-size:
 			$grid-cell $grid-cell,
 			$grid-cell $grid-cell,
@@ -616,47 +637,47 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 		}
 
 		&__window {
-			fill: color("surface");
-			stroke: color("teal");
+			fill: color-token("surface");
+			stroke: color-token("teal");
 			stroke-width: 1.5;
 			filter: drop-shadow(0 0 8px color-alpha("teal", 0.45));
 		}
 
 		&__bar {
-			fill: color("midnight");
+			fill: color-token("midnight");
 		}
 
 		&__panel {
-			fill: color("background");
+			fill: color-token("background");
 		}
 
 		&__card {
 			fill: color-alpha("midnight", 0.9);
-			stroke: color("border-strong");
+			stroke: color-token("border-strong");
 			stroke-width: 1;
 		}
 
 		&__phone {
-			fill: color("background");
-			stroke: color("salmon");
+			fill: color-token("background");
+			stroke: color-token("salmon");
 			stroke-width: 2;
 			filter: drop-shadow(0 0 8px color-alpha("salmon", 0.5));
 		}
 
 		&__line {
-			fill: color("border-strong");
+			fill: color-token("border-strong");
 		}
 
 		&__street {
 			fill: none;
-			stroke: color("border");
+			stroke: color-token("border");
 			stroke-width: 8;
 			stroke-linecap: round;
 		}
 
 		&__parcel {
 			fill: color-alpha("plum", 0.35);
-			stroke: color("plum");
+			stroke: color-token("plum");
 			stroke-width: 1.5;
 		}
 
@@ -665,7 +686,7 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 		}
 
 		&__sun {
-			fill: color("salmon");
+			fill: color-token("salmon");
 			filter: drop-shadow(0 0 14px color-alpha("magenta", 0.7));
 		}
 
@@ -676,49 +697,49 @@ const palette = ["teal", "magenta", "salmon", "plum", "steel"] as const;
 			stroke-linejoin: round;
 
 			&--teal {
-				stroke: color("teal");
+				stroke: color-token("teal");
 				filter: drop-shadow(0 0 5px color-alpha("teal", 0.8));
 			}
 
 			&--magenta {
-				stroke: color("magenta");
+				stroke: color-token("magenta");
 			}
 
 			&--salmon {
-				stroke: color("salmon");
+				stroke: color-token("salmon");
 			}
 		}
 
 		&__fill {
 			&--teal {
-				color: color("teal");
-				fill: color("teal");
+				color: color-token("teal");
+				fill: color-token("teal");
 			}
 
 			&--magenta {
-				color: color("magenta");
-				fill: color("magenta");
+				color: color-token("magenta");
+				fill: color-token("magenta");
 			}
 
 			&--salmon {
-				color: color("salmon");
-				fill: color("salmon");
+				color: color-token("salmon");
+				fill: color-token("salmon");
 			}
 
 			&--plum {
-				fill: color("plum");
+				fill: color-token("plum");
 			}
 
 			&--steel {
-				fill: color("steel");
+				fill: color-token("steel");
 			}
 
 			&--soft {
-				fill: color("border");
+				fill: color-token("border");
 			}
 
 			&--dark {
-				fill: color("background");
+				fill: color-token("background");
 			}
 		}
 	}

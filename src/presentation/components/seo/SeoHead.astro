@@ -1,11 +1,16 @@
 ---
+/**
+ * Metadatos SEO de una página: título, descripción, canónica, `hreflang`, Open Graph, Twitter Card y datos estructurados JSON-LD. Requiere `site` en `astro.config.mjs`.
+ */
 import { getAbsoluteLocaleUrl } from "astro:i18n";
 import type { PortfolioOverview } from "@application/use-cases/GetPortfolio";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "@domain/entities/locale";
 import { buildStructuredData } from "../../seo/structuredData";
 
 interface Props {
+	/** Idioma de la página. */
 	locale: Locale;
+	/** Contenido del que se derivan los metadatos. */
 	portfolio: PortfolioOverview;
 }
 
@@ -78,7 +83,7 @@ const structuredData = buildStructuredData(portfolio, {
 	property="profile:last_name"
 	content={identity.fullName.split(" ").slice(1).join(" ")}
 />
-<meta property="profile:username" content={identity.handle} />
+<meta property="profile:username" content={identity.username} />
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image" />

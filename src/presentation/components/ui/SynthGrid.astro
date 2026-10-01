@@ -1,16 +1,16 @@
 ---
 interface Props {
 	/** Altura del suelo en píxeles. */
-	height?: number;
-	animated?: boolean;
+	heightInPixels?: number;
+	isAnimated?: boolean;
 }
 
-const { height = 320, animated = true } = Astro.props;
+const { heightInPixels = 320, isAnimated = true } = Astro.props;
 ---
 
 <div
-	class:list={["c-synth-grid", { "c-synth-grid--animated": animated }]}
-	style={`--grid-height: ${height}px`}
+	class:list={["c-synth-grid", { "c-synth-grid--animated": isAnimated }]}
+	style={`--grid-height: ${heightInPixels}px`}
 	aria-hidden="true"
 >
 	<div class="c-synth-grid__floor"></div>
@@ -44,12 +44,12 @@ const { height = 320, animated = true } = Astro.props;
 			transform-origin: 50% 0;
 			background-image:
 				linear-gradient(
-					color("teal") $line-width,
+					color-token("teal") $line-width,
 					transparent $line-width
 				),
 				linear-gradient(
 					90deg,
-					color("teal") $line-width,
+					color-token("teal") $line-width,
 					transparent $line-width
 				);
 			background-size: $cell-size $cell-size;

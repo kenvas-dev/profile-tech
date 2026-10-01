@@ -1,14 +1,19 @@
 ---
+/**
+ * Sección de formación: credenciales y panel con el método de trabajo.
+ */
 import type { Education } from "@domain/entities/education";
 import SectionHeader from "../ui/SectionHeader.astro";
 
 interface Props {
-	index: string;
+	/** Índice visible de la sección. */
+	sectionIndex: string;
+	/** Contenido de formación. */
 	education: Education;
 }
 
-const { index, education } = Astro.props;
-const { method } = education;
+const { sectionIndex, education } = Astro.props;
+const { workMethod } = education;
 const formatStepNumber = (position: number) =>
 	String(position + 1).padStart(2, "0");
 ---
@@ -20,7 +25,7 @@ const formatStepNumber = (position: number) =>
 >
 	<div class="l-container">
 		<SectionHeader
-			index={index}
+			sectionIndex={sectionIndex}
 			intro={education.intro}
 			headingId="formacion-title"
 		/>
@@ -34,17 +39,17 @@ const formatStepNumber = (position: number) =>
 					{education.credentials.map((credential) => (
 						<li class="c-credential">
 							<span class="c-credential__year">
-								{credential.year}
+								{credential.completionYear}
 							</span>
 							<div class="c-credential__detail">
 								<span class="c-credential__type">
-									{credential.type}
+									{credential.credentialType}
 								</span>
 								<h4 class="c-credential__title">
 									{credential.title}
 								</h4>
 								<span class="c-credential__institution">
-									{credential.institution}
+									{credential.institutionName}
 								</span>
 							</div>
 						</li>
@@ -55,13 +60,15 @@ const formatStepNumber = (position: number) =>
 			<aside class="c-method" aria-labelledby="method-title">
 				<header class="c-method__header">
 					<h3 class="c-method__label" id="method-title">
-						{method.label}
+						{workMethod.sectionLabel}
 					</h3>
-					<span class="c-method__status">{method.status}</span>
+					<span class="c-method__status">
+						{workMethod.statusLabel}
+					</span>
 				</header>
 
 				<ol class="c-method__steps">
-					{method.steps.map((step, position) => (
+					{workMethod.steps.map((step, position) => (
 						<li class="c-method-step">
 							<span class="c-method-step__number">
 								{formatStepNumber(position)}
@@ -102,7 +109,7 @@ const formatStepNumber = (position: number) =>
 	}
 
 	.c-credential {
-		@include cluster(24px, flex-start);
+		@include flex-row(24px, flex-start);
 		@include divider(bottom);
 
 		padding-block: 22px;
@@ -112,11 +119,11 @@ const formatStepNumber = (position: number) =>
 
 			flex-shrink: 0;
 			width: 70px;
-			color: color("magenta");
+			color: color-token("magenta");
 		}
 
 		&__detail {
-			@include stack(8px);
+			@include flex-column(8px);
 
 			flex: 1;
 			min-width: 0;
@@ -129,19 +136,19 @@ const formatStepNumber = (position: number) =>
 		&__title {
 			@include typography("display", 20px, $font-weight-bold);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__institution {
 			@include typography("body", 14px);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 	}
 
 	.c-method {
 		@include surface($background: "background", $border: "teal");
-		@include stack(32px);
+		@include flex-column(32px);
 		@include neon-box("teal", 0.5);
 
 		padding: 32px;
@@ -151,7 +158,7 @@ const formatStepNumber = (position: number) =>
 		}
 
 		&__header {
-			@include cluster(16px, center, space-between);
+			@include flex-row(16px, center, space-between);
 		}
 
 		&__label {
@@ -161,19 +168,19 @@ const formatStepNumber = (position: number) =>
 		&__status {
 			@include typography("mono", 10px);
 
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__steps {
-			@include stack(32px);
+			@include flex-column(32px);
 		}
 	}
 
 	.c-method-step {
-		@include cluster(24px, flex-start);
+		@include flex-row(24px, flex-start);
 
 		&__number {
-			@include cluster($justify: center);
+			@include flex-row($justify: center);
 			@include typography("mono", 11px);
 			@include neon-box("teal", 0.4);
 			@include neon-text("teal", 0.5);
@@ -181,13 +188,13 @@ const formatStepNumber = (position: number) =>
 			flex-shrink: 0;
 			width: 38px;
 			height: 38px;
-			border: 1px solid color("teal");
+			border: 1px solid color-token("teal");
 			border-radius: $radius-sm;
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__detail {
-			@include stack(8px);
+			@include flex-column(8px);
 
 			padding-top: 6px;
 		}
@@ -195,13 +202,13 @@ const formatStepNumber = (position: number) =>
 		&__title {
 			@include typography("display", 20px, $font-weight-bold);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__description {
 			@include typography("body", 14px, $font-weight-regular, 1.55);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 	}
 </style>

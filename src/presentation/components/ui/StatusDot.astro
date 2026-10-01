@@ -1,13 +1,17 @@
 ---
+/**
+ * Indicador circular de estado, opcionalmente con brillo y parpadeo.
+ */
 interface Props {
-	glow?: boolean;
+	/** Añade brillo y parpadeo tipo LED. */
+	hasGlow?: boolean;
 }
 
-const { glow = false } = Astro.props;
+const { hasGlow = false } = Astro.props;
 ---
 
 <span
-	class:list={["c-status-dot", { "c-status-dot--glow": glow }]}
+	class:list={["c-status-dot", { "c-status-dot--glow": hasGlow }]}
 	aria-hidden="true"
 ></span>
 
@@ -19,7 +23,7 @@ const { glow = false } = Astro.props;
 		width: 8px;
 		height: 8px;
 		border-radius: 50%;
-		background: color("teal");
+		background: color-token("teal");
 
 		&--glow {
 			box-shadow: 0 0 10px color-alpha("teal", 0.9);

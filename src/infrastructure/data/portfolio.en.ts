@@ -1,4 +1,26 @@
+/**
+ * Contenido del portfolio en inglés. Los datos que no dependen del idioma
+ * se importan de `portfolio.shared.ts`.
+ * @packageDocumentation
+ */
 import type { Portfolio } from "@domain/entities/portfolio";
+import {
+	CONTACT_CHANNELS,
+	CONTACT_EMAIL,
+	CREDENTIAL_FACTS,
+	CV_URLS,
+	HERO_HEADLINE,
+	IDENTITY,
+	LOCATION_CHANNEL,
+	PORTRAIT_HUD,
+	PORTRAIT_IMAGE_SRC,
+	POSITION_PERIODS,
+	PROFILE_URLS,
+	PROJECT_METADATA,
+	SECTION_ANCHORS,
+	SOCIAL_IMAGE_URLS,
+	TECH_STACK,
+} from "./portfolio.shared";
 
 export const portfolioEn: Portfolio = {
 	seo: {
@@ -43,67 +65,59 @@ export const portfolioEn: Portfolio = {
 			"Web accessibility",
 		],
 		socialImage: {
-			src: "/og/og-en.jpg",
+			src: SOCIAL_IMAGE_URLS.en,
 			alt: "Kevin Aquino — Senior Frontend & Full Stack Developer",
 		},
 	},
 
-	identity: {
-		fullName: "Kevin Aquino",
-		logo: "{UN1T7D}",
-		handle: "kevin.aquino",
-		address: {
-			locality: "Quezaltepeque",
-			region: "La Libertad",
-			countryCode: "SV",
-		},
-	},
+	identity: IDENTITY,
 
 	navigation: [
-		{ label: "Profile", href: "#perfil" },
-		{ label: "Stack", href: "#stack" },
-		{ label: "Experience", href: "#experiencia" },
-		{ label: "Projects", href: "#proyectos" },
-		{ label: "Contact", href: "#contacto" },
+		{ label: "Profile", href: SECTION_ANCHORS.profile },
+		{ label: "Stack", href: SECTION_ANCHORS.stack },
+		{ label: "Experience", href: SECTION_ANCHORS.experience },
+		{ label: "Projects", href: SECTION_ANCHORS.projects },
+		{ label: "Contact", href: SECTION_ANCHORS.contact },
 	],
 
 	hero: {
-		availability: "Available for new projects · 2026",
-		context: "Portfolio / CV — Frontend Engineering",
-		role: {
-			primary: "Senior Frontend Developer",
-			secondary: "UI engineer.",
-		},
+		availabilityStatus: "Available for new projects · 2026",
+		tagline: "Portfolio / CV — Frontend Engineering",
+		headline: HERO_HEADLINE,
 		valueProposition:
 			"I build fast, accessible and scalable web interfaces, turning designs into reusable components with clean code, solid architecture and attention to detail.",
-		primaryAction: { label: "View projects", href: "#proyectos" },
-		secondaryAction: { label: "Get in touch", href: "#contacto" },
+		primaryAction: {
+			label: "View projects",
+			href: SECTION_ANCHORS.projects,
+		},
+		secondaryAction: {
+			label: "Get in touch",
+			href: SECTION_ANCHORS.contact,
+		},
 		professionalLinks: [
 			{
 				label: "LINKEDIN ↗",
-				href: "https://www.linkedin.com/in/kevin-v%C3%A1squez-46a0701b4",
+				href: PROFILE_URLS.linkedin,
 			},
-			{ label: "GITHUB ↗", href: "https://github.com/kenvas-dev" },
-			{ label: "DOWNLOAD CV ↓", href: "/cv/kevin-aquino-cv-en.pdf" },
+			{ label: "GITHUB ↗", href: PROFILE_URLS.github },
+			{ label: "DOWNLOAD CV ↓", href: CV_URLS.en },
 		],
 		portrait: {
 			image: {
-				src: "/images/retrato.jpg",
+				src: PORTRAIT_IMAGE_SRC,
 				alt: "Portrait of Kevin Aquino wearing glasses, lit by neon lights",
 			},
-			code: "PROFILE_001",
-			baseLabel: "BASE",
-			location: "Quezaltepeque, SV",
-			coordinates: "13.8350° N · 089.2720° W",
+			...PORTRAIT_HUD,
 		},
 	},
 
 	profile: {
-		label: "Profile",
+		sectionLabel: "Profile",
 		title: "Clean code. Interfaces that scale.",
 		biography:
 			"I'm Kevin Aquino, a senior frontend and full stack developer with 5 years of experience, from backend to frontend. I've worked on 7 projects alongside 3 design teams, turning ideas into solid products.",
-		focus: "My backend background helps me build interfaces that understand the data and APIs behind them. I specialize in maintainable frontend architecture, design systems in code, performance and accessibility.",
+		specialization:
+			"My backend background helps me build interfaces that understand the data and APIs behind them. I specialize in maintainable frontend architecture, design systems in code, performance and accessibility.",
 		metrics: [
 			{ value: "5+", label: "years in web development" },
 			{ value: "7", label: "projects delivered" },
@@ -114,47 +128,27 @@ export const portfolioEn: Portfolio = {
 
 	skills: {
 		intro: {
-			label: "Stack & expertise",
+			sectionLabel: "Stack & expertise",
 			title: "Tools to build, test and scale.",
 			description:
 				"A modern, TypeScript-centered stack: component frameworks, maintainable styles and automated quality from end to end.",
 		},
-		groups: [
+		skillGroups: [
 			{
-				code: "S.01",
+				sequenceCode: "S.01",
 				title: "Frameworks & languages",
 				description: "A solid, typed foundation for any product.",
-				technologies: [
-					"TypeScript",
-					"JavaScript",
-					"React",
-					"Angular",
-					"Astro",
-					"Node.js",
-					"Express.js",
-					"NestJS",
-					"Dart",
-					"Flutter",
-				],
+				technologies: TECH_STACK.frameworksAndLanguages,
 			},
 			{
-				code: "S.02",
+				sequenceCode: "S.02",
 				title: "UI & styling",
 				description:
 					"Consistent, accessible and responsive interfaces.",
-				technologies: [
-					"SCSS",
-					"BEM",
-					"Tailwind CSS",
-					"Material Angular",
-					"PrimeNG",
-					"Bulma",
-					"Bootstrap",
-					"Design systems",
-				],
+				technologies: TECH_STACK.uiAndStyling,
 			},
 			{
-				code: "S.03",
+				sequenceCode: "S.03",
 				title: "Quality & architecture",
 				description: "Code that grows at the team's pace.",
 				technologies: [
@@ -168,23 +162,23 @@ export const portfolioEn: Portfolio = {
 			},
 		],
 		strengths: {
-			label: "CORE_STRENGTHS",
-			version: "v.08.26",
+			sectionLabel: "CORE_STRENGTHS",
+			versionTag: "v.08.26",
 			items: [
 				{
-					icon: "radar",
+					iconName: "radar",
 					title: "Architectural vision",
 					description:
 						"I define layers, contracts and dependencies before writing the first component.",
 				},
 				{
-					icon: "waypoints",
+					iconName: "waypoints",
 					title: "Bridge between design and backend",
 					description:
 						"My backend experience and work with 3 design teams let me bring APIs and designs together into coherent interfaces.",
 				},
 				{
-					icon: "sparkles",
+					iconName: "sparkles",
 					title: "Detail and performance",
 					description:
 						"I care about every interaction, every millisecond of load time and every accessibility criterion.",
@@ -195,19 +189,19 @@ export const portfolioEn: Portfolio = {
 
 	experience: {
 		intro: {
-			label: "Experience",
+			sectionLabel: "Experience",
 			title: "Experience building products that scale.",
 			description:
 				"5 years across the full stack: I started as a full stack developer and now lead frontend, always working closely with design teams.",
 		},
-		currentLabel: "CURRENT",
-		presentLabel: "NOW",
+		currentPositionLabel: "CURRENT",
+		presentDateLabel: "NOW",
 		positions: [
 			{
-				company: "Freelance",
-				role: "Full Stack Developer",
-				location: "El Salvador · Remote",
-				period: { startYear: 2024, endYear: null },
+				companyName: "Freelance",
+				jobTitle: "Full Stack Developer",
+				workLocation: "El Salvador · Remote",
+				period: POSITION_PERIODS.freelance,
 				summary:
 					"I design and build custom websites for professionals and organizations, from frontend architecture to backend services, with Angular (v14+) and Node.js.",
 				achievements: [
@@ -217,10 +211,10 @@ export const portfolioEn: Portfolio = {
 				],
 			},
 			{
-				company: "Financial institution",
-				role: "Frontend Lead",
-				location: "El Salvador · Since Oct. 2022",
-				period: { startYear: 2022, endYear: null },
+				companyName: "Financial institution",
+				jobTitle: "Frontend Lead",
+				workLocation: "El Salvador · Since Oct. 2022",
+				period: POSITION_PERIODS.financialInstitution,
 				summary:
 					"I lead frontend development of the corporate CRM of a financial institution in El Salvador, the platform that orchestrates key customer management processes. I define the application architecture, coding standards and integration with internal services to deliver a consistent, secure and scalable experience for business teams.",
 				achievements: [
@@ -230,10 +224,10 @@ export const portfolioEn: Portfolio = {
 				],
 			},
 			{
-				company: "Waresoft",
-				role: "Full Stack Developer → Frontend Lead",
-				location: "Chile & El Salvador · Until Oct. 2022",
-				period: { startYear: 2021, endYear: 2022 },
+				companyName: "Waresoft",
+				jobTitle: "Full Stack Developer → Frontend Lead",
+				workLocation: "Chile & El Salvador · Until Oct. 2022",
+				period: POSITION_PERIODS.waresoft,
 				summary:
 					"Built web and mobile applications for clients in Chile and El Salvador, first as a full stack developer and later leading frontend on Angular projects.",
 				achievements: [
@@ -248,20 +242,18 @@ export const portfolioEn: Portfolio = {
 
 	projects: {
 		intro: {
-			label: "Selected work",
+			sectionLabel: "Selected work",
 			title: "Real projects, from banking to custom web.",
 			description:
 				"A selection of projects I've worked on: financial services, real estate, retail and custom websites for professionals and organizations.",
 		},
 		items: [
 			{
-				code: "CASE_STUDY_01",
-				kind: "crm",
+				...PROJECT_METADATA.crm,
 				category: "Financial services · CRM · 2022 – present",
 				title: "Customer management CRM",
 				summary:
 					"Corporate platform that orchestrates the core customer management features of a financial institution in El Salvador. I lead its frontend development: architecture, coding standards and integration with internal services.",
-				tone: "primary",
 				technologies: [
 					"Frontend architecture",
 					"Service integration",
@@ -271,66 +263,53 @@ export const portfolioEn: Portfolio = {
 					{ value: "Lead", label: "frontend development" },
 					{ value: "2022+", label: "continuously evolving" },
 				],
-				featured: true,
 			},
 			{
-				code: "CASE_STUDY_02",
-				kind: "real-estate",
+				...PROJECT_METADATA.mundoTerrenos,
 				category: "Real estate · Chile · Waresoft",
 				title: "Mundo Terrenos",
 				summary:
 					"Real estate sales platform with interactive maps and markers to locate each property.",
-				tone: "secondary",
 				technologies: ["Maps", "Geolocation"],
 				results: [{ value: "Maps", label: "location-based search" }],
-				featured: false,
 			},
 			{
-				code: "CASE_STUDY_03",
-				kind: "admin-panel",
+				...PROJECT_METADATA.sherwinWilliams,
 				category: "Retail · Web + Mobile · Waresoft",
 				title: "Sherwin-Williams",
 				summary:
 					"End-to-end development with Angular 12, from the admin panel to the main site, plus support on the mobile version built with Flutter.",
-				tone: "tertiary",
 				technologies: ["Angular 12", "Flutter"],
 				results: [
 					{ value: "Web + App", label: "admin, site and mobile" },
 				],
-				featured: false,
 			},
 			{
-				code: "CASE_STUDY_04",
-				kind: "rentals",
+				...PROJECT_METADATA.gimh,
 				category: "Rentals · Full stack · Waresoft",
 				title: "GIMH",
 				summary:
 					"Rental management application built end to end, from the React frontend to the API and databases.",
-				tone: "primary",
 				technologies: ["React", "Node.js", "PostgreSQL", "CouchDB"],
 				results: [
 					{ value: "Full stack", label: "from UI to database" },
 				],
-				featured: false,
 			},
 			{
-				code: "CASE_STUDY_05",
-				kind: "websites",
+				...PROJECT_METADATA.customWebsites,
 				category: "Freelance · Web · 2024 – present",
 				title: "Custom websites",
 				summary:
 					"Portfolios for photographers, blogs and informational landing pages for churches and organizations, built from start to finish.",
-				tone: "secondary",
 				technologies: ["Angular 14+", "Node.js"],
 				results: [{ value: "2024+", label: "freelance projects" }],
-				featured: false,
 			},
 		],
 	},
 
 	education: {
 		intro: {
-			label: "Learning & method",
+			sectionLabel: "Learning & method",
 			title: "Structured curiosity. Evolving code.",
 			description:
 				"Education, certifications and the method I use to take each feature from idea to production.",
@@ -338,21 +317,19 @@ export const portfolioEn: Portfolio = {
 		credentialsLabel: "Education / Certifications",
 		credentials: [
 			{
-				year: 2025,
-				type: "Certification",
+				...CREDENTIAL_FACTS.kodigo,
+				credentialType: "Certification",
 				title: "Full Stack Development",
-				institution: "Kodigo · El Salvador",
 			},
 			{
-				year: 2024,
-				type: "Bachelor's degree",
+				...CREDENTIAL_FACTS.utec,
+				credentialType: "Bachelor's degree",
 				title: "Bachelor's Degree in Computer Science",
-				institution: "Universidad Tecnológica de El Salvador (UTEC)",
 			},
 		],
-		method: {
-			label: "How I work",
-			status: "● ITERATIVE",
+		workMethod: {
+			sectionLabel: "How I work",
+			statusLabel: "● ITERATIVE",
 			steps: [
 				{
 					title: "Understand the problem",
@@ -379,34 +356,19 @@ export const portfolioEn: Portfolio = {
 	},
 
 	contact: {
-		label: "Contact",
+		sectionLabel: "Contact",
 		title: "Shall we build something worth existing?",
 		description:
 			"I work remotely from El Salvador (GMT-6) and I'm available for senior frontend roles, collaborations and conversations about web architecture, design systems and performance.",
-		email: "kevin.aquino.vasquez@gmail.com",
-		availability: "Available · Q4 2026",
+		email: CONTACT_EMAIL,
+		availabilityStatus: "Available · Q4 2026",
 		channels: [
-			{
-				icon: "linkedin",
-				label: "LinkedIn",
-				value: "/in/kevin-vásquez",
-				href: "https://www.linkedin.com/in/kevin-v%C3%A1squez-46a0701b4",
-			},
-			{
-				icon: "github",
-				label: "GitHub",
-				value: "@kenvas-dev",
-				href: "https://github.com/kenvas-dev",
-			},
-			{
-				icon: "map-pin",
-				label: "Location",
-				value: "Quezaltepeque, El Salvador",
-				href: "https://maps.google.com/?q=Quezaltepeque,+El+Salvador",
-			},
+			CONTACT_CHANNELS.linkedin,
+			CONTACT_CHANNELS.github,
+			{ ...LOCATION_CHANNEL, platformLabel: "Location" },
 		],
 		builtWith: {
-			label: "SOURCE_CODE",
+			sectionLabel: "SOURCE_CODE",
 			title: "This site is built with Astro",
 			description:
 				"TypeScript, SCSS with BEM and hexagonal architecture. Here's a look inside:",
@@ -424,7 +386,7 @@ export const portfolioEn: Portfolio = {
 	},
 
 	footer: {
-		note: "BUILT WITH ASTRO · TYPESCRIPT · SCSS",
-		copyright: "© 2026 Kevin Aquino. All rights reserved.",
+		builtWithNote: "BUILT WITH ASTRO · TYPESCRIPT · SCSS",
+		copyrightNotice: "© 2026 Kevin Aquino. All rights reserved.",
 	},
 };

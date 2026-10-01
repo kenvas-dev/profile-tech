@@ -1,3 +1,7 @@
+/**
+ * Agregado raíz del dominio.
+ * @packageDocumentation
+ */
 import type { Contact, Footer, NavigationLink } from "./contact";
 import type { Education } from "./education";
 import type { Experience } from "./experience";
@@ -7,6 +11,7 @@ import type { Projects } from "./projects";
 import type { Seo } from "./seo";
 import type { Skills } from "./skills";
 
+/** Todo el contenido del portfolio en un idioma. */
 export interface Portfolio {
 	readonly seo: Seo;
 	readonly identity: Identity;

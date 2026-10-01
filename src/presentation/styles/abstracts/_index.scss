@@ -1,3 +1,5 @@
+/// Punto de acceso a los abstracts: `@use "abstracts" as *;`.
+
 @forward "variables";
 @forward "functions";
 @forward "mixins";

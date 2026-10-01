@@ -1,33 +1,40 @@
 ---
+/**
+ * Sección de stack: grupos de tecnologías y panel de fortalezas.
+ */
 import type { Skills } from "@domain/entities/skills";
-import { resolveLocale, useTranslations } from "../../i18n/ui";
+import { getUiTranslationsFor } from "../../i18n/ui";
 import Icon from "../ui/Icon.astro";
 import PillList from "../ui/PillList.astro";
 import SectionHeader from "../ui/SectionHeader.astro";
 
 interface Props {
-	index: string;
+	/** Índice visible de la sección. */
+	sectionIndex: string;
+	/** Contenido del stack. */
 	skills: Skills;
 }
 
-const { index, skills } = Astro.props;
-const t = useTranslations(resolveLocale(Astro.currentLocale));
+const { sectionIndex, skills } = Astro.props;
+const uiText = getUiTranslationsFor(Astro.currentLocale);
 const { strengths } = skills;
 ---
 
 <section class="l-section" id="stack" aria-labelledby="stack-title">
 	<div class="l-container">
 		<SectionHeader
-			index={index}
+			sectionIndex={sectionIndex}
 			intro={skills.intro}
 			headingId="stack-title"
 		/>
 
 		<div class="c-skills">
 			<ul class="c-skills__groups">
-				{skills.groups.map((group) => (
+				{skills.skillGroups.map((group) => (
 					<li class="c-skill-group">
-						<span class="c-skill-group__code">{group.code}</span>
+						<span class="c-skill-group__code">
+							{group.sequenceCode}
+						</span>
 						<div class="c-skill-group__definition">
 							<h3 class="c-skill-group__title">{group.title}</h3>
 							<p class="c-skill-group__description">
@@ -41,11 +48,13 @@ const { strengths } = skills;
 				))}
 			</ul>
 
-			<aside class="c-strengths" aria-label={t.strengths}>
+			<aside class="c-strengths" aria-label={uiText.strengthsPanelLabel}>
 				<header class="c-strengths__header">
-					<span class="c-strengths__label">{strengths.label}</span>
+					<span class="c-strengths__label">
+						{strengths.sectionLabel}
+					</span>
 					<span class="c-strengths__version">
-						{strengths.version}
+						{strengths.versionTag}
 					</span>
 				</header>
 
@@ -54,7 +63,7 @@ const { strengths } = skills;
 						<li class="c-strength">
 							<span class="c-strength__icon">
 								<Icon
-									name={strength.icon}
+									iconName={strength.iconName}
 									size={20}
 									strokeWidth={1.6}
 								/>
@@ -88,7 +97,7 @@ const { strengths } = skills;
 	}
 
 	.c-skill-group {
-		@include cluster(32px, flex-start);
+		@include flex-row(32px, flex-start);
 		@include divider(bottom);
 
 		min-height: 136px;
@@ -105,11 +114,11 @@ const { strengths } = skills;
 
 			flex-shrink: 0;
 			width: 54px;
-			color: color("magenta");
+			color: color-token("magenta");
 		}
 
 		&__definition {
-			@include stack(8px);
+			@include flex-column(8px);
 
 			flex-shrink: 0;
 			width: 285px;
@@ -122,13 +131,13 @@ const { strengths } = skills;
 		&__title {
 			@include typography("display", 28px);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__description {
 			@include typography("body", 14px, $font-weight-regular, 1.55);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__technologies {
@@ -144,12 +153,12 @@ const { strengths } = skills;
 
 	.c-strengths {
 		@include surface($border: "magenta");
-		@include stack(32px);
+		@include flex-column(32px);
 		@include neon-box("magenta", 0.5);
 
 		background:
 			linear-gradient(180deg, color-alpha("plum", 0.25), transparent 60%),
-			color("surface");
+			color-token("surface");
 		min-height: 408px;
 		padding: 32px;
 
@@ -162,23 +171,23 @@ const { strengths } = skills;
 		}
 
 		&__header {
-			@include cluster(16px, center, space-between);
+			@include flex-row(16px, center, space-between);
 		}
 
 		&__label {
 			@include typography("mono", 12px);
 
-			color: color("salmon");
+			color: color-token("salmon");
 		}
 
 		&__version {
 			@include typography("mono", 10px);
 
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 		}
 
 		&__list {
-			@include stack(32px);
+			@include flex-column(32px);
 
 			// A todo el ancho, las fortalezas se reparten en columnas.
 			@include respond-below("laptop") {
@@ -190,23 +199,23 @@ const { strengths } = skills;
 	}
 
 	.c-strength {
-		@include stack(12px, flex-start);
+		@include flex-column(12px, flex-start);
 
 		&__icon {
-			color: color("teal");
+			color: color-token("teal");
 			filter: drop-shadow(0 0 6px color-alpha("teal", 0.8));
 		}
 
 		&__title {
 			@include typography("display", 20px, $font-weight-bold);
 
-			color: color("text");
+			color: color-token("text");
 		}
 
 		&__description {
 			@include typography("body", 14px, $font-weight-regular, 1.55);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 	}
 </style>

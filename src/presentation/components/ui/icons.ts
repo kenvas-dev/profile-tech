@@ -1,5 +1,10 @@
+/**
+ * Registro de iconos SVG (trazados de Lucide exportados desde Figma).
+ * @packageDocumentation
+ */
 import type { IconName } from "@domain/entities/shared";
 
+/** Iconos disponibles: los del dominio más los propios de la interfaz. */
 export type UiIconName =
 	| IconName
 	| "arrow-up"
@@ -8,9 +13,13 @@ export type UiIconName =
 	| "send"
 	| "scan-line";
 
+/** Geometría de un icono, dibujada con trazo (`stroke`) y `currentColor`. */
 interface IconDefinition {
+	/** `viewBox` del SVG original. */
 	readonly viewBox: string;
+	/** Atributos `d` de cada `<path>`. */
 	readonly paths: readonly string[];
+	/** Círculos adicionales (centro y radio). */
 	readonly circles?: readonly { cx: number; cy: number; r: number }[];
 }
 

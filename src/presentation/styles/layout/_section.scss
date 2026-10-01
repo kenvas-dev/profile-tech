@@ -1,16 +1,17 @@
+/// Estructura de secciones de página: `.l-section` y `.l-container`.
+
 @use "../abstracts" as *;
 
+/// Sección de página a todo el ancho con márgenes laterales responsive.
 .l-section {
-	position: relative;
-	padding: 104px gutter("desktop");
-	background: color("background");
+	@include page-gutter;
 
-	@include respond-below("laptop") {
-		padding-inline: gutter("tablet");
-	}
+	position: relative;
+	padding-block: 104px;
+	background: color-token("background");
 
 	@include respond-below("mobile") {
-		padding: 72px gutter("mobile");
+		padding-block: 72px;
 	}
 
 	// Línea de neón que separa cada sección.
@@ -26,7 +27,7 @@
 	}
 
 	&--alt {
-		background: color("background-alt");
+		background: color-token("background-alt");
 	}
 
 	&--compact {
@@ -34,10 +35,10 @@
 	}
 }
 
+/// Contenedor centrado que apila el contenido de una sección.
 .l-container {
-	@include stack(48px);
+	@include flex-column(48px);
+	@include page-container;
 
 	position: relative;
-	max-width: $container-max-width;
-	margin-inline: auto;
 }

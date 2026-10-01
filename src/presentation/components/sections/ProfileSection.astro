@@ -1,13 +1,18 @@
 ---
+/**
+ * Sección de perfil: titular, biografía, especialización y métricas.
+ */
 import type { Profile } from "@domain/entities/profile";
 import SectionLabel from "../ui/SectionLabel.astro";
 
 interface Props {
-	index: string;
+	/** Índice visible de la sección (p. ej. `/01`). */
+	sectionIndex: string;
+	/** Contenido del perfil. */
 	profile: Profile;
 }
 
-const { index, profile } = Astro.props;
+const { sectionIndex, profile } = Astro.props;
 ---
 
 <section
@@ -20,7 +25,10 @@ const { index, profile } = Astro.props;
 
 		<div class="c-profile__content">
 			<div class="c-profile__intro">
-				<SectionLabel index={index} label={profile.label} />
+				<SectionLabel
+					sectionIndex={sectionIndex}
+					sectionLabel={profile.sectionLabel}
+				/>
 				<h2 class="c-profile__title" id="perfil-title">
 					{profile.title}
 				</h2>
@@ -28,7 +36,7 @@ const { index, profile } = Astro.props;
 
 			<div class="c-profile__summary">
 				<p class="c-profile__biography">{profile.biography}</p>
-				<p class="c-profile__focus">{profile.focus}</p>
+				<p class="c-profile__focus">{profile.specialization}</p>
 
 				<dl class="c-profile__metrics">
 					{profile.metrics.map((metric) => (
@@ -52,7 +60,7 @@ const { index, profile } = Astro.props;
 
 	.c-profile {
 		&__content {
-			@include cluster(64px, flex-start);
+			@include flex-row(64px, flex-start);
 
 			@include respond-below("laptop") {
 				flex-direction: column;
@@ -64,14 +72,14 @@ const { index, profile } = Astro.props;
 			height: 2px;
 			background: linear-gradient(
 				to right,
-				color("magenta") 0 120px,
-				color("border") 120px
+				color-token("magenta") 0 120px,
+				color-token("border") 120px
 			);
 			box-shadow: 0 0 12px color-alpha("magenta", 0.5);
 		}
 
 		&__intro {
-			@include stack(24px);
+			@include flex-column(24px);
 
 			flex-shrink: 0;
 			width: 380px;
@@ -85,7 +93,7 @@ const { index, profile } = Astro.props;
 			@include typography("retro", 38px, $font-weight-bold, 1.18);
 			@include neon-text("magenta", 0.6);
 
-			color: color("text");
+			color: color-token("text");
 
 			@include respond-below("laptop") {
 				font-size: 30px;
@@ -93,7 +101,7 @@ const { index, profile } = Astro.props;
 		}
 
 		&__summary {
-			@include stack(32px);
+			@include flex-column(32px);
 
 			flex: 1;
 			min-width: 0;
@@ -102,7 +110,7 @@ const { index, profile } = Astro.props;
 		&__biography {
 			@include typography("body", 24px, $font-weight-regular, 1.5);
 
-			color: color("text");
+			color: color-token("text");
 
 			@include respond-below("mobile") {
 				font-size: 19px;
@@ -115,7 +123,7 @@ const { index, profile } = Astro.props;
 
 			max-width: 760px;
 			padding-bottom: 32px;
-			color: color("text-muted");
+			color: color-token("text-muted");
 		}
 
 		&__metrics {
@@ -129,7 +137,7 @@ const { index, profile } = Astro.props;
 		}
 
 		&__metric {
-			@include stack(8px);
+			@include flex-column(8px);
 
 			flex-direction: column-reverse;
 		}
@@ -138,7 +146,7 @@ const { index, profile } = Astro.props;
 			@include typography("retro", 36px, $font-weight-bold);
 			@include neon-text("teal", 0.7);
 
-			color: color("teal");
+			color: color-token("teal");
 			white-space: nowrap;
 
 			@include respond-below("mobile") {

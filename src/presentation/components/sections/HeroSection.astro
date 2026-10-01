@@ -1,4 +1,7 @@
 ---
+/**
+ * Cabecera principal: navegación, presentación, llamadas a la acción y retrato sobre el escenario synthwave (estrellas, sol y rejilla).
+ */
 import type { NavigationLink } from "@domain/entities/contact";
 import type { Hero, Identity } from "@domain/entities/identity";
 import HeroPortrait from "../hero/HeroPortrait.astro";
@@ -8,8 +11,11 @@ import SynthGrid from "../ui/SynthGrid.astro";
 import SiteHeader from "./SiteHeader.astro";
 
 interface Props {
+	/** Datos de la persona. */
 	identity: Identity;
+	/** Enlaces de la navegación principal. */
 	navigation: readonly NavigationLink[];
+	/** Contenido de la cabecera. */
 	hero: Hero;
 }
 
@@ -23,19 +29,19 @@ const { identity, navigation, hero } = Astro.props;
 		<div class="c-hero__presentation">
 			<div class="c-hero__message">
 				<p class="c-hero__availability">
-					<StatusDot glow />
-					{hero.availability}
+					<StatusDot hasGlow />
+					{hero.availabilityStatus}
 				</p>
 
 				<div class="c-hero__headline">
-					<p class="c-hero__context">{hero.context}</p>
+					<p class="c-hero__context">{hero.tagline}</p>
 					<h1 class="c-hero__name" id="hero-title">
 						{identity.fullName.toUpperCase()}
 					</h1>
 					<p class="c-hero__role">
-						{hero.role.primary}{" "}
+						{hero.headline.primaryRole}{" "}
 						<span class="c-hero__role-accent">+</span>{" "}
-						{hero.role.secondary}
+						{hero.headline.secondaryRole}
 					</p>
 				</div>
 
@@ -44,14 +50,14 @@ const { identity, navigation, hero } = Astro.props;
 				<div class="c-hero__actions">
 					<Button
 						href={hero.primaryAction.href}
-						icon="arrow-down-right"
+						iconName="arrow-down-right"
 					>
 						{hero.primaryAction.label}
 					</Button>
 					<Button
 						href={hero.secondaryAction.href}
 						variant="ghost"
-						icon="send"
+						iconName="send"
 					>
 						{hero.secondaryAction.label}
 					</Button>
@@ -80,7 +86,7 @@ const { identity, navigation, hero } = Astro.props;
 		</div>
 	</div>
 
-	<SynthGrid height={240} />
+	<SynthGrid heightInPixels={240} />
 </section>
 
 <style lang="scss">
@@ -90,7 +96,7 @@ const { identity, navigation, hero } = Astro.props;
 	$starfield:
 		radial-gradient(
 			1px 1px at 20px 30px,
-			color("text") 50%,
+			color-token("text") 50%,
 			transparent 51%
 		),
 		radial-gradient(
@@ -100,7 +106,7 @@ const { identity, navigation, hero } = Astro.props;
 		),
 		radial-gradient(
 			1.5px 1.5px at 90px 160px,
-			color("salmon") 50%,
+			color-token("salmon") 50%,
 			transparent 51%
 		),
 		radial-gradient(
@@ -110,14 +116,15 @@ const { identity, navigation, hero } = Astro.props;
 		),
 		radial-gradient(
 			1.5px 1.5px at 260px 60px,
-			color("teal") 50%,
+			color-token("teal") 50%,
 			transparent 51%
 		);
 
 	.c-hero {
+		@include page-gutter;
+
 		position: relative;
 		overflow: hidden;
-		padding-inline: gutter("desktop");
 		background: $starfield, $gradient-sky;
 		background-size:
 			300px 260px,
@@ -127,22 +134,13 @@ const { identity, navigation, hero } = Astro.props;
 			300px 260px,
 			100% 100%;
 
-		@include respond-below("laptop") {
-			padding-inline: gutter("tablet");
-		}
-
-		@include respond-below("mobile") {
-			padding-inline: gutter("mobile");
-		}
-
 		&__inner {
-			@include stack;
+			@include flex-column;
+			@include page-container;
 
 			position: relative;
-			z-index: z("content");
-			max-width: $container-max-width;
+			z-index: z-layer("content");
 			min-height: 940px;
-			margin-inline: auto;
 
 			@include respond-below("laptop") {
 				min-height: auto;
@@ -150,7 +148,7 @@ const { identity, navigation, hero } = Astro.props;
 		}
 
 		&__presentation {
-			@include cluster(64px);
+			@include flex-row(64px);
 
 			flex: 1;
 			padding-block: 64px;
@@ -162,19 +160,19 @@ const { identity, navigation, hero } = Astro.props;
 		}
 
 		&__message {
-			@include stack(24px, flex-start);
+			@include flex-column(24px, flex-start);
 
 			flex: 1;
 			min-width: 0;
 		}
 
 		&__availability {
-			@include cluster(12px);
+			@include flex-row(12px);
 			@include mono-label(12px, "teal", $font-weight-medium);
 		}
 
 		&__headline {
-			@include stack(8px);
+			@include flex-column(8px);
 		}
 
 		&__context {
@@ -186,9 +184,9 @@ const { identity, navigation, hero } = Astro.props;
 			@include gradient-text(
 				linear-gradient(
 					180deg,
-					color("text") 0%,
-					color("salmon") 45%,
-					color("magenta") 100%
+					color-token("text") 0%,
+					color-token("salmon") 45%,
+					color-token("magenta") 100%
 				)
 			);
 
@@ -202,7 +200,7 @@ const { identity, navigation, hero } = Astro.props;
 		&__role {
 			@include typography("display", 46px, $font-weight-regular, 1.08);
 
-			color: color("text-muted");
+			color: color-token("text-muted");
 
 			@include respond-below("mobile") {
 				font-size: 30px;
@@ -212,14 +210,14 @@ const { identity, navigation, hero } = Astro.props;
 		&__role-accent {
 			@include neon-text("teal");
 
-			color: color("teal");
+			color: color-token("teal");
 		}
 
 		&__value {
 			@include typography("body", 18px, $font-weight-regular, 1.65);
 
 			max-width: 610px;
-			color: color("text-muted");
+			color: color-token("text-muted");
 
 			@include respond-below("mobile") {
 				font-size: 16px;
@@ -227,13 +225,13 @@ const { identity, navigation, hero } = Astro.props;
 		}
 
 		&__actions {
-			@include cluster(16px);
+			@include flex-row(16px);
 
 			flex-wrap: wrap;
 		}
 
 		&__links {
-			@include cluster(24px);
+			@include flex-row(24px);
 
 			flex-wrap: wrap;
 			padding-top: 12px;
@@ -242,11 +240,11 @@ const { identity, navigation, hero } = Astro.props;
 		&__link {
 			@include typography("mono", 12px);
 
-			color: color("text-subtle");
+			color: color-token("text-subtle");
 			transition: color $transition-base;
 
 			&:hover {
-				color: color("teal");
+				color: color-token("teal");
 			}
 		}
 
