@@ -9,6 +9,11 @@ interface UiStrings {
 	readonly contactChannels: string;
 	readonly sourceCode: string;
 	readonly backToTop: string;
+	readonly cv: {
+		readonly documentTitle: (name: string) => string;
+		readonly languages: string;
+		readonly languageList: string;
+	};
 	readonly projectIllustration: (projectTitle: string) => string;
 }
 
@@ -21,6 +26,11 @@ const ui: Record<Locale, UiStrings> = {
 		contactChannels: "Canales de contacto",
 		sourceCode: "Fragmentos del código fuente de este sitio",
 		backToTop: "Volver arriba",
+		cv: {
+			documentTitle: (name) => `${name} — Currículum`,
+			languages: "Idiomas",
+			languageList: "Español · Inglés",
+		},
 		projectIllustration: (title) => `Ilustración del proyecto ${title}`,
 	},
 	en: {
@@ -31,6 +41,11 @@ const ui: Record<Locale, UiStrings> = {
 		contactChannels: "Contact channels",
 		sourceCode: "Snippets from this site's source code",
 		backToTop: "Back to top",
+		cv: {
+			documentTitle: (name) => `${name} — Resume`,
+			languages: "Languages",
+			languageList: "Spanish · English",
+		},
 		projectIllustration: (title) => `Illustration of the ${title} project`,
 	},
 };

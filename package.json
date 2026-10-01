@@ -9,6 +9,7 @@
 		"dev": "astro dev",
 		"build": "astro build",
 		"preview": "astro preview",
+		"cv:pdf": "astro build && node scripts/generate-cv.mjs && astro build",
 		"astro": "astro",
 		"check": "astro check",
 		"lint:styles": "stylelint \"src/**/*.{scss,astro}\"",

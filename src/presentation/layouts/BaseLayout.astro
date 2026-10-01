@@ -6,9 +6,11 @@ import "../styles/main.scss";
 
 interface Props {
 	lang?: Locale;
+	/** false en páginas para imprimir (CV): sin barra de progreso ni botón flotante. */
+	interactive?: boolean;
 }
 
-const { lang = DEFAULT_LOCALE } = Astro.props;
+const { lang = DEFAULT_LOCALE, interactive = true } = Astro.props;
 ---
 
 <!doctype html>
@@ -38,8 +40,8 @@ const { lang = DEFAULT_LOCALE } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body>
-		<ScrollProgress />
+		{interactive && <ScrollProgress />}
 		<slot />
-		<BackToTop />
+		{interactive && <BackToTop />}
 	</body>
 </html>

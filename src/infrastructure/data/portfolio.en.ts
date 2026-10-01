@@ -84,7 +84,7 @@ export const portfolioEn: Portfolio = {
 				href: "https://www.linkedin.com/in/kevin-v%C3%A1squez-46a0701b4",
 			},
 			{ label: "GITHUB ↗", href: "https://github.com/kenvas-dev" },
-			{ label: "DOWNLOAD CV ↓", href: "#" },
+			{ label: "DOWNLOAD CV ↓", href: "/cv/kevin-aquino-cv-en.pdf" },
 		],
 		portrait: {
 			image: {

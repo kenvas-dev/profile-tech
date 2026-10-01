@@ -34,6 +34,8 @@ export default defineConfig({
 	},
 	integrations: [
 		sitemap({
+			// El CV existe solo para generar el PDF (noindex).
+			filter: (page) => !/\/cv\/?$/.test(new URL(page).pathname),
 			i18n: {
 				defaultLocale: "es",
 				locales: { es: "es-SV", en: "en-US" },

@@ -1,0 +1,9 @@
+---
+import { getPortfolio } from "@infrastructure/di/container";
+import CvView from "@presentation/views/CvView.astro";
+
+const locale = "en";
+const portfolio = await getPortfolio.execute(locale);
+---
+
+<CvView locale={locale} portfolio={portfolio} />

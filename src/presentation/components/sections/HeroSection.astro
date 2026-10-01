@@ -60,7 +60,13 @@ const { identity, navigation, hero } = Astro.props;
 				<ul class="c-hero__links">
 					{hero.professionalLinks.map((link) => (
 						<li>
-							<a class="c-hero__link" href={link.href}>
+							<a
+								class="c-hero__link"
+								href={link.href}
+								download={
+									link.href.endsWith(".pdf") ? "" : undefined
+								}
+							>
 								{link.label}
 							</a>
 						</li>

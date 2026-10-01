@@ -4,17 +4,18 @@ Implementación en Astro del diseño de Figma _Portfolio profesional_, con arqui
 
 ## Comandos
 
-| Comando                   | Acción                                     |
-| :------------------------ | :----------------------------------------- |
-| `npm install`             | Instala dependencias                       |
-| `npm run dev`             | Servidor de desarrollo en `localhost:4321` |
-| `npm run build`           | Genera el sitio estático en `./dist/`      |
-| `npm run preview`         | Sirve el build localmente                  |
-| `npm run check`           | Comprueba los tipos de TypeScript y Astro  |
-| `npm run lint:styles`     | Valida SCSS y BEM con Stylelint            |
-| `npm run lint:styles:fix` | Corrige automáticamente lo que se pueda    |
-| `npm run format`          | Formatea todo el proyecto con Prettier     |
-| `npm run format:check`    | Comprueba el formato sin modificar         |
+| Comando                   | Acción                                        |
+| :------------------------ | :-------------------------------------------- |
+| `npm install`             | Instala dependencias                          |
+| `npm run dev`             | Servidor de desarrollo en `localhost:4321`    |
+| `npm run build`           | Genera el sitio estático en `./dist/`         |
+| `npm run preview`         | Sirve el build localmente                     |
+| `npm run check`           | Comprueba los tipos de TypeScript y Astro     |
+| `npm run cv:pdf`          | Genera el CV en PDF (es / en) en `public/cv/` |
+| `npm run lint:styles`     | Valida SCSS y BEM con Stylelint               |
+| `npm run lint:styles:fix` | Corrige automáticamente lo que se pueda       |
+| `npm run format`          | Formatea todo el proyecto con Prettier        |
+| `npm run format:check`    | Comprueba el formato sin modificar            |
 
 Al hacer `git commit`, un hook de **Husky** ejecuta **lint-staged** sobre los archivos en stage: aplica Prettier (`.prettierrc`) y, en `.scss`/`.astro`, `stylelint --fix`. Los archivos corregidos se vuelven a añadir al commit automáticamente; si queda algún error que no se pueda corregir, el commit se cancela.
 
@@ -57,6 +58,12 @@ Las dependencias apuntan siempre hacia dentro: `presentation → application →
 - **Datos estructurados:** `src/presentation/seo/structuredData.ts` construye `Person`, `WebSite` y `ProfilePage` (schema.org) a partir del contenido del portfolio.
 - **Rastreo:** `@astrojs/sitemap` (con alternativas por idioma) y `src/pages/robots.txt.ts`.
 - **Recursos:** `public/og/og-{es,en}.jpg` (1200×630), favicon, `apple-touch-icon.png`, iconos y `site.webmanifest`.
+
+## CV en PDF
+
+Las páginas `/cv` y `/en/cv` (`src/presentation/views/CvView.astro`) maquetan el CV en A4 con la estética del sitio y el mismo contenido de `portfolio.*.ts`. Son `noindex` y no aparecen en el sitemap.
+
+`npm run cv:pdf` compila el sitio, imprime ambas páginas con Chrome headless (`scripts/generate-cv.mjs`, ruta configurable con `CHROME_PATH`) y guarda `public/cv/kevin-aquino-cv-{es,en}.pdf`, que enlaza el botón «Descargar CV». **Ejecútalo cada vez que cambies el contenido** y commitea los PDF: Vercel no tiene Chrome para generarlos.
 
 ## Estilos (SCSS)
 
