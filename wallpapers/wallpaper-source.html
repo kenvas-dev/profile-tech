@@ -1,0 +1,350 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;700&family=Orbitron:wght@900&display=swap"
+		/>
+		<style>
+			:root {
+				--midnight: #3b0855;
+				--plum: #852467;
+				--salmon: #fd8083;
+				--magenta: #ee227d;
+				--teal: #30c0b7;
+				--bg: #1a0228;
+				--text: #fff1f8;
+				/* unidad base: el lado corto de la pantalla */
+				--u: min(1vw, 1vh);
+				--horizon: 62%;
+			}
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			html,
+			body {
+				width: 100vw;
+				height: 100vh;
+				overflow: hidden;
+				background: var(--bg);
+			}
+			body.portrait {
+				--horizon: 60%;
+			}
+
+			.sky {
+				position: absolute;
+				inset: 0;
+				background:
+					radial-gradient(
+						ellipse 70% 45% at 50% var(--horizon),
+						rgb(238 34 125 / 0.45),
+						transparent 70%
+					),
+					linear-gradient(
+						180deg,
+						var(--bg) 0%,
+						var(--midnight) 45%,
+						var(--plum) var(--horizon),
+						var(--bg) var(--horizon)
+					);
+			}
+			.stars {
+				position: absolute;
+				inset: 0;
+				bottom: calc(100% - var(--horizon));
+			}
+			.star {
+				position: absolute;
+				border-radius: 50%;
+				background: var(--text);
+			}
+
+			.sun-wrap {
+				position: absolute;
+				left: 50%;
+				top: var(--horizon);
+				width: calc(var(--u) * 52);
+				aspect-ratio: 1;
+				transform: translate(-50%, -74%);
+			}
+			body.portrait .sun-wrap {
+				width: calc(var(--u) * 80);
+			}
+			.sun {
+				position: absolute;
+				inset: 0;
+				border-radius: 50%;
+				background: linear-gradient(
+					180deg,
+					var(--salmon) 0%,
+					var(--magenta) 55%,
+					var(--plum) 100%
+				);
+				filter: drop-shadow(
+					0 0 calc(var(--u) * 6) rgb(238 34 125 / 0.75)
+				);
+				-webkit-mask-image: linear-gradient(
+					to bottom,
+					#000 0%,
+					#000 52%,
+					transparent 52%,
+					transparent 54.5%,
+					#000 54.5%,
+					#000 60%,
+					transparent 60%,
+					transparent 63%,
+					#000 63%,
+					#000 68%,
+					transparent 68%,
+					transparent 72%,
+					#000 72%,
+					#000 76%,
+					transparent 76%,
+					transparent 81%,
+					#000 81%,
+					#000 84%,
+					transparent 84%,
+					transparent 90%,
+					#000 90%,
+					#000 92%,
+					transparent 92%
+				);
+			}
+			.orbit {
+				position: absolute;
+				inset: -9%;
+				border-radius: 50%;
+				border: calc(var(--u) * 0.22) dashed rgb(48 192 183 / 0.7);
+				filter: drop-shadow(
+					0 0 calc(var(--u) * 0.8) rgb(48 192 183 / 0.8)
+				);
+				-webkit-mask-image: linear-gradient(
+					to bottom,
+					#000 60%,
+					transparent 70%
+				);
+			}
+
+			.mountains {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: var(--horizon);
+				height: calc(var(--u) * 14);
+				transform: translateY(-100%);
+			}
+			.mountains svg {
+				width: 100%;
+				height: 100%;
+				display: block;
+			}
+
+			.floor {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: var(--horizon);
+				bottom: 0;
+				overflow: hidden;
+				perspective: calc(var(--u) * 30);
+				perspective-origin: 50% 0;
+				background: linear-gradient(180deg, #2a0640 0%, var(--bg) 100%);
+			}
+			.floor::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: -150%;
+				width: 400%;
+				height: 400%;
+				transform: rotateX(70deg);
+				transform-origin: 50% 0;
+				background-image:
+					linear-gradient(
+						var(--teal) calc(var(--u) * 0.25),
+						transparent calc(var(--u) * 0.25)
+					),
+					linear-gradient(
+						90deg,
+						var(--teal) calc(var(--u) * 0.25),
+						transparent calc(var(--u) * 0.25)
+					);
+				background-size: calc(var(--u) * 7) calc(var(--u) * 7);
+				background-position: center top;
+				filter: drop-shadow(
+					0 0 calc(var(--u) * 0.6) rgb(48 192 183 / 0.9)
+				);
+				-webkit-mask-image: linear-gradient(
+					to bottom,
+					transparent 0%,
+					#000 6%
+				);
+			}
+			.horizon-line {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: var(--horizon);
+				height: calc(var(--u) * 0.25);
+				background: linear-gradient(
+					90deg,
+					transparent,
+					var(--magenta) 20%,
+					var(--salmon) 50%,
+					var(--magenta) 80%,
+					transparent
+				);
+				box-shadow: 0 0 calc(var(--u) * 2) var(--magenta);
+			}
+
+			.brand {
+				position: absolute;
+				left: 50%;
+				top: 6%;
+				transform: translateX(-50%);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: calc(var(--u) * 1.6);
+			}
+			body.portrait .brand {
+				top: 16%;
+			}
+			.badge {
+				font:
+					700 calc(var(--u) * 2) "IBM Plex Mono",
+					monospace;
+				letter-spacing: 0.08em;
+				color: var(--teal);
+				padding: calc(var(--u) * 0.6) calc(var(--u) * 1.4);
+				border: 1px solid var(--magenta);
+				border-radius: calc(var(--u) * 0.5);
+				background: rgb(59 8 85 / 0.7);
+				box-shadow:
+					0 0 calc(var(--u) * 1) rgb(238 34 125 / 0.6),
+					inset 0 0 calc(var(--u) * 1) rgb(238 34 125 / 0.2);
+				text-shadow: 0 0 calc(var(--u) * 0.8) rgb(48 192 183 / 0.8);
+			}
+			.name {
+				font:
+					900 calc(var(--u) * 6.4) "Orbitron",
+					sans-serif;
+				letter-spacing: 0.06em;
+				background: linear-gradient(
+					180deg,
+					var(--text) 0%,
+					var(--salmon) 45%,
+					var(--magenta) 100%
+				);
+				-webkit-background-clip: text;
+				color: transparent;
+				filter: drop-shadow(
+					0 0 calc(var(--u) * 1.6) rgb(238 34 125 / 0.65)
+				);
+				white-space: nowrap;
+			}
+			body.portrait .name {
+				font-size: calc(var(--u) * 9);
+			}
+
+			.scanlines {
+				position: absolute;
+				inset: 0;
+				pointer-events: none;
+				background: repeating-linear-gradient(
+					180deg,
+					rgb(0 0 0 / 0.14) 0 1px,
+					transparent 1px 3px
+				);
+			}
+			.vignette {
+				position: absolute;
+				inset: 0;
+				background: radial-gradient(
+					ellipse at center,
+					transparent 55%,
+					rgb(10 0 18 / 0.65) 100%
+				);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="sky"></div>
+		<div class="stars" id="stars"></div>
+		<div class="sun-wrap">
+			<div class="orbit"></div>
+			<div class="sun"></div>
+		</div>
+		<div class="mountains">
+			<svg viewBox="0 0 1000 100" preserveAspectRatio="none">
+				<path
+					d="M0 100 L0 70 L60 40 L110 62 L170 18 L240 66 L300 44 L340 58 L380 100 Z"
+					fill="#14011f"
+				/>
+				<path
+					d="M620 100 L660 56 L710 70 L780 22 L840 60 L890 38 L950 64 L1000 48 L1000 100 Z"
+					fill="#14011f"
+				/>
+				<path
+					d="M0 70 L60 40 L110 62 L170 18 L240 66 L300 44 L340 58 L380 100"
+					fill="none"
+					stroke="#ee227d"
+					stroke-width="1.2"
+				/>
+				<path
+					d="M620 100 L660 56 L710 70 L780 22 L840 60 L890 38 L950 64 L1000 48"
+					fill="none"
+					stroke="#ee227d"
+					stroke-width="1.2"
+				/>
+			</svg>
+		</div>
+		<div class="floor"></div>
+		<div class="horizon-line"></div>
+		<div class="brand">
+			<span class="badge">{UN1T7D}</span>
+			<span class="name">KEVIN AQUINO</span>
+		</div>
+		<div class="vignette"></div>
+		<div class="scanlines"></div>
+		<script>
+			if (innerHeight > innerWidth)
+				document.body.classList.add("portrait");
+			if (location.hash === "#clean")
+				document.querySelector(".brand").remove();
+			// Campo de estrellas determinista (misma imagen en cada render)
+			let seed = 7;
+			const rand = () =>
+				(seed = (seed * 16807) % 2147483647) / 2147483647;
+			const colors = [
+				"#fff1f8",
+				"#fff1f8",
+				"#fff1f8",
+				"#fd8083",
+				"#30c0b7",
+			];
+			const stars = document.getElementById("stars");
+			const count = Math.round((innerWidth * innerHeight) / 9000);
+			for (let i = 0; i < count; i++) {
+				const s = document.createElement("span");
+				const size = rand() < 0.85 ? 1 + rand() : 2 + rand() * 1.5;
+				const c = colors[Math.floor(rand() * colors.length)];
+				Object.assign(s.style, {
+					left: rand() * 100 + "%",
+					top: Math.pow(rand(), 1.3) * 100 + "%",
+					width: size + "px",
+					height: size + "px",
+					background: c,
+					opacity: 0.35 + rand() * 0.65,
+					boxShadow: size > 2 ? `0 0 ${size * 3}px ${c}` : "none",
+				});
+				s.className = "star";
+				stars.appendChild(s);
+			}
+		</script>
+	</body>
+</html>
