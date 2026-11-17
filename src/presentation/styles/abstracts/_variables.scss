@@ -40,6 +40,20 @@ $colors: map.merge(
 	)
 );
 
+/// Paleta «papel» del CV corporativo: fondo claro con los tonos de la marca
+/// oscurecidos para cumplir contraste WCAG AA (≥ 4.5:1) sobre blanco.
+/// Úsese con `paper-token()`.
+/// @type Map
+$paper-colors: (
+	"background": #fff,
+	"ink": $_background,
+	"ink-muted": #4a3a57,
+	"ink-subtle": #6b5b78,
+	"rule": #e7dcee,
+	"accent": #c4175f,
+	"accent-alt": #0b7a73,
+);
+
 /// Degradado de atardecer (sol, nombre del hero).
 $gradient-sunset: linear-gradient(
 	180deg,

@@ -1,0 +1,43 @@
+---
+/**
+ * Sección del CV con encabezado estándar (legible por sistemas ATS) y el
+ * degradado neón de la marca como único acento.
+ */
+interface Props {
+	/** Título de la sección (p. ej. «Experiencia profesional»). */
+	heading: string;
+	/** true para que la sección no se parta entre dos páginas. */
+	keepTogether?: boolean;
+}
+
+const { heading, keepTogether = false } = Astro.props;
+---
+
+<section class:list={["c-cv-section", { "c-cv-section--keep": keepTogether }]}>
+	<h2 class="c-cv-section__heading">{heading}</h2>
+	<slot />
+</section>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-cv-section {
+		@include flex-column(8px);
+
+		&--keep {
+			break-inside: avoid;
+		}
+
+		&__heading {
+			@include typography("mono", 10.5px, $font-weight-semibold);
+
+			padding-bottom: 4px;
+			border-bottom: 1px solid paper-token("rule");
+			background: $gradient-neon no-repeat left bottom / 44px 2px;
+			color: paper-token("accent");
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			break-after: avoid;
+		}
+	}
+</style>

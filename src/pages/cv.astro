@@ -1,12 +1,12 @@
 ---
 /**
- * CV para imprimir en español (`/cv/`). Fuente del PDF generado con `npm run cv:pdf`; no se indexa.
+ * CV corporativo para imprimir (es, `/cv/`). Fuente del PDF generado con `npm run cv:pdf`; no se indexa.
  */
-import { getPortfolioUseCase } from "@infrastructure/di/container";
+import { getCurriculumUseCase } from "@infrastructure/di/container";
 import CvView from "@presentation/views/CvView.astro";
 
 const locale = "es";
-const portfolio = await getPortfolioUseCase.execute(locale);
+const curriculum = await getCurriculumUseCase.execute(locale);
 ---
 
-<CvView locale={locale} portfolio={portfolio} />
+<CvView locale={locale} curriculum={curriculum} />
