@@ -1,0 +1,123 @@
+---
+/**
+ * Puesto de trabajo del CV: cargo, empresa, fechas, logros y tecnologías,
+ * en el orden y formato que esperan reclutadores y sistemas ATS.
+ */
+import type {
+	CurriculumLabels,
+	CurriculumPosition,
+} from "@domain/entities/curriculum";
+import type { Locale } from "@domain/entities/locale";
+import { formatDateRange } from "../../utils/formatPartialDate";
+
+interface Props {
+	position: CurriculumPosition;
+	/** Etiquetas del documento («Presente», «Tecnologías»). */
+	labels: CurriculumLabels;
+	locale: Locale;
+}
+
+const { position, labels, locale } = Astro.props;
+const period = formatDateRange(
+	position.startDate,
+	position.endDate,
+	locale,
+	labels.present,
+);
+---
+
+<article class="c-cv-position">
+	<header class="c-cv-position__header">
+		<h3 class="c-cv-position__title">
+			{position.jobTitle}
+			<span class="c-cv-position__company">
+				{" — "}
+				{position.companyName}
+			</span>
+		</h3>
+		<p class="c-cv-position__period">{period}</p>
+	</header>
+	<p class="c-cv-position__location">{position.workLocation}</p>
+
+	<ul class="c-cv-position__highlights">
+		{position.highlights.map((highlight) => (
+			<li class="c-cv-position__highlight">{highlight}</li>
+		))}
+	</ul>
+
+	{position.technologies.length > 0 && (
+		<p class="c-cv-position__technologies">
+			<span class="c-cv-position__technologies-label">
+				{labels.technologies}:
+			</span>{" "}
+			{position.technologies.join(", ")}
+		</p>
+	)}
+</article>
+
+<style lang="scss">
+	@use "abstracts" as *;
+
+	.c-cv-position {
+		@include flex-column(3px);
+
+		break-inside: avoid;
+
+		&__header {
+			@include flex-row(16px, baseline, space-between);
+		}
+
+		&__title {
+			@include typography("display", 12.5px, $font-weight-bold, 1.3);
+
+			color: paper-token("ink");
+		}
+
+		&__company {
+			font-weight: $font-weight-medium;
+		}
+
+		&__period {
+			@include typography("mono", 10px, $font-weight-medium);
+
+			flex-shrink: 0;
+			color: paper-token("ink-muted");
+		}
+
+		&__location {
+			@include typography("body", 10.5px);
+
+			color: paper-token("ink-subtle");
+		}
+
+		&__highlights {
+			@include flex-column(2px);
+
+			margin-top: 3px;
+			padding-left: 14px;
+			list-style: disc;
+		}
+
+		&__highlight {
+			@include typography("body", 11px, $font-weight-regular, 1.4);
+
+			color: paper-token("ink");
+
+			&::marker {
+				color: paper-token("accent");
+			}
+		}
+
+		&__technologies {
+			@include typography("body", 10.5px, $font-weight-regular, 1.4);
+
+			margin-top: 2px;
+			color: paper-token("ink-muted");
+		}
+
+		&__technologies-label {
+			font-weight: $font-weight-semibold;
+			color: paper-token("accent-alt");
+		}
+	}
+</style>

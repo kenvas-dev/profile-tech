@@ -1,574 +1,330 @@
 ---
 /**
- * CV en formato A4 con la estética del sitio, a partir del mismo contenido que la web. Pensado para imprimirse a PDF.
+ * CV corporativo en A4, pensado para reclutadores y sistemas ATS: una sola
+ * columna, fondo claro, texto real seleccionable y encabezados estándar. La
+ * marca se conserva en la tipografía, el monograma y el degradado neón.
  */
-import type { PortfolioOverview } from "@application/use-cases/GetPortfolio";
-import { isCurrentPosition } from "@domain/entities/experience";
+import type { Curriculum } from "@domain/entities/curriculum";
 import type { Locale } from "@domain/entities/locale";
-import Icon from "../components/ui/Icon.astro";
-import PillList from "../components/ui/PillList.astro";
-import RetroSun from "../components/ui/RetroSun.astro";
-import SectionLabel from "../components/ui/SectionLabel.astro";
+import CvPosition from "../components/cv/CvPosition.astro";
+import CvSection from "../components/cv/CvSection.astro";
 import { getUiTranslations } from "../i18n/ui";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { formatPeriod } from "../utils/formatPeriod";
 
 interface Props {
 	/** Idioma del CV. */
 	locale: Locale;
 	/** Contenido ya procesado por el caso de uso. */
-	portfolio: PortfolioOverview;
+	curriculum: Curriculum;
 }
 
-const { locale, portfolio } = Astro.props;
+const { locale, curriculum } = Astro.props;
 const {
 	identity,
-	seo,
-	hero,
-	profile,
-	skills,
+	headline,
+	location,
+	contacts,
+	summary,
 	experience,
+	skillGroups,
 	projects,
 	education,
-	contact,
-} = portfolio;
+	languages,
+	labels,
+} = curriculum;
 const uiText = getUiTranslations(locale);
-
-const website = Astro.site?.host ?? "";
-const allProjects = [projects.featuredProject, ...projects.otherProjects];
-const channelHref = (icon: string) =>
-	contact.channels.find((channel) => channel.iconName === icon);
-const linkedin = channelHref("linkedin");
-const github = channelHref("github");
 ---
 
-<BaseLayout locale={locale} isInteractive={false}>
+<BaseLayout locale={locale} isInteractive={false} colorScheme="light">
 	<Fragment slot="head">
 		<title>{uiText.cv.documentTitle(identity.fullName)}</title>
+		<meta name="author" content={identity.fullName} />
+		<meta
+			name="description"
+			content={`${identity.fullName} — ${headline}`}
+		/>
 		<meta name="robots" content="noindex, follow" />
 	</Fragment>
 
 	<article class="c-cv">
 		<header class="c-cv__header">
 			<div class="c-cv__identity">
-				<span class="c-cv__brand">{identity.brandMark}</span>
 				<h1 class="c-cv__name">{identity.fullName}</h1>
-				<p class="c-cv__role">
-					{seo.jobTitles.slice(0, 2).join(" · ")}
-				</p>
-				<p class="c-cv__summary">{hero.valueProposition}</p>
+				<p class="c-cv__headline">{headline}</p>
 			</div>
-
-			<figure class="c-cv__portrait">
-				<div class="c-cv__sun">
-					<RetroSun size="100%" />
-				</div>
-				<img
-					class="c-cv__photo"
-					src={hero.portrait.image.src}
-					alt={hero.portrait.image.alt}
-					width="132"
-					height="132"
-				/>
-			</figure>
+			<span class="c-cv__brand" aria-hidden="true">
+				{identity.brandMark}
+			</span>
 		</header>
 
-		<ul class="c-cv__contact">
-			<li class="c-cv__contact-item">
-				<Icon iconName="send" size={12} />
-				<a href={`mailto:${contact.email}`}>{contact.email}</a>
-			</li>
-			{linkedin && (
-				<li class="c-cv__contact-item">
-					<Icon iconName="linkedin" size={12} />
-					<a href={linkedin.href}>
-						linkedin.com{linkedin.displayValue}
-					</a>
-				</li>
-			)}
-			{github && (
-				<li class="c-cv__contact-item">
-					<Icon iconName="github" size={12} />
-					<a href={github.href}>
-						github.com/{github.displayValue.replace("@", "")}
-					</a>
-				</li>
-			)}
-			<li class="c-cv__contact-item">
-				<Icon iconName="arrow-up-right" size={12} />
-				<a href={Astro.site?.href}>{website}</a>
-			</li>
-			<li class="c-cv__contact-item">
-				<Icon iconName="map-pin" size={12} />
-				<span>{hero.portrait.locationName}</span>
-			</li>
-		</ul>
+		<address class="c-cv__contact">
+			<span class="c-cv__contact-item">{location}</span>
+			{contacts.map((contact) => (
+				<a class="c-cv__contact-item" href={contact.href}>
+					{contact.displayValue}
+				</a>
+			))}
+		</address>
 
-		<div class="c-cv__body">
-			<aside class="c-cv__sidebar">
-				<section class="c-cv__section">
-					<SectionLabel
-						sectionIndex="/01"
-						sectionLabel={profile.sectionLabel}
-					/>
-					<p class="c-cv__text">{profile.biography}</p>
-					<dl class="c-cv__metrics">
-						{profile.metrics.slice(0, 3).map((metric) => (
-							<div class="c-cv__metric">
-								<dt class="c-cv__metric-label">
-									{metric.label}
-								</dt>
-								<dd class="c-cv__metric-value">
-									{metric.value}
-								</dd>
-							</div>
-						))}
-					</dl>
-				</section>
+		<CvSection heading={labels.summary}>
+			<p class="c-cv__text">{summary}</p>
+		</CvSection>
 
-				<section class="c-cv__section">
-					<SectionLabel
-						sectionIndex="/02"
-						sectionLabel={skills.intro.sectionLabel}
+		<CvSection heading={labels.experience}>
+			<div class="c-cv__stack">
+				{experience.map((position) => (
+					<CvPosition
+						position={position}
+						labels={labels}
+						locale={locale}
 					/>
-					{skills.skillGroups.map((group) => (
-						<div class="c-cv__skill-group">
-							<h3 class="c-cv__skill-title">{group.title}</h3>
-							<PillList items={group.technologies} />
-						</div>
-					))}
-				</section>
+				))}
+			</div>
+		</CvSection>
 
-				<section class="c-cv__section c-cv__section--keep">
-					<SectionLabel
-						sectionIndex="/03"
-						sectionLabel={education.credentialsLabel}
-					/>
-					{education.credentials.map((credential) => (
-						<div class="c-cv__credential">
-							<span class="c-cv__credential-year">
-								{credential.completionYear} ·{" "}
-								{credential.credentialType}
-							</span>
-							<h3 class="c-cv__credential-title">
-								{credential.title}
-							</h3>
-							<span class="c-cv__credential-institution">
-								{credential.institutionName}
-							</span>
-						</div>
-					))}
-				</section>
-
-				<section class="c-cv__section c-cv__section--keep">
-					<SectionLabel
-						sectionIndex="/04"
-						sectionLabel={uiText.cv.languagesHeading}
-					/>
-					<p class="c-cv__text">{uiText.cv.spokenLanguages}</p>
-				</section>
-			</aside>
-
-			<main class="c-cv__main">
-				<section class="c-cv__section">
-					<SectionLabel
-						sectionIndex="/05"
-						sectionLabel={experience.intro.sectionLabel}
-					/>
-					{experience.positions.map((position) => (
-						<div class="c-cv__position">
-							<div class="c-cv__position-header">
-								<div>
-									<span class="c-cv__company">
-										{position.companyName}
-									</span>
-									<h3 class="c-cv__position-title">
-										{position.jobTitle}
-									</h3>
-								</div>
-								<span
-									class:list={[
-										"c-cv__period",
-										{
-											"c-cv__period--current":
-												isCurrentPosition(position),
-										},
-									]}
-								>
-									{formatPeriod(
-										position.period,
-										experience.presentDateLabel,
-									)}
-								</span>
-							</div>
-							<span class="c-cv__location">
-								{position.workLocation}
-							</span>
-							<p class="c-cv__text">{position.summary}</p>
-							<ul class="c-cv__achievements">
-								{position.achievements.map((achievement) => (
-									<li class="c-cv__achievement">
-										{achievement}
-									</li>
-								))}
-							</ul>
-						</div>
-					))}
-				</section>
-
-				<section class="c-cv__section c-cv__section--new-page">
-					<SectionLabel
-						sectionIndex="/06"
-						sectionLabel={projects.intro.sectionLabel}
-					/>
-					<div class="c-cv__projects">
-						{allProjects.map((project) => (
-							<div class="c-cv__project">
-								<span class="c-cv__project-category">
-									{project.category}
-								</span>
-								<h3 class="c-cv__project-title">
-									{project.title}
-								</h3>
-								<p class="c-cv__project-summary">
-									{project.summary}
-								</p>
-								<span class="c-cv__project-stack">
-									{project.technologies.join(" · ")}
-								</span>
-							</div>
-						))}
+		<CvSection heading={labels.skills} keepTogether>
+			<dl class="c-cv__skills">
+				{skillGroups.map((group) => (
+					<div class="c-cv__skill-row">
+						<dt class="c-cv__skill-title">{group.title}:</dt>
+						<dd class="c-cv__skill-list">
+							{` ${group.skills.join(", ")}`}
+						</dd>
 					</div>
-				</section>
-			</main>
-		</div>
+				))}
+			</dl>
+		</CvSection>
+
+		<CvSection heading={labels.projects} keepTogether>
+			{projects.map((project) => (
+				<div class="c-cv__project">
+					<h3 class="c-cv__item-title">
+						{project.title}
+						<span class="c-cv__item-meta">
+							{" — "}
+							{project.links.map((link) => (
+								<a class="c-cv__inline-link" href={link.href}>
+									{link.displayValue}
+								</a>
+							))}
+						</span>
+					</h3>
+					<p class="c-cv__text">{project.description}</p>
+					<p class="c-cv__technologies">
+						<span class="c-cv__technologies-label">
+							{labels.technologies}:
+						</span>{" "}
+						{project.technologies.join(", ")}
+					</p>
+				</div>
+			))}
+		</CvSection>
+
+		<CvSection heading={labels.education} keepTogether>
+			<ul class="c-cv__stack c-cv__stack--tight">
+				{education.map((credential) => (
+					<li class="c-cv__credential">
+						<span class="c-cv__item-title">{credential.title}</span>
+						<span class="c-cv__item-meta">
+							{" — "}
+							{credential.institutionName} ·{" "}
+							{credential.completionYear}
+						</span>
+					</li>
+				))}
+			</ul>
+		</CvSection>
+
+		<CvSection heading={labels.languages} keepTogether>
+			<ul class="c-cv__languages">
+				{languages.map((language) => (
+					<li class="c-cv__language">
+						<span class="c-cv__item-title">{language.name}</span>
+						<span class="c-cv__item-meta">
+							{" — "}
+							{language.proficiency}
+						</span>
+					</li>
+				))}
+			</ul>
+		</CvSection>
 	</article>
 </BaseLayout>
 
 <style lang="scss">
 	@use "abstracts" as *;
 
-	// A4 a 96 ppp: 210mm ≈ 794px. El fondo oscuro se imprime tal cual.
-	$page-width: 210mm;
-	$page-padding: 36px;
-	$sidebar-width: 236px;
+	// Márgenes reales de página: el fondo es claro, así que el navegador puede
+	// dejarlos en blanco sin franjas, y cada página nueva respira igual.
+	$page-margin-block: 10mm;
+	$page-margin-inline: 14mm;
 
-	// Sin márgenes de página: Chrome no pinta el fondo en ellos (saldrían
-	// franjas grises). El aire entre páginas lo da __body con decoration clone.
 	@page {
 		size: a4;
-		margin: 0;
+		margin: $page-margin-block $page-margin-inline;
 	}
 
-	:global(html) {
-		background: color-token("background");
+	:global(html),
+	:global(body) {
+		background: paper-token("background");
+		color-scheme: light;
 		print-color-adjust: exact;
+	}
+
+	// Las scanlines CRT del sitio no tienen sentido sobre papel.
+	:global(body)::after {
+		display: none;
 	}
 
 	.c-cv {
-		width: $page-width;
+		@include flex-column(12px);
+
+		max-width: 210mm;
 		margin: 0 auto;
-		background:
-			radial-gradient(
-				ellipse 70% 40% at 85% 0%,
-				color-alpha("magenta", 0.22),
-				transparent 70%
-			),
-			color-token("background");
-		color: color-token("text");
-		font-size: 10.5px;
+		padding: $page-margin-block $page-margin-inline;
+		background: paper-token("background");
+		color: paper-token("ink");
+
+		// Ligaduras desactivadas: algunos ATS extraen «fi»/«fl» como un solo
+		// glifo ilegible.
+		font-variant-ligatures: none;
 		print-color-adjust: exact;
 
 		&__header {
-			@include flex-row(24px, center, space-between);
+			@include flex-row(16px, flex-start, space-between);
 
-			position: relative;
-			padding: $page-padding $page-padding 20px;
-			overflow: hidden;
-			border-bottom: 1px solid color-alpha("magenta", 0.45);
-			background:
-				linear-gradient(color-alpha("teal", 0.12) 1px, transparent 1px),
-				linear-gradient(
-					90deg,
-					color-alpha("teal", 0.12) 1px,
-					transparent 1px
-				),
-				$gradient-sky;
-			background-size:
-				28px 28px,
-				28px 28px,
-				100% 100%;
+			padding-top: 8px;
+			border-top: 4px solid transparent;
+			border-image: $gradient-neon 1;
 		}
 
 		&__identity {
-			@include flex-column(6px, flex-start);
-
-			flex: 1;
-			min-width: 0;
-		}
-
-		&__brand {
-			@include typography("mono", 11px, $font-weight-bold);
-			@include neon-text("teal", 0.4);
-
-			padding: 3px 8px;
-			border: 1px solid color-token("magenta");
-			border-radius: $radius-sm;
-			background: color-token("midnight");
-			color: color-token("teal");
+			@include flex-column(4px);
 		}
 
 		&__name {
-			// Color sólido: Chrome imprime mal el texto con background-clip (deja
-			// una barra junto al texto), así que en papel se usa neón en lugar de degradado.
-			@include retro-heading(34px, $font-weight-black, 1.05);
-			@include neon-text("magenta", 0.5);
+			@include retro-heading(26px, $font-weight-black, 1.1);
 
-			margin-top: 4px;
-			color: color-token("salmon");
+			color: paper-token("ink");
 		}
 
-		&__role {
-			@include typography("display", 15px, $font-weight-bold);
+		&__headline {
+			@include typography("display", 14px, $font-weight-semibold);
 
-			color: color-token("teal");
+			color: paper-token("accent");
 		}
 
-		&__summary {
-			@include typography("body", 11px, $font-weight-regular, 1.55);
+		&__brand {
+			@include typography("mono", 10px, $font-weight-bold);
 
-			max-width: 430px;
-			color: color-token("text-muted");
-		}
-
-		&__portrait {
-			position: relative;
-			display: grid;
-			flex-shrink: 0;
-			place-items: center;
-			width: 176px;
-			height: 176px;
-		}
-
-		&__sun {
-			position: absolute;
-			inset: 0;
-		}
-
-		&__photo {
-			@include neon-box("magenta", 0.6);
-
-			position: relative;
-			width: 132px;
-			height: 132px;
-			border: 3px solid color-token("salmon");
-			border-radius: 50%;
-			object-fit: cover;
+			padding: 3px 8px;
+			border: 1px solid paper-token("accent");
+			border-radius: $radius-sm;
+			color: paper-token("accent-alt");
 		}
 
 		&__contact {
-			@include flex-row(8px 18px);
+			@include flex-row(2px 0);
+			@include typography("body", 10.5px, $font-weight-regular, 1.5);
 
 			flex-wrap: wrap;
-			padding: 12px $page-padding;
-			border-bottom: 1px solid color-token("border");
-			background: color-alpha("midnight", 0.6);
+			padding-bottom: 8px;
+			border-bottom: 1px solid paper-token("rule");
+			color: paper-token("ink-muted");
+			font-style: normal;
 		}
 
 		&__contact-item {
-			@include flex-row(6px);
-			@include typography("mono", 9.5px);
+			color: inherit;
 
-			color: color-token("text-muted");
-
-			a {
-				color: inherit;
-			}
-
-			:global(.c-icon) {
-				color: color-token("teal");
-			}
-		}
-
-		&__body {
-			display: grid;
-			grid-template-columns: $sidebar-width minmax(0, 1fr);
-			gap: 28px;
-			padding: 24px $page-padding $page-padding;
-
-			// Repite el padding al inicio y final de cada página impresa.
-			box-decoration-break: clone;
-		}
-
-		&__sidebar,
-		&__main {
-			@include flex-column(22px);
-		}
-
-		&__section {
-			@include flex-column(10px);
-
-			&--keep {
-				break-inside: avoid;
-			}
-
-			&--new-page {
-				break-before: page;
+			&:not(:last-child)::after {
+				content: "·";
+				margin-inline: 8px;
+				color: paper-token("accent");
 			}
 		}
 
 		&__text {
-			@include typography("body", 10.5px, $font-weight-regular, 1.55);
+			@include typography("body", 11px, $font-weight-regular, 1.45);
 
-			color: color-token("text-muted");
+			color: paper-token("ink");
 		}
 
-		&__metrics {
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			gap: 8px;
-		}
+		&__stack {
+			@include flex-column(9px);
 
-		&__metric {
-			@include flex-column(2px);
-
-			flex-direction: column-reverse;
-		}
-
-		&__metric-value {
-			@include typography("retro", 18px, $font-weight-bold);
-			@include neon-text("teal", 0.4);
-
-			color: color-token("teal");
-		}
-
-		&__metric-label {
-			@include mono-label(7.5px);
-		}
-
-		&__skill-group {
-			@include flex-column(6px);
-		}
-
-		&__skill-title {
-			@include typography("display", 11.5px, $font-weight-bold);
-
-			color: color-token("text");
-		}
-
-		&__credential {
-			@include flex-column(2px);
-
-			padding-bottom: 8px;
-			border-bottom: 1px solid color-token("border");
-		}
-
-		&__credential-year {
-			@include mono-label(8px, "magenta");
-		}
-
-		&__credential-title {
-			@include typography("display", 12px, $font-weight-bold);
-
-			color: color-token("text");
-		}
-
-		&__credential-institution {
-			@include typography("body", 10px);
-
-			color: color-token("text-muted");
-		}
-
-		&__position {
-			@include flex-column(5px);
-
-			padding: 12px 0 12px 14px;
-			border-left: 2px solid color-token("magenta");
-			break-inside: avoid;
-		}
-
-		&__position-header {
-			@include flex-row(12px, flex-start, space-between);
-		}
-
-		&__company {
-			@include mono-label(8.5px, "magenta");
-		}
-
-		&__position-title {
-			@include typography("display", 14px, $font-weight-bold, 1.2);
-
-			color: color-token("text");
-		}
-
-		&__period {
-			@include typography("mono", 9px, $font-weight-semibold);
-
-			flex-shrink: 0;
-			color: color-token("text-subtle");
-
-			&--current {
-				color: color-token("teal");
+			&--tight {
+				gap: 4px;
 			}
 		}
 
-		&__location {
-			@include typography("body", 9.5px);
-
-			color: color-token("text-subtle");
-		}
-
-		&__achievements {
+		&__skills {
 			@include flex-column(3px);
 		}
 
-		&__achievement {
-			@include flex-row(6px, flex-start);
-			@include typography("body", 10px, $font-weight-regular, 1.45);
-
-			color: color-token("text");
-
-			&::before {
-				content: "↳";
-				color: color-token("teal");
-				font-family: font-family("mono");
-			}
+		// Título y lista en la misma línea de texto: el espacio entre ambos es
+		// texto real, así los ATS no los pegan («datos:Node.js»).
+		&__skill-row {
+			@include typography("body", 11px, $font-weight-regular, 1.45);
 		}
 
-		&__projects {
-			display: grid;
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 10px;
+		&__skill-title {
+			display: inline;
+			font-family: font-family("display");
+			font-weight: $font-weight-bold;
+			color: paper-token("ink");
+		}
+
+		&__skill-list {
+			display: inline;
+			color: paper-token("ink-muted");
 		}
 
 		&__project {
-			@include surface($border: "border-strong");
-			@include flex-column(4px);
-
-			padding: 10px 12px;
-			break-inside: avoid;
+			@include flex-column(2px);
 		}
 
-		&__project-category {
-			@include mono-label(7.5px, "salmon");
+		&__item-title {
+			@include typography("display", 11.5px, $font-weight-bold, 1.4);
+
+			color: paper-token("ink");
 		}
 
-		&__project-title {
-			@include typography("display", 12px, $font-weight-bold);
+		&__item-meta {
+			@include typography("body", 10.5px);
 
-			color: color-token("text");
+			color: paper-token("ink-subtle");
 		}
 
-		&__project-summary {
-			@include typography("body", 9.5px, $font-weight-regular, 1.45);
+		&__inline-link {
+			color: inherit;
 
-			color: color-token("text-muted");
+			&:not(:last-child)::after {
+				content: " ·";
+				margin-right: 4px;
+			}
 		}
 
-		&__project-stack {
-			@include typography("mono", 8.5px);
+		&__technologies {
+			@include typography("body", 10.5px, $font-weight-regular, 1.4);
 
-			color: color-token("teal");
+			color: paper-token("ink-muted");
+		}
+
+		&__technologies-label {
+			font-weight: $font-weight-semibold;
+			color: paper-token("accent-alt");
+		}
+
+		&__languages {
+			@include flex-row(4px 28px);
+
+			flex-wrap: wrap;
+		}
+
+		@media print {
+			max-width: none;
+			padding: 0;
 		}
 	}
 </style>

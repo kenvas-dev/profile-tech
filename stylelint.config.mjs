@@ -39,6 +39,7 @@ export default {
 					// Funciones propias (abstracts/_functions.scss y componentes).
 					"color-token",
 					"color-alpha",
+					"paper-token",
 					"font-family",
 					"gutter-size",
 					"z-layer",

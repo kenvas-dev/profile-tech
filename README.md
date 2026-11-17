@@ -52,7 +52,7 @@ Las dependencias apuntan siempre hacia dentro: `presentation → application →
 
 ## SEO
 
-- **Dominio:** `site` en `astro.config.mjs` se resuelve con `SITE_URL` → `VERCEL_PROJECT_PRODUCTION_URL` (lo inyecta Vercel) → `https://profile-tech.vercel.app`.
+- **Dominio:** `site` en `astro.config.mjs` es `https://www.un1t7d.dev` (sobrescribible con `SITE_URL`). Es fijo a propósito: así producción y previews de Vercel declaran la canónica del dominio propio, y el CV en PDF enlaza al sitio correcto.
 - **Contenido SEO por idioma:** bloque `seo` de `src/infrastructure/data/portfolio.*.ts` (título, descripción, palabras clave, cargos, áreas de conocimiento e imagen social).
 - **`<head>`:** `src/presentation/components/seo/SeoHead.astro` genera canónica, `hreflang` absolutos (+ `x-default`), Open Graph, Twitter Card y JSON-LD.
 - **Datos estructurados:** `src/presentation/seo/structuredData.ts` construye `Person`, `WebSite` y `ProfilePage` (schema.org) a partir del contenido del portfolio.
@@ -61,7 +61,11 @@ Las dependencias apuntan siempre hacia dentro: `presentation → application →
 
 ## CV en PDF
 
-Las páginas `/cv` y `/en/cv` (`src/presentation/views/CvView.astro`) maquetan el CV en A4 con la estética del sitio y el mismo contenido de `portfolio.*.ts`. Son `noindex` y no aparecen en el sitemap.
+Las páginas `/cv` y `/en/cv` (`src/presentation/views/CvView.astro`) maquetan un CV corporativo en A4 de una página, pensado para reclutadores y sistemas ATS: una columna, fondo claro, texto real seleccionable, encabezados estándar y fechas `Oct 2022 – Presente`. La marca se conserva en la tipografía, el monograma y el degradado neón (paleta `$paper-colors`, contraste WCAG AA). Son `noindex` y no aparecen en el sitemap.
+
+El contenido del CV es **independiente de la web**: vive en `src/infrastructure/data/curriculum.{es,en}.ts` (puerto `CurriculumRepository`, caso de uso `GetCurriculum`) y reutiliza los hechos comunes de `portfolio.shared.ts` y `curriculum.shared.ts`. Así se puede ajustar el CV para una oferta sin tocar el portfolio. Los comentarios `TODO(métricas)` marcan dónde añadir cifras reales.
+
+**Prueba ATS rápida:** abre el PDF, selecciona todo, pégalo en un editor de texto y comprueba que el orden y los espacios se mantienen.
 
 `npm run cv:pdf` compila el sitio, imprime ambas páginas con Chrome headless (`scripts/generate-cv.mjs`, ruta configurable con `CHROME_PATH`) y guarda `public/cv/kevin-aquino-cv-{es,en}.pdf`, que enlaza el botón «Descargar CV». **Ejecútalo cada vez que cambies el contenido** y commitea los PDF: Vercel no tiene Chrome para generarlos.
 

@@ -6,12 +6,10 @@
  */
 import { DEFAULT_LOCALE, isLocale, type Locale } from "@domain/entities/locale";
 
-/** Textos del CV en PDF que no existen en el contenido del portfolio. */
+/** Textos del CV en PDF que no forman parte de su contenido (`curriculum.*.ts`). */
 export interface CvTranslations {
 	/** Título del documento (pestaña del navegador y metadatos del PDF). */
 	readonly documentTitle: (fullName: string) => string;
-	readonly languagesHeading: string;
-	readonly spokenLanguages: string;
 }
 
 /** Textos de interfaz de un idioma. */
@@ -48,8 +46,6 @@ const UI_TRANSLATIONS: Record<Locale, UiTranslations> = {
 			`Ilustración del proyecto ${projectTitle}`,
 		cv: {
 			documentTitle: (fullName) => `${fullName} — Currículum`,
-			languagesHeading: "Idiomas",
-			spokenLanguages: "Español · Inglés",
 		},
 	},
 	en: {
@@ -64,8 +60,6 @@ const UI_TRANSLATIONS: Record<Locale, UiTranslations> = {
 			`Illustration of the ${projectTitle} project`,
 		cv: {
 			documentTitle: (fullName) => `${fullName} — Resume`,
-			languagesHeading: "Languages",
-			spokenLanguages: "Spanish · English",
 		},
 	},
 };

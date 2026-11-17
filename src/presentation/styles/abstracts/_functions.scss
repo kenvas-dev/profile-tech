@@ -33,6 +33,20 @@
 	@return sass-color.change(color-token($name), $alpha: $alpha);
 }
 
+/// Devuelve un color de la paleta «papel» del CV (`$paper-colors`).
+/// @param {String} $name - Nombre del token (p. ej. `"ink"`, `"accent"`).
+/// @return {Color}
+/// @throw Si el token no existe.
+/// @example scss
+///   color: paper-token("ink-muted");
+@function paper-token($name) {
+	@if not map.has-key($paper-colors, $name) {
+		@error 'Color `#{$name}` no existe en $paper-colors.';
+	}
+
+	@return map.get($paper-colors, $name);
+}
+
 /// Devuelve una pila tipográfica del mapa `$font-families`.
 /// @param {String} $name - `"retro"`, `"display"`, `"body"` o `"mono"`.
 /// @return {List}
