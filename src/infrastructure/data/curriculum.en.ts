@@ -25,7 +25,7 @@ export const curriculumEn: Curriculum = {
 	contacts: CURRICULUM_CONTACTS,
 
 	summary:
-		"Frontend Lead with 5 years of experience building web applications with Angular, React and TypeScript, on a full stack foundation in Node.js. Since 2022 I have led frontend development of the corporate CRM at a financial institution in El Salvador, owning the architecture, code standards and integration with internal services. I have delivered 7 projects alongside 3 design teams for clients in Chile and El Salvador, focusing on maintainable architecture, performance and accessibility.",
+		"Frontend Lead with 5 years of experience building web applications with Angular, React and TypeScript, on a full stack foundation in Node.js. Since 2022 I have led frontend development of the corporate CRM at a financial institution in El Salvador (Angular 21 in an Nx monorepo), owning the architecture, code standards and integration with Spring Boot services, and co-created the team's in-house UI library. I have delivered 7 projects alongside 3 design teams for clients in Chile and El Salvador.",
 
 	experience: [
 		{
@@ -34,13 +34,14 @@ export const curriculumEn: Curriculum = {
 			workLocation: "El Salvador",
 			startDate: POSITION_DATES.financialInstitution.start,
 			endDate: POSITION_DATES.financialInstitution.end,
-			// TODO(metrics): CRM users/business units, team size and a
-			// measurable outcome (delivery time, performance, defects).
+			// TODO(metrics): CRM users/business units and a measurable
+			// outcome (delivery time, performance, defects).
 			highlights: [
-				"Lead frontend development of the corporate CRM that orchestrates the institution's core customer management processes.",
+				"Lead frontend development of the corporate customer management CRM, built with Angular 21 in an Nx monorepo, within a team of 10 developers (4 frontend, 6 backend).",
+				"Co-created the team's in-house Angular UI library: Tailwind/PrimeFlex-style utility styles and Angular Material-style components that power the whole platform.",
 				"Designed a modular frontend architecture that lets the team add new business workflows without compromising maintainability.",
 				"Set the team's quality standards: reusable components, strict typing and mandatory code reviews.",
-				"Coordinate integration with backend services and design teams to ship business-critical features continuously.",
+				"Coordinate integration with Spring Boot backend services and design teams to ship business-critical features continuously.",
 			],
 			technologies: POSITION_TECHNOLOGIES.financialInstitution,
 		},
@@ -53,8 +54,7 @@ export const curriculumEn: Curriculum = {
 			// TODO(metrics): number of sites delivered and Lighthouse scores, if any.
 			highlights: [
 				"Design and build custom websites end to end, from frontend architecture to backend services.",
-				"Built photography portfolios centered on image galleries, plus responsive blogs and landing pages with easy-to-update content.",
-				"Developed landing pages for churches and organizations featuring activity schedules and contact channels.",
+				"Built gallery-driven portfolios for photographers, plus responsive blogs and landing pages for churches and organizations with easy-to-update content.",
 			],
 			technologies: POSITION_TECHNOLOGIES.freelance,
 		},
@@ -128,7 +128,7 @@ export const curriculumEn: Curriculum = {
 		experience: "Experience",
 		skills: "Technical skills",
 		projects: "Projects",
-		education: "Education",
+		educationAndLanguages: "Education & languages",
 		languages: "Languages",
 		present: "Present",
 		technologies: "Tech",
