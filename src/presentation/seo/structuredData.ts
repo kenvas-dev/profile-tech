@@ -6,7 +6,7 @@ import type { PortfolioOverview } from "@application/use-cases/GetPortfolio";
 import type { IconName } from "@domain/entities/shared";
 
 interface StructuredDataUrls {
-	/** Raíz del sitio, p. ej. https://profile-tech.vercel.app/ */
+	/** Raíz del sitio, p. ej. https://www.un1t7d.dev/ */
 	readonly site: URL;
 	/** URL canónica de la página actual. */
 	readonly page: URL;

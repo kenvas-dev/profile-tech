@@ -8,16 +8,12 @@ const stylesPath = fileURLToPath(
 );
 
 /**
- * URL pública del sitio (canónicas, Open Graph, sitemap, hreflang).
- * 1. SITE_URL: para fijar un dominio propio.
- * 2. VERCEL_PROJECT_PRODUCTION_URL: la inyecta Vercel en cada build.
- * 3. Valor por defecto del proyecto en Vercel.
+ * URL pública del sitio (canónicas, Open Graph, sitemap, hreflang y el
+ * enlace del CV en PDF). Es fija para que todas las builds (producción,
+ * previews de Vercel y local) apunten al dominio propio y no al de Vercel.
+ * SITE_URL permite sobrescribirla puntualmente.
  */
-const site =
-	process.env.SITE_URL ??
-	(process.env.VERCEL_PROJECT_PRODUCTION_URL
-		? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-		: "https://profile-tech.vercel.app");
+const site = process.env.SITE_URL ?? "https://www.un1t7d.dev";
 
 // https://astro.build/config
 export default defineConfig({

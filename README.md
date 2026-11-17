@@ -52,7 +52,7 @@ Las dependencias apuntan siempre hacia dentro: `presentation → application →
 
 ## SEO
 
-- **Dominio:** `site` en `astro.config.mjs` se resuelve con `SITE_URL` → `VERCEL_PROJECT_PRODUCTION_URL` (lo inyecta Vercel) → `https://profile-tech.vercel.app`.
+- **Dominio:** `site` en `astro.config.mjs` es `https://www.un1t7d.dev` (sobrescribible con `SITE_URL`). Es fijo a propósito: así producción y previews de Vercel declaran la canónica del dominio propio, y el CV en PDF enlaza al sitio correcto.
 - **Contenido SEO por idioma:** bloque `seo` de `src/infrastructure/data/portfolio.*.ts` (título, descripción, palabras clave, cargos, áreas de conocimiento e imagen social).
 - **`<head>`:** `src/presentation/components/seo/SeoHead.astro` genera canónica, `hreflang` absolutos (+ `x-default`), Open Graph, Twitter Card y JSON-LD.
 - **Datos estructurados:** `src/presentation/seo/structuredData.ts` construye `Person`, `WebSite` y `ProfilePage` (schema.org) a partir del contenido del portfolio.
