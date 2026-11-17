@@ -64,7 +64,9 @@ export interface CurriculumLabels {
 	readonly experience: string;
 	readonly skills: string;
 	readonly projects: string;
-	readonly education: string;
+	/** Título de la sección que agrupa formación e idiomas. */
+	readonly educationAndLanguages: string;
+	/** Rótulo de la línea de idiomas dentro de esa sección. */
 	readonly languages: string;
 	/** Fin de un puesto en curso (p. ej. «Presente»). */
 	readonly present: string;

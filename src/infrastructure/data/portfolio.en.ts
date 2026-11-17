@@ -52,6 +52,8 @@ export const portfolioEn: Portfolio = {
 			"Frontend development",
 			"Full stack development",
 			"Angular",
+			"Nx",
+			"Monorepos",
 			"React",
 			"TypeScript",
 			"JavaScript",
@@ -216,11 +218,12 @@ export const portfolioEn: Portfolio = {
 				workLocation: "El Salvador · Since Oct. 2022",
 				period: POSITION_PERIODS.financialInstitution,
 				summary:
-					"I lead frontend development of the corporate CRM of a financial institution in El Salvador, the platform that orchestrates key customer management processes. I define the application architecture, coding standards and integration with internal services to deliver a consistent, secure and scalable experience for business teams.",
+					"I lead frontend development of the corporate CRM of a financial institution in El Salvador, the platform that orchestrates key customer management processes, built with Angular 21 in an Nx monorepo by a team of 10 developers (4 frontend, 6 backend). I define the application architecture, coding standards and integration with Spring Boot services to deliver a consistent, secure and scalable experience for business teams.",
 				achievements: [
+					"Co-created the team's in-house Angular UI library: Tailwind/PrimeFlex-style utility styles and Angular Material-style components that power the whole platform.",
 					"Designed a modular frontend architecture that allows new management flows to be added without compromising maintainability.",
 					"Established quality standards for the team: reusable components, strict typing and code reviews.",
-					"Coordinate integration with backend services and design teams to continuously deliver critical features.",
+					"Coordinate integration with Spring Boot backend services and design teams to continuously deliver critical features.",
 				],
 			},
 			{
@@ -253,15 +256,17 @@ export const portfolioEn: Portfolio = {
 				category: "Financial services · CRM · 2022 – present",
 				title: "Customer management CRM",
 				summary:
-					"Corporate platform that orchestrates the core customer management features of a financial institution in El Salvador. I lead its frontend development: architecture, coding standards and integration with internal services.",
+					"Corporate platform that orchestrates the core customer management features of a financial institution in El Salvador. I lead its frontend development with Angular 21 in an Nx monorepo: architecture, coding standards, the team's in-house UI library and integration with Spring Boot services.",
 				technologies: [
-					"Frontend architecture",
-					"Service integration",
+					"Angular 21",
+					"Nx monorepo",
+					"In-house UI library",
+					"Spring Boot",
 					"Technical leadership",
 				],
 				results: [
 					{ value: "Lead", label: "frontend development" },
-					{ value: "2022+", label: "continuously evolving" },
+					{ value: "10", label: "devs on the team · 4 FE / 6 BE" },
 				],
 			},
 			{

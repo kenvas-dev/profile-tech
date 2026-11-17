@@ -80,6 +80,7 @@ export const TECH_STACK = {
 		"JavaScript",
 		"React",
 		"Angular",
+		"Nx",
 		"Astro",
 		"Node.js",
 		"Express.js",

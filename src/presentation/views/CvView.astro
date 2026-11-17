@@ -33,6 +33,10 @@ const {
 	labels,
 } = curriculum;
 const uiText = getUiTranslations(locale);
+/** Idiomas en una línea: «Español (Nativo), Inglés (Profesional)». */
+const spokenLanguages = languages
+	.map((language) => `${language.name} (${language.proficiency})`)
+	.join(", ");
 ---
 
 <BaseLayout locale={locale} isInteractive={false} colorScheme="light">
@@ -110,8 +114,8 @@ const uiText = getUiTranslations(locale);
 						</span>
 					</h3>
 					<p class="c-cv__text">{project.description}</p>
-					<p class="c-cv__technologies">
-						<span class="c-cv__technologies-label">
+					<p class="c-cv__detail">
+						<span class="c-cv__detail-label">
 							{labels.technologies}:
 						</span>{" "}
 						{project.technologies.join(", ")}
@@ -120,7 +124,7 @@ const uiText = getUiTranslations(locale);
 			))}
 		</CvSection>
 
-		<CvSection heading={labels.education} keepTogether>
+		<CvSection heading={labels.educationAndLanguages} keepTogether>
 			<ul class="c-cv__stack c-cv__stack--tight">
 				{education.map((credential) => (
 					<li class="c-cv__credential">
@@ -133,20 +137,10 @@ const uiText = getUiTranslations(locale);
 					</li>
 				))}
 			</ul>
-		</CvSection>
-
-		<CvSection heading={labels.languages} keepTogether>
-			<ul class="c-cv__languages">
-				{languages.map((language) => (
-					<li class="c-cv__language">
-						<span class="c-cv__item-title">{language.name}</span>
-						<span class="c-cv__item-meta">
-							{" — "}
-							{language.proficiency}
-						</span>
-					</li>
-				))}
-			</ul>
+			<p class="c-cv__detail">
+				<span class="c-cv__detail-label">{labels.languages}:</span>
+				{` ${spokenLanguages}`}
+			</p>
 		</CvSection>
 	</article>
 </BaseLayout>
@@ -305,21 +299,15 @@ const uiText = getUiTranslations(locale);
 			}
 		}
 
-		&__technologies {
+		&__detail {
 			@include typography("body", 10.5px, $font-weight-regular, 1.4);
 
 			color: paper-token("ink-muted");
 		}
 
-		&__technologies-label {
+		&__detail-label {
 			font-weight: $font-weight-semibold;
 			color: paper-token("accent-alt");
-		}
-
-		&__languages {
-			@include flex-row(4px 28px);
-
-			flex-wrap: wrap;
 		}
 
 		@media print {

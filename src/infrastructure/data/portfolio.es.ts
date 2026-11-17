@@ -52,6 +52,8 @@ export const portfolioEs: Portfolio = {
 			"Desarrollo Frontend",
 			"Desarrollo Full Stack",
 			"Angular",
+			"Nx",
+			"Monorepos",
 			"React",
 			"TypeScript",
 			"JavaScript",
@@ -214,11 +216,12 @@ export const portfolioEs: Portfolio = {
 				workLocation: "El Salvador · Desde oct. 2022",
 				period: POSITION_PERIODS.financialInstitution,
 				summary:
-					"Lidero el desarrollo frontend del CRM corporativo de una entidad financiera en El Salvador, la plataforma que orquesta los procesos clave de gestión de clientes. Defino la arquitectura de la aplicación, los estándares de código y la integración con los servicios internos para ofrecer una experiencia consistente, segura y escalable a los equipos de negocio.",
+					"Lidero el desarrollo frontend del CRM corporativo de una entidad financiera en El Salvador, la plataforma que orquesta los procesos clave de gestión de clientes, construida con Angular 21 en un monorepo Nx por un equipo de 10 desarrolladores (4 frontend y 6 backend). Defino la arquitectura de la aplicación, los estándares de código y la integración con los servicios Spring Boot para ofrecer una experiencia consistente, segura y escalable a los equipos de negocio.",
 				achievements: [
+					"Co-creé la librería de UI propia del equipo para Angular: utilidades de estilos tipo Tailwind/PrimeFlex y componentes tipo Angular Material, base visual de toda la plataforma.",
 					"Diseñé una arquitectura frontend modular que permite incorporar nuevos flujos de gestión sin comprometer la mantenibilidad.",
 					"Establecí estándares de calidad para el equipo: componentes reutilizables, tipado estricto y revisiones de código.",
-					"Coordino la integración con servicios backend y equipos de diseño para entregar funcionalidades críticas de forma continua.",
+					"Coordino la integración con los servicios backend en Spring Boot y con los equipos de diseño para entregar funcionalidades críticas de forma continua.",
 				],
 			},
 			{
@@ -251,15 +254,17 @@ export const portfolioEs: Portfolio = {
 				category: "Sector financiero · CRM · 2022 – hoy",
 				title: "CRM de gestión de clientes",
 				summary:
-					"Plataforma corporativa que orquesta las funcionalidades principales en la gestión de clientes de una entidad financiera en El Salvador. Lidero su desarrollo frontend: arquitectura, estándares de código e integración con los servicios internos.",
+					"Plataforma corporativa que orquesta las funcionalidades principales en la gestión de clientes de una entidad financiera en El Salvador. Lidero su desarrollo frontend con Angular 21 en un monorepo Nx: arquitectura, estándares de código, la librería de UI propia del equipo e integración con servicios Spring Boot.",
 				technologies: [
-					"Arquitectura frontend",
-					"Integración de servicios",
+					"Angular 21",
+					"Nx monorepo",
+					"Librería UI propia",
+					"Spring Boot",
 					"Liderazgo técnico",
 				],
 				results: [
 					{ value: "Lead", label: "desarrollo frontend" },
-					{ value: "2022+", label: "en evolución continua" },
+					{ value: "10", label: "devs en el equipo · 4 FE / 6 BE" },
 				],
 			},
 			{

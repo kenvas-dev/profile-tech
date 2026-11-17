@@ -60,8 +60,12 @@ export const POSITION_DATES = {
 
 /** Tecnologías con nombre propio de cada puesto (no se traducen). */
 export const POSITION_TECHNOLOGIES = {
-	// TODO(métricas): añadir el stack del CRM (framework y versión) cuando se confirme.
-	financialInstitution: [],
+	financialInstitution: [
+		"Angular 21",
+		"Nx (monorepo)",
+		"TypeScript",
+		"Spring Boot (APIs)",
+	],
 	freelance: ["Angular 14+", "TypeScript", "Node.js", "SCSS"],
 	waresoft: [
 		"Angular 12/14",
@@ -90,6 +94,7 @@ export const SKILLS = {
 		"Angular",
 		"React",
 		"TypeScript",
+		"Nx",
 		"JavaScript",
 		"Astro",
 		"HTML5",

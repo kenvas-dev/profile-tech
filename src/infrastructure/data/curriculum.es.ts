@@ -25,7 +25,7 @@ export const curriculumEs: Curriculum = {
 	contacts: CURRICULUM_CONTACTS,
 
 	summary:
-		"Frontend Lead con 5 años de experiencia construyendo aplicaciones web con Angular, React y TypeScript, sobre una base full stack en Node.js. Desde 2022 lidero el frontend del CRM corporativo de una entidad financiera en El Salvador, donde defino la arquitectura, los estándares de código y la integración con los servicios internos. He participado en 7 proyectos junto a 3 equipos de diseño para clientes de Chile y El Salvador, con foco en arquitectura mantenible, rendimiento y accesibilidad.",
+		"Frontend Lead con 5 años de experiencia construyendo aplicaciones web con Angular, React y TypeScript, sobre una base full stack en Node.js. Desde 2022 lidero el frontend del CRM corporativo de una entidad financiera en El Salvador (Angular 21 en un monorepo Nx): defino la arquitectura, los estándares de código y la integración con servicios Spring Boot, y co-creé la librería de UI propia del equipo. He participado en 7 proyectos junto a 3 equipos de diseño para clientes de Chile y El Salvador.",
 
 	experience: [
 		{
@@ -34,13 +34,14 @@ export const curriculumEs: Curriculum = {
 			workLocation: "El Salvador",
 			startDate: POSITION_DATES.financialInstitution.start,
 			endDate: POSITION_DATES.financialInstitution.end,
-			// TODO(métricas): nº de usuarios/áreas del CRM, tamaño del equipo
-			// y algún resultado medible (tiempos de entrega, rendimiento, bugs).
+			// TODO(métricas): nº de usuarios/áreas del CRM y algún resultado
+			// medible (tiempos de entrega, rendimiento, bugs).
 			highlights: [
-				"Lidero el desarrollo frontend del CRM corporativo que orquesta los procesos clave de gestión de clientes de la entidad.",
+				"Lidero el frontend del CRM corporativo de gestión de clientes, construido con Angular 21 en un monorepo Nx, dentro de un equipo de 10 desarrolladores (4 frontend y 6 backend).",
+				"Co-creé la librería de UI propia del equipo para Angular: utilidades de estilos tipo Tailwind/PrimeFlex y componentes tipo Angular Material, base visual de toda la plataforma.",
 				"Diseñé una arquitectura frontend modular que permite incorporar nuevos flujos de negocio sin comprometer la mantenibilidad.",
 				"Definí los estándares de calidad del equipo: componentes reutilizables, tipado estricto y revisiones de código obligatorias.",
-				"Coordino la integración con los servicios backend y los equipos de diseño para entregar funcionalidades críticas de forma continua.",
+				"Coordino la integración con los servicios backend en Spring Boot y con los equipos de diseño para entregar funcionalidades críticas de forma continua.",
 			],
 			technologies: POSITION_TECHNOLOGIES.financialInstitution,
 		},
@@ -53,8 +54,7 @@ export const curriculumEs: Curriculum = {
 			// TODO(métricas): nº de sitios entregados y, si hay, puntuación Lighthouse.
 			highlights: [
 				"Diseño y desarrollo sitios web a medida de principio a fin, desde la arquitectura del frontend hasta los servicios backend.",
-				"Construí portafolios para fotógrafos centrados en galerías de imágenes, además de blogs y landing pages responsive con contenido fácil de actualizar.",
-				"Desarrollé landing pages para iglesias y organizaciones con información de actividades y canales de contacto.",
+				"Construí portafolios con galerías de imágenes para fotógrafos, blogs y landing pages responsive para iglesias y organizaciones, con contenido fácil de actualizar.",
 			],
 			technologies: POSITION_TECHNOLOGIES.freelance,
 		},
@@ -128,7 +128,7 @@ export const curriculumEs: Curriculum = {
 		experience: "Experiencia profesional",
 		skills: "Habilidades técnicas",
 		projects: "Proyectos",
-		education: "Formación",
+		educationAndLanguages: "Formación e idiomas",
 		languages: "Idiomas",
 		present: "Presente",
 		technologies: "Tecnologías",
