@@ -12,9 +12,21 @@ interface Props {
 	locale?: Locale;
 	/** false en páginas para imprimir (CV): sin barra de progreso ni botón flotante. */
 	isInteractive?: boolean;
+	/**
+	 * Esquema de color del documento. `light` en páginas sobre papel (CV):
+	 * con `dark`, Chrome pinta los márgenes de impresión con su lienzo oscuro.
+	 */
+	colorScheme?: "dark" | "light";
 }
 
-const { locale = DEFAULT_LOCALE, isInteractive = true } = Astro.props;
+/** Color de la barra del navegador según el esquema (fondo del sitio o papel). */
+const THEME_COLORS = { dark: "#1a0228", light: "#ffffff" } as const;
+
+const {
+	locale = DEFAULT_LOCALE,
+	isInteractive = true,
+	colorScheme = "dark",
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -22,8 +34,8 @@ const { locale = DEFAULT_LOCALE, isInteractive = true } = Astro.props;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="theme-color" content="#1a0228" />
-		<meta name="color-scheme" content="dark" />
+		<meta name="theme-color" content={THEME_COLORS[colorScheme]} />
+		<meta name="color-scheme" content={colorScheme} />
 
 		<!-- Metadatos SEO específicos de cada página -->
 		<slot name="head" />

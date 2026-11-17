@@ -35,7 +35,7 @@ const {
 const uiText = getUiTranslations(locale);
 ---
 
-<BaseLayout locale={locale} isInteractive={false}>
+<BaseLayout locale={locale} isInteractive={false} colorScheme="light">
 	<Fragment slot="head">
 		<title>{uiText.cv.documentTitle(identity.fullName)}</title>
 		<meta name="author" content={identity.fullName} />
@@ -167,6 +167,7 @@ const uiText = getUiTranslations(locale);
 	:global(html),
 	:global(body) {
 		background: paper-token("background");
+		color-scheme: light;
 		print-color-adjust: exact;
 	}
 
